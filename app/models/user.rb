@@ -1,20 +1,14 @@
 class User < ApplicationRecord
-
-  REGEXP_EMAIL = /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
   
-  enum role: [:customer, :admin]
+  ROLES = { customer: 0, admin: 1 }
+  enum role: ROLES
   has_secure_password
 
   validates :name, presence: true
-  validates :email, uniqueness: true, format: {
-    with:    REGEXP_EMAIL,
-    message: 'must be a valid email address.'
-  }
-
-  after_initialize do
-    if self.new_record?
-      self.role ||= :customer
-    end
-  end
+  validates :email, presence: true
+  validates :email, :uniqueness => { :case_sensitive => false }, format: {
+    with:    EMAIL_REGEXP,
+    message: I18n.t('.invalid_email')
+  }, allow_blank: true
 
 end
