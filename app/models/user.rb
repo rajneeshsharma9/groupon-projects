@@ -14,4 +14,12 @@ class User < ApplicationRecord
     message: :invalid_email
   }, allow_blank: true
 
+  #Callbacks
+  after_create_commit :send_verification_email
+
+  private
+    def send_verification_email
+      #mail will not be sent for admin creation
+    end
+
 end
