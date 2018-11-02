@@ -1,0 +1,5 @@
+Hi <%= @user.name %>,
+
+Thanks for registering! To confirm your registration click the URL below.
+<br>
+<%= link_to nil, confirm_email_url(@user.verification_token), target: "_blank" %>

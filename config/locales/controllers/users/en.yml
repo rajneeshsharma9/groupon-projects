@@ -1,0 +1,8 @@
+en:
+  users:
+    create:
+      confirm_email_message: 'Please confirm your email address to continue'
+    confirm_email:  
+      welcome_email_message: 'Welcome to the Groupon App! Your email has been confirmed.
+       Please sign in to continue.'
+      no_user_exists: 'Sorry. User does not exist' 

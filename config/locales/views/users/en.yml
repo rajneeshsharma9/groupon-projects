@@ -1,0 +1,7 @@
+en:
+  users:
+    new:
+      sign-up: 'Sign-up'
+    form:
+      signup_form_legend: 'Enter User Details'
+      sign-up: 'Signup'
