@@ -13,27 +13,33 @@ class User < ApplicationRecord
     with:    EMAIL_REGEXP,
     message: :invalid_email
   }, allow_blank: true
-  # validates :verification_token, uniqueness: { case_sensitive: false }
+  validates :verification_token, uniqueness: { case_sensitive: false }, allow_nil: true
 
   #Callbacks
   before_create :set_verification_token
   after_create_commit :send_verification_email
 
   def verify_email
-    self.verified_at = Time.current
-    self.verification_token = nil
-    save(validate: false)
+    update_columns(verified_at: Time.current, verification_token: nil)
   end
 
   private
     def send_verification_email
       #mail will not be sent for admin creation
-      UserMailer.send_verification_email(id).deliver_later
+      if customer?
+        SendVerificationEmailJob.perform_later(id)
+      end
     end
 
     def set_verification_token
-      if self.verification_token.blank?
-        self.verification_token = SecureRandom.urlsafe_base64.to_s
+      if verification_token.blank?
+        loop do
+          token = SecureRandom.urlsafe_base64.to_s
+          if User.find_by(verification_token: token).nil?
+            self.verification_token = token
+            break
+          end
+        end
       end
     end
 

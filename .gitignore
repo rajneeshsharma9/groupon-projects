@@ -27,3 +27,6 @@
 /config/master.key
 /db/schema.rb
 /config/database.yml
+
+# Ignore application configuration
+/config/application.yml

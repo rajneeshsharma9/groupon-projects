@@ -1,6 +1,3 @@
 class ApplicationController < ActionController::Base
-
-  def home
-  end
-
+  add_flash_types :danger, :success, :info
 end

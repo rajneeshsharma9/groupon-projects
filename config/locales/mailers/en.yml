@@ -1,0 +1,4 @@
+en:
+  user_mailer:
+    send_verification_email:
+      sign_up_mail_subject: 'Registration Confirmation for Groupon App'

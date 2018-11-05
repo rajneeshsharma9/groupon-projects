@@ -1,42 +1,29 @@
-<p id="notice"><%= notice %></p>
 <div class="groupon_signup_form">
-<%= form_for(user) do |f| %>
+<%= form_for(user) do |form| %>
   <legend><%= t('.signup_form_legend') %></legend>
   <div class="form-container">
   <div class="field">
-    <%= f.label :name , class: 'col-form-label' %>
-    <%= f.text_field :name, size: 40, class: 'form-control', placeholder: 'Enter name' %>
-    <span class="form-error">
-      <%= 'Name ' + user.errors[:name].join if user.errors[:name].present? %>
-    </span>
+    <%= form.label :name , class: 'col-form-label' %>
+    <%= form.text_field :name, class: 'form-control', placeholder: 'Enter name' %>
   </div>
 
   <div class="field">
-    <%= f.label :email, class: 'col-form-label' %>
-    <%= f.email_field :email, size: 40 ,class: 'form-control', placeholder: 'Enter email' %>
-    <span class="form-error">
-      <%= 'Email ' + user.errors[:email].join if user.errors[:email].present? %>
-    </span>
+    <%= form.label :email, class: 'col-form-label' %>
+    <%= form.email_field :email, class: 'form-control', placeholder: 'Enter email' %>
   </div>
 
   <div class="field">
-    <%= f.label :password, class: 'col-form-label' %>
-    <%= f.password_field :password, size: 40, class: 'form-control', placeholder: 'Enter password' %>
-    <span class="form-error">
-      <%= 'Password ' + user.errors[:password].join if user.errors[:password].present? %>
-    </span>
+    <%= form.label :password, class: 'col-form-label' %>
+    <%= form.password_field :password, class: 'form-control', placeholder: 'Enter password' %>
   </div>
 
   <div class="field">
-    <%= f.label :password_confirmation, 'Confirm password:', class: 'col-form-label' %>
-    <%= f.password_field :password_confirmation, size: 40 ,class: 'form-control', placeholder: 'Confirm password' %>
-    <span class="form-error">
-      <%= 'Confirm password ' + user.errors[:password_confirmation].join if user.errors[:password_confirmation].present? %>
-    </span>
+    <%= form.label :password_confirmation, 'Confirm password:', class: 'col-form-label' %>
+    <%= form.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm password' %>
   </div>
   </div>
   <div class="actions">
-    <%= f.submit t('.sign-up'), class: 'btn btn-primary' %>
+    <%= form.submit t('.sign-up'), class: 'btn btn-primary' %>
   </div>
 <% end %>
 

@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
 
+  before_action :set_user_by_token, only: [:confirm_account]
+
   def new
     @user = User.new
   end
@@ -7,20 +9,17 @@ class UsersController < ApplicationController
   def create
     @user = User.customer.new(user_params)
     if @user.save
-      redirect_to home_page_url, notice: t('.confirm_email_message')
+      redirect_to home_page_path, info: t('.confirm_account_message')
     else
       render :new
     end
   end
 
-  def confirm_email
-    user = User.find_by_verification_token(params[:token])
-    if user
-      user.verify_email
-      flash[:notice] = t('.welcome_email_message')
-      redirect_to home_page_url
+  def confirm_account
+    if @user.verify_email
+      redirect_to home_page_path, success: t('.welcome_email_message') 
     else
-      redirect_to home_page_url, notice: t('.no_user_exists')
+      redirect_to home_page_path, danger: t('.unknown_error')
     end
   end
 
@@ -28,6 +27,13 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(:name, :password, :password_confirmation, :email)
+    end
+
+    def set_user_by_token
+      @user = User.find_by(verification_token: params[:token])
+      if @user.nil?
+        redirect_to home_page_path, danger: t('.wrong_link')
+      end
     end
 
 end
