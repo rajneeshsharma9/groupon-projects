@@ -1,6 +1,6 @@
 class SendVerificationEmailJob < ActiveJob::Base
 
-  queue_as :user_verification_emails
+  queue_as :default
 
   def perform(user_id)
     UserMailer.send_verification_email(user_id).deliver_now
