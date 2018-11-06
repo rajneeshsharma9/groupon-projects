@@ -21,7 +21,7 @@ class UsersController < ApplicationController
 
   def confirm_account
     if @user.verify_email
-      redirect_to home_page_path, success: t('.welcome_email_message') 
+      redirect_to login_path, success: t('.welcome_email_message') 
     else
       redirect_to home_page_path, danger: t('.unknown_error')
     end

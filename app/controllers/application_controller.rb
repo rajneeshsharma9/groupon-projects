@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize
-    unless User.find_by(id: session[:user_id])
+    unless logged_in?
       redirect_to login_path, info: 'Please log in'
     end
   end
