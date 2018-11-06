@@ -1,9 +1,13 @@
 class UsersController < ApplicationController
 
   before_action :set_user_by_token, only: [:confirm_account]
+  skip_before_action :authorize, only: [:create, :confirm_account]
 
   def new
     @user = User.new
+  end
+
+  def dashboard
   end
 
   def create

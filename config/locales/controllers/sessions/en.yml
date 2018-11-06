@@ -1,0 +1,7 @@
+en:
+  sessions:
+    create:
+      login_successful: 'Logged In!'
+      invalid_password: "Email or password is invalid"
+    destroy:  
+      logged_out: 'Logged Out!'
