@@ -5,22 +5,24 @@ class ApplicationController < ActionController::Base
 
   before_action :authorize
 
-  def current_user
-    if session[:user_id]
-      @current_user ||= User.find(session[:user_id])
-    else
-      @current_user = nil
-    end
-  end
+  private
 
-  def logged_in?
-    current_user != nil
-  end
-
-  def authorize
-    unless logged_in?
-      redirect_to login_path, info: 'Please log in'
+    def current_user
+      if session[:user_id]
+        @current_user ||= User.find_by(id: session[:user_id])
+      else
+        @current_user
+      end
     end
-  end
+  
+    def logged_in?
+      current_user.present?
+    end
+  
+    def authorize
+      unless logged_in?
+        redirect_to login_path, info: t('login_message')
+      end
+    end
 
 end

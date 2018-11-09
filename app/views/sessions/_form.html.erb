@@ -1,21 +1,21 @@
 <div class="signup-login-form">
-<%= form_tag do %>
-  <legend><%= t('.login_form_legend') %></legend>
-  <div class="form-container">
+  <%= form_tag do %>
+    <legend><%= t('.login_form_legend') %></legend>
+    <div class="form-container">
 
-  <div class="field">
-    <%= label_tag :email, 'Email:', class: 'col-form-label' %>
-    <%= email_field_tag :email, params[:email], class: 'form-control', placeholder: 'Enter email' %>
-  </div>
+      <div class="field">
+        <%= label_tag :email, 'Email:', class: 'col-form-label' %>
+        <%= email_field_tag :email, params[:email], class: 'form-control', placeholder: 'Enter email' %>
+      </div>
 
-  <div class="field">
-    <%= label_tag :password, 'Password:', class: 'col-form-label' %>
-    <%= password_field_tag :password, params[:password], class: 'form-control', placeholder: 'Enter password' %>
-  </div>
+      <div class="field">
+        <%= label_tag :password, 'Password:', class: 'col-form-label' %>
+        <%= password_field_tag :password, params[:password], class: 'form-control', placeholder: 'Enter password' %>
+      </div>
 
-  </div>
-  <div class="actions">
-    <%= submit_tag t('.login'), class: 'btn btn-primary' %>
-  </div>
-<% end %>
+    </div>
+    <div class="actions">
+      <%= submit_tag t('.login'), class: 'btn btn-primary' %>
+    </div>
+  <% end %>
 </div>

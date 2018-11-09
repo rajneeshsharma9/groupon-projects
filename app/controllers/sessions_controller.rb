@@ -1,15 +1,15 @@
 class SessionsController < ApplicationController
 
-  skip_before_action :authorize
+  before_action :find_user_by_email, only: [:create]
+  skip_before_action :authorize, only: [:new, :create]
 
-  def new
-  end
+  def new; end
 
   def create
-    user = User.find_by(email: params[:email])
-    if user && user.authenticate(params[:password])
-      session[:user_id] = user.id
-      redirect_to dashboard_user_path(user), success: t('.login_successful')
+    
+    if @user && @user.authenticate(params[:password])
+      session[:user_id] = @user.id
+      redirect_to dashboard_user_path(@user), success: t('.login_successful')
     else
       flash.now[:danger] = t('.invalid_password')
       render :new
@@ -17,8 +17,14 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
+    session.delete(:user_id)
     redirect_to home_page_path, info: t('.logged_out')
   end
+
+  private
+
+    def find_user_by_email
+      @user = User.find_by(email: params[:email])
+    end
 
 end 
