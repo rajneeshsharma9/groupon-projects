@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   
+  attr_accessor :reset_token
   ROLES = ({ customer: 0, admin: 1 }).freeze
   PASSWORD_VALIDATION_RANGE = (6..20).freeze
 
@@ -22,6 +23,30 @@ class User < ApplicationRecord
 
   def verify_email
     update_columns(verified_at: Time.current, verification_token: nil)
+  end
+
+  def activated?
+    verified_at.present?
+  end
+
+  def authenticated?(attribute, token)
+    digest = send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
+  end
+
+  def create_reset_digest
+    self.reset_token = SecureRandom.urlsafe_base64.to_s
+    update_attribute(:reset_digest, BCrypt::Password.create(reset_token))
+    update_attribute(:reset_sent_at, Time.current)
+  end
+
+  def send_password_reset_email
+    SendPasswordResetEmailJob.perform_later(id, reset_token)
+  end
+
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
   end
 
   private

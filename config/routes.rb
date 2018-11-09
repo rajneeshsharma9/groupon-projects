@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     end
   end
   get '/:token/confirm_account/', to: 'users#confirm_account', as: 'confirm_account'
+  get '/:token/edit/', to: 'password_resets#edit', as: 'password_reset'
   get '/signup', to: 'users#new', as: 'signup'
   post '/signup', to: 'users#create'
   controller :sessions do
@@ -13,4 +14,5 @@ Rails.application.routes.draw do
     post 'login' => :create
     delete 'logout' => :destroy
   end
+  resources :password_resets, only: [:new, :create, :update]
 end

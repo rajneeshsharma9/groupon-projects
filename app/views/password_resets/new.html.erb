@@ -1,0 +1,14 @@
+<main class="form-main">
+  <h1>Forgot password</h1>
+  <div class="signup-login-form">
+    <div class="form-container">
+      <%= form_for(:password_reset, url: password_resets_url) do |f| %>
+       <div class="field">
+        <%= f.label :email %>
+        <%= f.email_field :email, class: 'form-control' %>
+      </div>
+      <%= f.submit "Submit", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+</main>

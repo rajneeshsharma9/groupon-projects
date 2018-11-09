@@ -1,0 +1,17 @@
+en:
+  password_resets:
+    new: 
+      enter_email: 'Enter your email registered address to reset password'
+    create:
+      email_sent: 'Email sent with password reset instructions'
+      email_invalid: 'Email address not found'
+    update:  
+      required: "can't be empty"
+      password_reset: 'Password has been reset.'
+    edit:
+      invalid_user: 'Invalid url or unactivated user'  
+    validate_user:
+      invalid_user: 'Invalid url or unactivated user'
+    check_expiration:
+      reset_expired: 'Password reset has expired.'  
+
