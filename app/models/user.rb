@@ -1,8 +1,9 @@
 class User < ApplicationRecord
   
-  attr_accessor :reset_token
   ROLES = ({ customer: 0, admin: 1 }).freeze
   PASSWORD_VALIDATION_RANGE = (6..20).freeze
+
+  attr_accessor :reset_token, :remember_token
 
   has_secure_password
 
@@ -33,6 +34,15 @@ class User < ApplicationRecord
     digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
+  end
+
+  def remember
+    self.remember_token = SecureRandom.urlsafe_base64.to_s
+    update_attribute(:remember_digest, BCrypt::Password.create(remember_token))
+  end
+
+  def forget
+    update_attribute(:remember_digest, nil)
   end
 
   def create_reset_digest
