@@ -12,7 +12,7 @@ class PasswordResetsController < ApplicationController
 
   def create
     if @user
-      @user.create_reset_digest
+      @user.set_reset_digest
       @user.send_password_reset_email
       flash[:info] = t('.email_sent')
       redirect_to home_page_path
