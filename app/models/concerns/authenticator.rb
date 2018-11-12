@@ -17,15 +17,6 @@ module Authenticator
     BCrypt::Password.new(digest).is_password?(token)
   end
 
-  def remember
-    self.remember_token = new_token
-    update_attribute(:remember_digest, create_digest(:remember_token))
-  end
-
-  def forget
-    update_attribute(:remember_digest, nil)
-  end
-
   def set_reset_digest
     self.reset_token = new_token
     update_attribute(:reset_digest, create_digest(reset_token))

@@ -1,16 +1,21 @@
 class SessionsController < ApplicationController
 
+  include LoginAuthenticator
   before_action :find_user_by_email, only: [:create]
-  before_action :set_user_by_id,     only: [:destroy]
   skip_before_action :authorize,     only: [:new, :create]
 
   def new; end
 
   def create
-    if @user && @user.authenticate(params[:password])
+    if @user.authenticate(params[:password]) && @user.activated?
       log_in @user
-      params[:remember_me] == '1' ? remember(@user) : forget(@user)
+      if params[:remember_me] == 'on'
+        remember(@user)
+      end
       redirect_to dashboard_user_path(@user), success: t('.login_successful')
+    elsif @user.authenticate(params[:password]) && !@user.activated?
+      flash.now[:danger] = t('.inactive_user')
+      render :new
     else
       flash.now[:danger] = t('.invalid_password')
       render :new
@@ -26,26 +31,8 @@ class SessionsController < ApplicationController
 
     def find_user_by_email
       @user = User.find_by(email: params[:email])
-    end
-
-    def log_out
-      session.delete(:user_id)
-      forget(@user)
-    end
-
-    def remember(user)
-      user.remember
-      cookies.permanent.signed[:user_id] = user.id
-      cookies.permanent[:remember_token] = user.remember_token
-    end
-
-    def forget(user)
-      user.forget
-      cookies.delete(:user_id)
-      cookies.delete(:remember_token)
-    end
-
-    def set_user_by_id
-      @user = User.find_by(id: session[:user_id])
+      if @user.nil?
+        redirect_to login_path, danger: t('.invalid_email') 
+      end
     end
 end 
