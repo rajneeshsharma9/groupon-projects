@@ -7,8 +7,7 @@ class UsersController < ApplicationController
     @user = User.new
   end
 
-  def dashboard
-  end
+  def dashboard; end
 
   def create
     @user = User.customer.new(user_params)

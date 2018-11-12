@@ -3,10 +3,15 @@ module LoginAuthenticator
   include ActiveSupport::Concern
 
   def log_in(user)
-    cookies.signed[:user_id] = user.id
+    if params[:remember_me] == 'on'
+      remember(user)
+    else  
+      cookies.signed[:user_id] = user.id
+    end
   end
 
   def log_out
+    reset_session
     cookies.clear
   end
 

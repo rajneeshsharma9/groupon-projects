@@ -18,7 +18,7 @@ class User < ApplicationRecord
     message: :invalid_email
   }, allow_blank: true
   validates :verification_token, uniqueness: { case_sensitive: false }, allow_nil: true
-  validates :password, length: { in: PASSWORD_VALIDATION_RANGE }
+  validates :password, length: { in: PASSWORD_VALIDATION_RANGE }, allow_blank: true
   #Callbacks
   before_create :set_verification_token
   after_create_commit :send_verification_email

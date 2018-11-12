@@ -1,10 +1,9 @@
 module Authenticator
   
-  include ActiveSupport::Concern
-  include Tokenizer
+  extend ActiveSupport::Concern
   
   def verify_email
-    update_columns(verified_at: Time.current, verification_token: nil)
+    update(verified_at: Time.current, verification_token: nil)
   end
 
   def activated?
@@ -14,12 +13,12 @@ module Authenticator
   def authenticated?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?
-    BCrypt::Password.new(digest).is_password?(token)
+    Tokenizer.is_digest_of?(digest, token)
   end
 
   def set_reset_digest
-    self.reset_token = new_token
-    update(reset_digest: create_digest(reset_token), reset_sent_at: Time.current)
+    self.reset_token = Tokenizer.new_token
+    update(reset_digest: Tokenizer.create_digest(reset_token), reset_sent_at: Time.current)
   end
 
   def send_password_reset_email
@@ -41,7 +40,7 @@ module Authenticator
         return false
       end
       loop do
-        self.verification_token = new_token
+        self.verification_token = Tokenizer.new_token
         if User.find_by(verification_token: verification_token).nil?
           break
         end
