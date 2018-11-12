@@ -5,9 +5,11 @@ en:
     create:
       email_sent: 'Email sent with password reset instructions'
       email_invalid: 'Email address not found'
+      error_has_occured: 'Some error has occured while updating'
     update:  
       required: "can't be empty"
       password_reset: 'Password has been reset.'
+      error_has_occured: 'Some error has occured while updating'
     edit:
       invalid_user: 'Invalid url or unactivated user'  
     validate_user:

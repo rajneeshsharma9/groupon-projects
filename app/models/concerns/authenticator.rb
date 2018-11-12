@@ -19,8 +19,7 @@ module Authenticator
 
   def set_reset_digest
     self.reset_token = new_token
-    update_attribute(:reset_digest, create_digest(reset_token))
-    update_attribute(:reset_sent_at, Time.current)
+    update(reset_digest: create_digest(reset_token), reset_sent_at: Time.current)
   end
 
   def send_password_reset_email

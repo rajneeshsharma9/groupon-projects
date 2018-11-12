@@ -11,26 +11,20 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    if @user
-      @user.set_reset_digest
-      @user.send_password_reset_email
-      flash[:info] = t('.email_sent')
-      redirect_to home_page_path
+    if @user.set_reset_digest
+      redirect_to home_page_path, info: t('.email_sent')
     else
-      flash.now[:danger] = t('.email_invalid')
-      render 'new'
+      redirect_to home_page_path, danger: t('.error_has_occured')
     end
   end
 
   def edit; end
 
   def update
-    if params[:user][:password].empty?
-      @user.errors.add(:password, t('.required'))
-      render 'edit'
-    elsif @user.update_attributes(user_params)
+    if @user.update(user_params)
       redirect_to login_path, success: t('.password_reset')
     else
+      flash.now[:danger] = t('.error_has_occured')
       render 'edit'
     end
   end
@@ -43,6 +37,10 @@ class PasswordResetsController < ApplicationController
 
     def set_user
       @user = User.find_by(email: params[:email])
+      if @user.nil?
+        flash.now[:danger] = t('.email_invalid')
+        render 'new'
+      end
     end
 
     def validate_user
@@ -53,6 +51,10 @@ class PasswordResetsController < ApplicationController
 
     def find_user_by_email
       @user = User.find_by(email: params[:password_reset][:email])
+      if @user.nil?
+        flash.now[:danger] = t('.email_invalid')
+        render 'new'
+      end
     end
 
     def check_expiration
