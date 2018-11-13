@@ -66,6 +66,10 @@ plugins:
         enabled: false
       Rubocop/Layout/EmptyLinesAroundBlockBody:
         enabled: false
+      Rubocop/Layout/EmptyLinesAroundClassBody:
+        enabled: false
+      Rubocop/Layout/EmptyLinesAroundModuleBody:
+        enabled: false
       Rubocop/Style/FrozenStringLiteralComment:
         enabled: false
     exclude_patterns:

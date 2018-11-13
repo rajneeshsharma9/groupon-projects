@@ -30,5 +30,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
   hi: "Hi"
+  login_message : 'Please log In !'
+  logout_message : 'Please log Out !'

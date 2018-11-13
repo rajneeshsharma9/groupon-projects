@@ -3,6 +3,6 @@ en:
     create:
       confirm_account_message: 'Please confirm your email address to continue'
     confirm_account:  
-      welcome_email_message: 'Welcome to the Groupon App! Your email has been confirmed. Please sign in to continue.'
-      wrong_link: 'Sorry. User does not exist or the link has already been used'
+      welcome_email_message: 'Welcome to the Groupon App! Your email has been confirmed. Please login to continue.'
+      wrong_link: 'Sorry. User does not exist or the link has already been used.'
       unknown_error: 'Some error has occurred. Please try again' 
