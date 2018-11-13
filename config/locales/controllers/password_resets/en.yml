@@ -11,7 +11,8 @@ en:
       password_reset: 'Password has been reset.'
       error_has_occured: 'Some error has occured while updating'
     edit:
-      invalid_user: 'Invalid url or unactivated user'  
+      invalid_user: 'Invalid url or unactivated user'
+      email_invalid: 'Email address not found'
     validate_user:
       invalid_user: 'Invalid url or unactivated user'
     check_expiration:

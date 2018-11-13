@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
   root 'home#index', as: 'home_page'
-  resources :users, only: [:new, :create] do
-    member do
-      get 'dashboard'
-    end
-  end
+  resources :users, only: [:new, :create]
   get '/:token/confirm_account/', to: 'users#confirm_account', as: 'confirm_account'
   get '/:token/edit/', to: 'password_resets#edit', as: 'password_reset'
   get '/signup', to: 'users#new', as: 'signup'

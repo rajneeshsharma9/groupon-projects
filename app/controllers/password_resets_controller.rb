@@ -1,10 +1,11 @@
 class PasswordResetsController < ApplicationController
 
-  before_action :set_user,           only: [:edit, :update]
-  before_action :find_user_by_email, only: [:create]
-  before_action :validate_user,      only: [:edit]
-  before_action :check_expiration,   only: [:edit, :update]
-  skip_before_action :authorize,     only: [:new, :create, :edit, :update]
+  before_action :find_user_by_email,           only: %i[edit update]
+  before_action :find_user_by_reset_email,     only: %i[create]
+  before_action :validate_user_authentication, only: %i[edit]
+  before_action :check_expiration,             only: %i[edit update]
+  before_action :ensure_logged_out,            only: %i[new]
+  skip_before_action :authorize,               only: %i[new create edit update]
 
   def new
     flash.now[:info] = t('.enter_email')
@@ -29,38 +30,36 @@ class PasswordResetsController < ApplicationController
     end
   end
 
-  private
+  private def user_params
+    params.require(:user).permit(:password, :password_confirmation)
+  end
 
-    def user_params
-      params.require(:user).permit(:password, :password_confirmation)
+  private def find_user_by_email
+    @user = User.find_by(email: params[:email])
+    if @user.nil?
+      flash.now[:danger] = t('.email_invalid')
+      render 'new'
     end
+  end
 
-    def set_user
-      @user = User.find_by(email: params[:email])
-      if @user.nil?
-        flash.now[:danger] = t('.email_invalid')
-        render 'new'
-      end
+  private def validate_user_authentication
+    unless @user.activated? && @user.authenticated_token?(:reset, params[:token])
+      redirect_to home_page_path, danger: t('.invalid_user')
     end
+  end
 
-    def validate_user
-      unless (@user.activated? && @user.authenticated?(:reset, params[:token]))
-        redirect_to home_page_path, danger: t('.invalid_user')
-      end
+  private def find_user_by_reset_email
+    @user = User.find_by(email: params[:password_reset][:email])
+    if @user.nil?
+      flash.now[:danger] = t('.email_invalid')
+      render 'new'
     end
+  end
 
-    def find_user_by_email
-      @user = User.find_by(email: params[:password_reset][:email])
-      if @user.nil?
-        flash.now[:danger] = t('.email_invalid')
-        render 'new'
-      end
+  private def check_expiration
+    if @user.password_reset_expired?
+      redirect_to new_password_reset_path, danger: t('.reset_expired')
     end
-
-    def check_expiration
-      if @user.password_reset_expired?
-        redirect_to new_password_reset_path, danger: t('.reset_expired')
-      end
-    end
+  end
 
 end

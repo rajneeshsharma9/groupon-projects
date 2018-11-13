@@ -1,13 +1,9 @@
 module LoginAuthenticator
-  
+
   include ActiveSupport::Concern
 
   def log_in(user)
-    if params[:remember_me] == 'on'
-      remember(user)
-    else  
-      cookies.signed[:user_id] = user.id
-    end
+    cookies.signed[:user_id] = cookie_hash(user)
   end
 
   def log_out
@@ -15,11 +11,15 @@ module LoginAuthenticator
     cookies.clear
   end
 
-  def remember(user)
-    cookies.signed[:user_id] = {
-      value: user.id,
-      expires: COOKIE_EXPIRY_TIME.from_now,
-    }
+  def cookie_hash(user)
+    if params[:remember_me] == 'on'
+      {
+        value: user.id,
+        expires: COOKIE_EXPIRY_TIME.from_now
+      }
+    else
+      { value: user.id }
+    end
   end
 
 end

@@ -32,3 +32,4 @@
 en:
   hi: "Hi"
   login_message : 'Please log In !'
+  logout_message : 'Please log Out !'

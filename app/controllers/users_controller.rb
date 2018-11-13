@@ -1,13 +1,12 @@
 class UsersController < ApplicationController
 
-  before_action :set_user_by_token, only: [:confirm_account]
-  skip_before_action :authorize, only: [:new, :create, :confirm_account]
+  before_action :find_user_by_token, only: %i[confirm_account]
+  before_action :ensure_logged_out,  only: %i[new]
+  skip_before_action :authorize, only: %i[new create confirm_account]
 
   def new
     @user = User.new
   end
-
-  def dashboard; end
 
   def create
     @user = User.customer.new(user_params)
@@ -26,17 +25,15 @@ class UsersController < ApplicationController
     end
   end
 
-  private
+  private def user_params
+    params.require(:user).permit(:name, :password, :password_confirmation, :email)
+  end
 
-    def user_params
-      params.require(:user).permit(:name, :password, :password_confirmation, :email)
+  private def find_user_by_token
+    @user = User.find_by(verification_token: params[:token])
+    if @user.nil?
+      redirect_to home_page_path, danger: t('.wrong_link')
     end
-
-    def set_user_by_token
-      @user = User.find_by(verification_token: params[:token])
-      if @user.nil?
-        redirect_to home_page_path, danger: t('.wrong_link')
-      end
-    end
+  end
 
 end

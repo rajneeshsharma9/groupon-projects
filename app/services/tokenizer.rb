@@ -1,5 +1,5 @@
 class Tokenizer
-  
+
   def self.new_token
     SecureRandom.urlsafe_base64.to_s
   end
@@ -8,7 +8,7 @@ class Tokenizer
     BCrypt::Password.create(string)
   end
 
-  def self.is_digest_of?(digest, token)
+  def self.digest_of?(digest, token)
     BCrypt::Password.new(digest).is_password?(token)
   end
 

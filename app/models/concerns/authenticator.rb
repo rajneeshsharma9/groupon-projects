@@ -1,7 +1,7 @@
 module Authenticator
-  
+
   extend ActiveSupport::Concern
-  
+
   def verify_email
     update(verified_at: Time.current, verification_token: nil)
   end
@@ -10,10 +10,10 @@ module Authenticator
     verified_at.present?
   end
 
-  def authenticated?(attribute, token)
+  def authenticated_token?(attribute, token)
     digest = send("#{attribute}_digest")
     return false if digest.nil?
-    Tokenizer.is_digest_of?(digest, token)
+    Tokenizer.digest_of?(digest, token)
   end
 
   def set_reset_digest
@@ -29,22 +29,18 @@ module Authenticator
     reset_sent_at < RESET_TOKEN_EXPIRY_TIME.ago
   end
 
-  private
+  private def send_verification_email
+    SendVerificationEmailJob.perform_later(id) if customer?
+  end
 
-    def send_verification_email
-      SendVerificationEmailJob.perform_later(id) if customer?
-    end
-
-    def set_verification_token
-      if verification_token.present?
-        return false
-      end
-      loop do
-        self.verification_token = Tokenizer.new_token
-        if User.find_by(verification_token: verification_token).nil?
-          break
-        end
+  private def set_verification_token
+    return false if verification_token.present?
+    loop do
+      self.verification_token = Tokenizer.new_token
+      if User.find_by(verification_token: verification_token).nil?
+        break
       end
     end
+  end
 
 end

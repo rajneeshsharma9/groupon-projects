@@ -1,15 +1,17 @@
 class SessionsController < ApplicationController
 
   include LoginAuthenticator
-  before_action :find_user_by_email, only: [:create]
-  skip_before_action :authorize,     only: [:new, :create]
+
+  before_action :find_user_by_email, only: %i[create]
+  before_action :ensure_logged_out,  except: %i[destroy]
+  skip_before_action :authorize,     only: %i[new create]
 
   def new; end
 
   def create
     if @user.authenticate(params[:password]) && @user.activated?
       log_in @user
-      redirect_to dashboard_user_path(@user), success: t('.login_successful')
+      redirect_to home_page_path(@user), success: t('.login_successful')
     elsif @user.authenticate(params[:password]) && !@user.activated?
       flash.now[:danger] = t('.inactive_user')
       render :new
@@ -24,10 +26,9 @@ class SessionsController < ApplicationController
     redirect_to home_page_path, info: t('.logged_out')
   end
 
-  private
+  private def find_user_by_email
+    @user = User.find_by(email: params[:email])
+    redirect_to login_path, danger: t('.invalid_email') if @user.nil?
+  end
 
-    def find_user_by_email
-      @user = User.find_by(email: params[:email])
-      redirect_to login_path, danger: t('.invalid_email') if @user.nil?
-    end
-end 
+end
