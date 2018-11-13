@@ -1,8 +1,10 @@
 class ApplicationController < ActionController::Base
   
   add_flash_types :danger, :success, :info
-  helper_method :current_user, :logged_in?
+  
   before_action :authorize
+  
+  helper_method :current_user, :logged_in?
 
   private
   
