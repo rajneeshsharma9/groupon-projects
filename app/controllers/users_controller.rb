@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
 
-  before_action :find_user_by_token, only: %i[confirm_account]
-  before_action :ensure_logged_out,  only: %i[new]
-  skip_before_action :authorize, only: %i[new create confirm_account]
+  before_action :find_user_by_token,     only: %i[confirm_account]
+  before_action :ensure_logged_out_user, only: %i[new]
+  skip_before_action :authorize,         only: %i[new create confirm_account]
 
   def new
     @user = User.new
@@ -33,6 +33,12 @@ class UsersController < ApplicationController
     @user = User.find_by(verification_token: params[:token])
     if @user.nil?
       redirect_to home_page_path, danger: t('.wrong_link')
+    end
+  end
+
+  private def ensure_logged_out_user
+    if logged_in?
+      redirect_to home_page_path, info: t('logout_message')
     end
   end
 

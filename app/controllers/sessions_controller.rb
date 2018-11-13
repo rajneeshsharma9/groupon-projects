@@ -2,9 +2,9 @@ class SessionsController < ApplicationController
 
   include LoginAuthenticator
 
-  before_action :find_user_by_email, only: %i[create]
-  before_action :ensure_logged_out,  except: %i[destroy]
-  skip_before_action :authorize,     only: %i[new create]
+  before_action :find_user_by_email,     only: %i[create]
+  before_action :ensure_logged_out_user, except: %i[destroy]
+  skip_before_action :authorize,         only: %i[new create]
 
   def new; end
 
@@ -29,6 +29,12 @@ class SessionsController < ApplicationController
   private def find_user_by_email
     @user = User.find_by(email: params[:email])
     redirect_to login_path, danger: t('.invalid_email') if @user.nil?
+  end
+
+  private def ensure_logged_out_user
+    if logged_in?
+      redirect_to home_page_path, info: t('logout_message')
+    end
   end
 
 end

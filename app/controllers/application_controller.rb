@@ -22,10 +22,4 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  private def ensure_logged_out
-    if logged_in?
-      redirect_to home_page_path, info: t('logout_message')
-    end
-  end
-
 end

@@ -1,10 +1,9 @@
 class PasswordResetsController < ApplicationController
 
-  before_action :find_user_by_email,           only: %i[edit update]
-  before_action :find_user_by_reset_email,     only: %i[create]
+  before_action :find_user_by_email,           only: %i[edit update create]
   before_action :validate_user_authentication, only: %i[edit]
   before_action :check_expiration,             only: %i[edit update]
-  before_action :ensure_logged_out,            only: %i[new]
+  before_action :ensure_logged_out_user,       only: %i[new]
   skip_before_action :authorize,               only: %i[new create edit update]
 
   def new
@@ -35,7 +34,7 @@ class PasswordResetsController < ApplicationController
   end
 
   private def find_user_by_email
-    @user = User.find_by(email: params[:email])
+    @user = User.find_by(email: params[:email] || params[:password_reset][:email])
     if @user.nil?
       flash.now[:danger] = t('.email_invalid')
       render 'new'
@@ -48,11 +47,9 @@ class PasswordResetsController < ApplicationController
     end
   end
 
-  private def find_user_by_reset_email
-    @user = User.find_by(email: params[:password_reset][:email])
-    if @user.nil?
-      flash.now[:danger] = t('.email_invalid')
-      render 'new'
+  private def ensure_logged_out_user
+    if logged_in?
+      redirect_to home_page_path, info: t('logout_message')
     end
   end
 
