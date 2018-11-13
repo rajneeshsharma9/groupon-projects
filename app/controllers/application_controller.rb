@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   private def logged_in?
     current_user.present?
   end
-  
+
   private def authorize
     unless logged_in?
       redirect_to login_path, info: t('login_message')
@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   private def current_user
-    if user_id = cookies.signed[:user_id]
+    if (user_id = cookies.signed[:user_id])
       @current_user ||= User.find_by(id: user_id)
     end
   end
