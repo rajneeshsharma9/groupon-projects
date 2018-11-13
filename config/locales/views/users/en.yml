@@ -1,0 +1,11 @@
+en:
+  users:
+    new:
+      sign-up: 'Sign-up'
+    form:
+      signup_form_legend: 'Enter User Details'
+      sign-up: 'Signup'
+  sessions:
+    form:
+      login_form_legend: 'Enter Your Login Details'
+      login: 'Login'    

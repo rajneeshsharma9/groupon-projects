@@ -4,12 +4,16 @@
     <title>Groupon</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
-    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
   </head>
 
+  <header>
+    <%= render 'shared/navbar' %> 
+  </header>
+
   <body>
+    <%= render_flash_messages %>
     <%= yield %>
   </body>
 </html>

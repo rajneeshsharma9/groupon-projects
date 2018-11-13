@@ -1,0 +1,30 @@
+<div class="signup-login-form">
+<%= form_for(user) do |form| %>
+  <legend><%= t('.signup_form_legend') %></legend>
+  <div class="form-container">
+  <div class="field">
+    <%= form.label :name , class: 'col-form-label' %>
+    <%= form.text_field :name, class: 'form-control', placeholder: 'Enter name' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email, class: 'col-form-label' %>
+    <%= form.email_field :email, class: 'form-control', placeholder: 'Enter email' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password, class: 'col-form-label' %>
+    <%= form.password_field :password, class: 'form-control', placeholder: 'Enter password' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :password_confirmation, 'Confirm password:', class: 'col-form-label' %>
+    <%= form.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm password' %>
+  </div>
+  </div>
+  <div class="actions">
+    <%= form.submit t('.sign-up'), class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+</div>

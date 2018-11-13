@@ -1,0 +1,105 @@
+version: "2"
+exclude_patterns:
+- "tests/"
+- "spec/"
+- "vendor/"
+- "coverage/"
+- "db/"
+- "**/spec/"
+- "config/initializers/ajax_datatables_rails/"
+- "config/initializers/ajax_datatables_rails.rb"
+- 'app/assets/javascripts/lib/'
+- 'app/assets/stylesheets/lib/'
+- 'public/si_forms/'
+- "bin/"
+- "lib/nested_form/builder_mixin.rb"
+- "bin/dev/tests_performance.rb"
+
+plugins:
+  brakeman:
+    enabled: true
+  bundler-audit:
+    enabled: true
+  csslint:
+    enabled: true
+  flog:
+    enabled: true
+    config:
+      score_threshold: 30.0
+  markdownlint:
+    enabled: true
+  reek:
+    enabled: true
+    checks:
+      PrimaDonnaMethod:
+        enabled: false
+      BooleanParameter:
+        enabled: false
+      FeatureEnvy:
+        enabled: false
+      Attribute:
+        enabled: false
+      UtilityFunction:
+        enabled: false
+      NilCheck:
+        enabled: false
+      TooManyStatements:
+        enabled: false
+      IrresponsibleModule:
+        enabled: false
+      InstanceVariableAssumption:
+        enabled: false
+        exclude_patterns:
+        - 'app/controllers/'
+  rubocop:
+    enabled: true
+    checks:
+      Rubocop/Style/IfUnlessModifier:
+        enabled: false
+      Rubocop/Style/GuardClause:
+        enabled: false
+      Rubocop/Style/Documentation:
+        enabled: false
+      Rubocop/Layout/EmptyLines:
+        enabled: false
+      Rubocop/Metrics/LineLength:
+        enabled: false
+      Rubocop/Layout/EmptyLinesAroundBlockBody:
+        enabled: false
+      Rubocop/Layout/EmptyLinesAroundClassBody:
+        enabled: false
+      Rubocop/Layout/EmptyLinesAroundModuleBody:
+        enabled: false
+      Rubocop/Style/FrozenStringLiteralComment:
+        enabled: false
+    exclude_patterns:
+    - "spec/"
+    - "**/spec/"
+
+  rubymotion:
+    enabled: false
+  scss-lint:
+    enabled: true
+    checks:
+      ImportantRule:
+        enabled: false
+      PropertySortOrder:
+        enabled: false
+      VendorPrefix:
+        enabled: false
+      DeclarationOrder:
+        enabled: false
+      Comment:
+        enabled: false
+        exclude_patterns:
+        - 'app/assets/stylesheets/application.scss'
+  stylelint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+        ruby:
+          mass_threshold: 40
+        javascript:
+          mass_threshold: 90
