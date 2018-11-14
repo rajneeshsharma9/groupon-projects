@@ -12,6 +12,6 @@ Rails.application.routes.draw do
   end
   resources :password_resets, only: %i[new create update]
   namespace :admin do
-    #resources for deals will go here
+    # resources for deals will go here
   end
 end
