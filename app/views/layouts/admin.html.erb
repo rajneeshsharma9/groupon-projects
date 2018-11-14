@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Groupon - Admin</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag 'admin', media: 'all' %>
+    <%= javascript_include_tag 'admin' %>
+  </head>
+
+  <header>
+    <%= render 'admin/shared/navbar' %> 
+  </header>
+
+  <body>
+    <%= render_flash_messages %>
+    <%= yield %>
+  </body>
+</html>

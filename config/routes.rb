@@ -11,4 +11,7 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
   resources :password_resets, only: %i[new create update]
+  namespace :admin do
+    # resources for deals will go here
+  end
 end
