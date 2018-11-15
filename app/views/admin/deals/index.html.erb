@@ -19,8 +19,8 @@
         <th scope="row"><%= deal.title %></th>
         <td><%= truncate(deal.description, length: 15) %></td>
         <td><%= deal.price %></td>
-        <td><%= deal.start_time.to_formatted_s(:long) %></td>
-        <td><%= deal.expire_time.to_formatted_s(:long) %></td>
+        <td><%= deal.start_at.to_formatted_s(:long) %></td>
+        <td><%= deal.expire_at.to_formatted_s(:long) %></td>
         <td>
           <%= link_to 'Show', [:admin, deal] %> |
           <%= link_to 'Edit', edit_admin_deal_path(deal) %> |

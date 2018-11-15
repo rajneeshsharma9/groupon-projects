@@ -8,17 +8,17 @@
 
       <div class="field">
         <%= form.label :description, class: 'col-form-label' %>
-        <%= form.text_area :description, class: 'form-control', placeholder: 'Enter description', id: 'editor' %>
+        <%= form.text_area :description, class: 'form-control', placeholder: 'Enter description', id: 'editor', data: { type: 'ck-editor-textarea' } %>
       </div>
 
       <div class="field">
-        <%= form.label :start_time, class: 'col-form-label' %>
-        <%= form.datetime_select :start_time, class: 'form-control', placeholder: 'Enter start time' %>
+        <%= form.label :start_at, class: 'col-form-label' %>
+        <%= form.datetime_select :start_at, class: 'form-control', placeholder: 'Enter start time' %>
       </div>
 
       <div class="field">
-        <%= form.label :expire_time, class: 'col-form-label' %>
-        <%= form.datetime_select :expire_time, class: 'form-control', placeholder: 'Enter   expire time' %>
+        <%= form.label :expire_at, class: 'col-form-label' %>
+        <%= form.datetime_select :expire_at, class: 'form-control', placeholder: 'Enter   expire time' %>
       </div>
 
       <div class="field">

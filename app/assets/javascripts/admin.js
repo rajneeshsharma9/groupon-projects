@@ -1,2 +1,4 @@
-//= require application
-//= require ck_classic_editor
+//= require rails-ujs
+//= require jquery
+//= require bootstrap
+//= require activestorage
