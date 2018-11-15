@@ -1,0 +1,24 @@
+<div class="deal-container">
+  <p>
+    <strong>Title:</strong>
+    <%= @deal.title %>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <%= @deal.description %>
+  </p>
+
+  <p>
+    <strong>Price:</strong>
+    <%= @deal.price %>
+  </p>
+
+  <p>
+    <strong>Maximum Purchases allowed:</strong>
+    <%= @deal.maximum_purchases_allowed %>
+  </p>
+
+  <%= link_to 'Edit', edit_admin_deal_path(@deal) %> |
+  <%= link_to 'Back', admin_deals_path %>
+</div>
