@@ -11,5 +11,5 @@ Rails.application.config.assets.paths += Dir["#{Rails.root}/vendor/*"]
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
-Rails.application.config.assets.precompile += %w( admin.js admin.scss )
-Rails.application.config.assets.precompile += %w( admin/ck_editor_initiate.js )
+Rails.application.config.assets.precompile += %w[admin.js admin.scss]
+Rails.application.config.assets.precompile += %w[admin/ck_editor_initiate.js]
