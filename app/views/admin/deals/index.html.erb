@@ -1,5 +1,7 @@
 <h1 class="deal-title">Deals</h1>
-<div class="corner-button"><%= button_to 'New Deal', new_admin_deal_path, method: :get, class: 'btn btn-primary' %></div>
+<div class="corner-button">
+  <%= button_to 'New Deal', new_admin_deal_path, method: :get, class: 'btn btn-primary' %>
+</div>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -13,18 +15,18 @@
   </thead>
   <tbody>
     <% @deals.each do |deal| %>
-    <tr class="<%= cycle('table-primary', 'table-secondary') -%>">
-      <th scope="row"><%= deal.title %></th>
-      <td><%= truncate(deal.description, length: 15) %></td>
-      <td><%= deal.price %></td>
-      <td><%= deal.start_time.to_formatted_s(:long) %></td>
-      <td><%= deal.expire_time.to_formatted_s(:long) %></td>
-      <td>
-        <%= link_to 'Show', [:admin, deal] %> |
-        <%= link_to 'Edit', edit_admin_deal_path(deal) %> |
-        <%= link_to 'Destroy', [:admin, deal], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %>
-      </td>
-    </tr>
+      <tr class="<%= cycle('table-primary', 'table-secondary') -%>">
+        <th scope="row"><%= deal.title %></th>
+        <td><%= truncate(deal.description, length: 15) %></td>
+        <td><%= deal.price %></td>
+        <td><%= deal.start_time.to_formatted_s(:long) %></td>
+        <td><%= deal.expire_time.to_formatted_s(:long) %></td>
+        <td>
+          <%= link_to 'Show', [:admin, deal] %> |
+          <%= link_to 'Edit', edit_admin_deal_path(deal) %> |
+          <%= link_to 'Destroy', [:admin, deal], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %>
+        </td>
+      </tr>
     <% end %>
   </tbody>
 </table>
