@@ -1,0 +1,5 @@
+en:
+  admin:
+    models:
+      deal:
+        invalid_start_at: 'cannot be less than the current time'

@@ -18,7 +18,7 @@ class Deal < ApplicationRecord
 
   private def validate_start_at
     if start_at < created_at
-      errors.add(:start_at, "cannot be less than the current time")
+      errors.add(:start_at, I18n.t :invalid_start_at )
       raise ActiveRecord::Rollback
     end
   end
