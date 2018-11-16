@@ -1,4 +1,5 @@
-//= require ck_classic_editor
+//= require ck_editor
+
 function RichHtmlEditorHandler(options) {
   this.textarea = options.textarea;
   this.toolbar_options = options.toolbar_options
@@ -13,7 +14,6 @@ RichHtmlEditorHandler.prototype.createClassicEditor = function() {
 RichHtmlEditorHandler.prototype.init = function() {
   this.createClassicEditor();
 };
-
 
 $(document).ready(function() {
   var options = {

@@ -10,6 +10,17 @@ class Deal < ApplicationRecord
   validates :price, numericality: { less_than_or_equal_to: 9999.99 }, allow_nil: true
   validates :maximum_purchases_per_customer, numericality: { greater_than_or_equal_to: 0 }
   validates :maximum_purchases_per_customer, numericality: { less_than_or_equal_to: :maximum_purchases_allowed }
-  validates_with DateValidator
+  validates :start_at, date_range: { greater_than: :current_time }, on: :create
+  validates :start_at, date_range: { greater_than: :created_at }, on: :update
+  validates :expire_at, date_range: { greater_than: :start_at }
+  # Callbacks
+  after_create :validate_start_at
+
+  private def validate_start_at
+    if start_at < created_at
+      errors.add(:start_at, "cannot be less than the current time")
+      raise ActiveRecord::Rollback
+    end
+  end
 
 end
