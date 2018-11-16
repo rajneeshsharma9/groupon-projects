@@ -17,6 +17,7 @@ module Admin
 
     def create
       @deal = Deal.new(permitted_deal_params)
+      @deal.images.attach(params[:deal][:images])
       if @deal.save
         redirect_to admin_deal_path(@deal), info: t('.deal_created')
       else

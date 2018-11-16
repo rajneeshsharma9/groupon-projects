@@ -4,6 +4,10 @@ class Deal < ApplicationRecord
   MAXIMUM_ALLOWED_PRICE = 9999.99
   # Callbacks
   after_create :validate_start_at
+
+  # Associations
+  has_many_attached :images
+
   # Validations
   validates :title, presence: true
   validates :title, uniqueness: { case_sensitive: false }, allow_nil: true

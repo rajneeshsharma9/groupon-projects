@@ -22,6 +22,11 @@
       </div>
 
       <div class="field">
+        <%= form.label :images, class: 'col-form-label' %>
+        <%= form.file_field :images, multiple: true, class: 'form-control' %>
+      </div>
+
+      <div class="field">
         <%= form.label :minimum_purchases_required, 'Minimum purchases required:', class: '  col-form-label' %>
         <%= form.text_field   :minimum_purchases_required, class: 'form-control', placeholder: 'Minimum purchases required' %>
       </div>

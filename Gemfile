@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.3.7'
 gem 'bcrypt',                                                      '~> 3.1.7'
 gem 'bootsnap',                                                    '>= 1.1.0', require: false
-gem 'bootstrap-sass',                                              '~> 3.3.7'
+gem 'bootstrap',                                                   '~> 4.1.3'
 gem 'delayed_job_active_record',                                   '~> 4.1.3'
 gem 'figaro',                                                      '~> 1.1.1'
 gem 'jbuilder',                                                    '~> 2.5'

@@ -29,6 +29,11 @@
     <%= @deal.expire_at.to_s(:long) %>
   </p>
 
+  <% @deal.images.each do |image| %>
+    <%= image_tag image %> <br/>
+  <% end %>
+
   <%= link_to 'Edit', edit_admin_deal_path(@deal) %> |
   <%= link_to 'Back', admin_deals_path %>
+
 </div>
