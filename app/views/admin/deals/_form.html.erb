@@ -18,17 +18,35 @@
 
       <div class="field">
         <%= form.label :expire_at, class: 'col-form-label' %>
-        <%= form.datetime_select :expire_at, class: 'form-control', placeholder: 'Enter   expire time' %>
+        <%= form.datetime_select :expire_at, class: 'form-control', placeholder: 'Enter expire time' %>
       </div>
 
-      <div class="field">
+      <div class="field" data-type="add-more-container">
         <%= form.label :images, class: 'col-form-label' %>
-        <%= form.file_field :images, multiple: true, class: 'form-control' %>
+        <div class="form-images-container">
+          <% if deal.images.present? %>
+            <% @deal.images.each do |image| %>
+              <div class="image-box">
+                <%= image_tag image, size:"60" %>
+                <%= form.fields_for :images_attachments, image do |fields| %>
+                  <%= fields.check_box :_destroy, id: image.id, class: 'css-checkbox' %>
+                  <label for='<%= image.id %>' class="css-label"></label>
+                <% end %>
+              </div>
+            <% end %>
+            <span class="image-message">Click checkbox to remove image</span>
+          <% end %>
+        </div>
+
+        <%= form.file_field :images, class: 'form-control image-field', name: 'deal[images][first]' %>
+        <%= form.file_field :images, class: 'form-control hidden-input', data: { type: 'add-more-field' } %>
       </div>
 
+      <input type="button" class="btn btn-primary" value="Add more" data-type="add-more-button" />
+
       <div class="field">
-        <%= form.label :minimum_purchases_required, 'Minimum purchases required:', class: '  col-form-label' %>
-        <%= form.text_field   :minimum_purchases_required, class: 'form-control', placeholder: 'Minimum purchases required' %>
+        <%= form.label :minimum_purchases_required, 'Minimum purchases required:', class: 'col-form-label' %>
+        <%= form.text_field :minimum_purchases_required, class: 'form-control', placeholder: 'Minimum purchases required' %>
       </div>
 
       <div class="field">
@@ -57,5 +75,8 @@
     </div>
   <% end %>
 </div>
+
 <%= link_to 'Back', admin_deals_path %>
 <%= javascript_include_tag 'admin/rich_html_editor_handler' %>
+<%= javascript_include_tag 'admin/multiple_input_field_handler' %>
+<%= javascript_include_tag 'admin/image_destroy_handler' %>

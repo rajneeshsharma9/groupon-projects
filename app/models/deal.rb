@@ -2,11 +2,14 @@ class Deal < ApplicationRecord
 
   MINIMUM_ALLOWED_PRICE = 0.01
   MAXIMUM_ALLOWED_PRICE = 9999.99
-  # Callbacks
-  after_create :validate_start_at
 
   # Associations
   has_many_attached :images
+  accepts_nested_attributes_for :images_attachments, allow_destroy: true
+
+  # Callbacks
+  after_create :validate_start_at
+  before_update :purge_images
 
   # Validations
   validates :title, presence: true
@@ -26,6 +29,14 @@ class Deal < ApplicationRecord
     if start_at < created_at
       errors.add(:start_at, 'cannot be less than the current time')
       raise ActiveRecord::Rollback
+    end
+  end
+
+  private def purge_images
+    images_attachments.each do |image_attachment|
+      if image_attachment.marked_for_destruction?
+        image_attachment.blob.purge_later
+      end
     end
   end
 

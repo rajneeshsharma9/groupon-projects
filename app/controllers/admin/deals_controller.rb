@@ -17,18 +17,25 @@ module Admin
 
     def create
       @deal = Deal.new(permitted_deal_params)
-      @deal.images.attach(params[:deal][:images])
+      if params[:deal][:images].present?
+        @deal.images.attach(params[:deal][:images].values)
+      end
       if @deal.save
         redirect_to admin_deal_path(@deal), info: t('.deal_created')
       else
+        flash.now[:danger] = t('.error_has_occured')
         render :new
       end
     end
 
     def update
+      if params[:deal][:images].present?
+        @deal.images.attach(params[:deal][:images].values)
+      end
       if @deal.update(permitted_deal_params)
         redirect_to admin_deal_path(@deal), success: t('.deal_updated')
       else
+        flash.now[:danger] = t('.error_has_occured')
         render :edit
       end
     end
@@ -49,7 +56,7 @@ module Admin
     end
 
     private def permitted_deal_params
-      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price)
+      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price, :images, images_attachments_attributes: [:id, :_destroy])
     end
 
   end
