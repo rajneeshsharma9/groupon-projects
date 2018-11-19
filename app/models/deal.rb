@@ -2,6 +2,7 @@ class Deal < ApplicationRecord
 
   MINIMUM_ALLOWED_PRICE = 0.01
   MAXIMUM_ALLOWED_PRICE = 9999.99
+  MAXIMUM_ALLOWED_IMAGE_SIZE = 100000
 
   # Associations
   has_many_attached :images
@@ -42,7 +43,7 @@ class Deal < ApplicationRecord
   private def images_size_constraint
     if images.present?
       images.each do |image|
-        if image.blob && image.blob.byte_size > 100000
+        if image.blob && image.blob.byte_size > MAXIMUM_ALLOWED_IMAGE_SIZE
           image.purge
           image.blob.purge
           errors.add(:images, 'only 100 kb image allowed')
