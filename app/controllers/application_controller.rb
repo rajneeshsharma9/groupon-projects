@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   add_flash_types :danger, :success, :info
 
   before_action :authorize
+  around_action :transaction_block
 
   helper_method :current_user, :logged_in?
 
@@ -19,6 +20,12 @@ class ApplicationController < ActionController::Base
   private def current_user
     if (user_id = cookies.signed[:user_id])
       @current_user ||= User.find_by(id: user_id)
+    end
+  end
+
+  private def transaction_block
+    ActiveRecord::Base.transaction do
+        yield
     end
   end
 

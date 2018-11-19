@@ -24,22 +24,26 @@
       <div class="field" data-type="add-more-container">
         <%= form.label :images, class: 'col-form-label' %>
         <div class="form-images-container">
-          <% if deal.images.present? %>
+          <% if deal.images.attached? && deal.persisted? %>
             <% @deal.images.each do |image| %>
+              <% if image.persisted? %>
               <div class="image-box">
-                <%= image_tag image, size:"60" %>
+                  <%= image_tag image, size:"60" %>
                 <%= form.fields_for :images_attachments, image do |fields| %>
                   <%= fields.check_box :_destroy, id: image.id, class: 'css-checkbox' %>
                   <label for='<%= image.id %>' class="css-label"></label>
                 <% end %>
               </div>
+              <% end %>
             <% end %>
             <span class="image-message">Click checkbox to remove image</span>
           <% end %>
         </div>
 
-        <%= form.file_field :images, class: 'form-control image-field', name: 'deal[images][first]' %>
-        <%= form.file_field :images, class: 'form-control hidden-input', data: { type: 'add-more-field' } %>
+        <%= form.file_field :images, class: 'form-control image-field', name: "deal[images][#{Time.current.to_i}]" %>
+        <div class="hidden-input-div" data-type="hidden-input-div">
+          <%= form.file_field :images, class: 'form-control', data: { type: 'add-more-field' , model: 'deal', for: 'images' } %>
+        </div>
       </div>
 
       <input type="button" class="btn btn-primary" value="Add more" data-type="add-more-button" />

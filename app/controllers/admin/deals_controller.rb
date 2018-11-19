@@ -2,6 +2,7 @@ module Admin
   class DealsController < BaseController
 
     before_action :find_deal_by_id, only: %i[show edit update destroy]
+    around_action :transaction_block, only: %i[create update]
 
     def index
       @deals = Deal.order(created_at: :desc)
@@ -25,6 +26,7 @@ module Admin
       else
         flash.now[:danger] = t('.error_has_occured')
         render :new
+        raise ActiveRecord::Rollback
       end
     end
 
@@ -37,6 +39,7 @@ module Admin
       else
         flash.now[:danger] = t('.error_has_occured')
         render :edit
+        raise ActiveRecord::Rollback
       end
     end
 
@@ -56,7 +59,7 @@ module Admin
     end
 
     private def permitted_deal_params
-      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price, :images, images_attachments_attributes: %i[id _destroy])
+      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price, images_attachments_attributes: %i[id _destroy])
     end
 
   end
