@@ -1,6 +1,6 @@
 class Deal < ApplicationRecord
 
-  MINIMUM_AlLLOWED_PRICE = 0.01
+  MINIMUM_ALLOWED_PRICE = 0.01
   MAXIMUM_ALLOWED_PRICE = 9999.99
   # Callbacks
   after_create :validate_start_at
