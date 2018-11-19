@@ -1,0 +1,11 @@
+en:
+  admin:
+    deals:
+      error_has_occured: 'An error has occurred'
+      deal_not_found: 'Deal not found'
+      create:
+        deal_created: 'Deal created successfully'
+      update:
+        deal_updated: 'Deal updated successfully'
+      destroy:
+        deal_deleted: 'Deal deleted successfully'

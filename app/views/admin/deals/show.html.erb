@@ -1,0 +1,34 @@
+<div class="deal-container">
+  <p>
+    <strong>Title:</strong>
+    <%= @deal.title %>
+  </p>
+
+  <p>
+    <strong>Description:</strong>
+    <%= raw @deal.description %>
+  </p>
+
+  <p>
+    <strong>Price:</strong>
+    <%= @deal.price %>
+  </p>
+
+  <p>
+    <strong>Maximum Purchases allowed:</strong>
+    <%= @deal.maximum_purchases_allowed %>
+  </p>
+
+  <p>
+    <strong>Start at:</strong>
+    <%= @deal.start_at.to_s(:long) %>
+  </p>
+
+  <p>
+    <strong>Expire at:</strong>
+    <%= @deal.expire_at.to_s(:long) %>
+  </p>
+
+  <%= link_to 'Edit', edit_admin_deal_path(@deal) %> |
+  <%= link_to 'Back', admin_deals_path %>
+</div>

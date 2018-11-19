@@ -1,0 +1,56 @@
+<div class="deal-form">
+  <%= form_for [:admin, deal] do |form| %>
+    <div class="form-container">
+      <div class="field">
+        <%= form.label :title , class: 'col-form-label' %>
+        <%= form.text_field :title, class: 'form-control', placeholder: 'Enter title' %>
+      </div>
+
+      <div class="field">
+        <%= form.label :description, class: 'col-form-label' %>
+        <%= form.text_area :description, class: 'form-control', placeholder: 'Enter description', id: 'editor', data: { type: 'ck-editor-textarea' } %>
+      </div>
+
+      <div class="field">
+        <%= form.label :start_at, class: 'col-form-label' %>
+        <%= form.datetime_select :start_at, class: 'form-control', placeholder: 'Enter start time' %>
+      </div>
+
+      <div class="field">
+        <%= form.label :expire_at, class: 'col-form-label' %>
+        <%= form.datetime_select :expire_at, class: 'form-control', placeholder: 'Enter   expire time' %>
+      </div>
+
+      <div class="field">
+        <%= form.label :minimum_purchases_required, 'Minimum purchases required:', class: '  col-form-label' %>
+        <%= form.text_field   :minimum_purchases_required, class: 'form-control', placeholder: 'Minimum purchases required' %>
+      </div>
+
+      <div class="field">
+        <%= form.label :price, 'Price:', class: 'col-form-label' %>
+        <%= form.text_field :price, class: 'form-control', placeholder: 'Price' %>
+      </div>
+
+      <div class="field">
+        <%= form.label :maximum_purchases_allowed, 'Maximum purchases allowed:', class: 'col-form-label' %>
+        <%= form.text_field :maximum_purchases_allowed, class: 'form-control', placeholder: 'Maximum purchases allowed' %>
+      </div>
+
+      <div class="field">
+        <%= form.label :maximum_purchases_allowed_per_customer, 'Maximum purchases allowed per customer:', class: 'col-form-label' %>
+        <%= form.text_field :maximum_purchases_per_customer, class: 'form-control', placeholder: 'Maximum purchases allowed per customer' %>
+      </div>
+
+      <div class="field">
+        <%= form.label :instructions, class: 'col-form-label' %>
+        <%= form.text_area :instructions, class: 'form-control', placeholder: 'Enter instructions' %>
+      </div>
+
+    </div>
+    <div class="actions">
+      <%= form.submit 'Submit', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+<%= link_to 'Back', admin_deals_path %>
+<%= javascript_include_tag 'admin/rich_html_editor_handler' %>
