@@ -6,7 +6,6 @@ class Deal < ApplicationRecord
   # Associations
   has_many_attached :images
   accepts_nested_attributes_for :images_attachments, allow_destroy: true
-
   # Callbacks
   after_create :validate_start_at
   before_update :purge_images
