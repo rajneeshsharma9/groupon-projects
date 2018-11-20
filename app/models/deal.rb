@@ -1,5 +1,9 @@
 class Deal < ApplicationRecord
 
+  #Assciations
+  has_many :deals_locations
+  has_many :locations, through: :deals_locations
+  belongs_to :category
   MINIMUM_ALLOWED_PRICE = 0.01
   MAXIMUM_ALLOWED_PRICE = 9999.99
   MAXIMUM_ALLOWED_IMAGE_SIZE = 100000

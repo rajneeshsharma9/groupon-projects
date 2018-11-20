@@ -6,6 +6,8 @@ class CreateAddresses < ActiveRecord::Migration[5.2]
       t.string :city
       t.string :country
       t.string :pincode
+      t.string :contact_person_name
+      t.string :contact_number
       t.references :location
       t.timestamps
     end

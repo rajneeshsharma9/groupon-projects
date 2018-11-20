@@ -14,6 +14,7 @@ gem 'mysql2',                                                      '>= 0.4.4', '
 gem 'puma',                                                        '~> 3.11'
 gem 'rails',                                                       '~> 5.2.1'
 gem 'sass-rails',                                                  '~> 5.0'
+gem 'select2-rails',                                               '~> 4.0.3'
 gem 'uglifier',                                                    '>= 1.3.0'
 
 group :development, :test do

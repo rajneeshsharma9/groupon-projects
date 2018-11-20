@@ -13,5 +13,6 @@ Rails.application.routes.draw do
   resources :password_resets, only: %i[new create update]
   namespace :admin do
     resources :deals
+    resources :locations
   end
 end
