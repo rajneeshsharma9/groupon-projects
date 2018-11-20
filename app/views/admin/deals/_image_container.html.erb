@@ -1,0 +1,16 @@
+<div class="form-images-container">
+  <% if deal.images.attached? && deal.persisted? %>
+    <% @deal.images.each do |image| %>
+      <% if image.persisted? %>
+        <div class="image-box">
+          <%= image_tag image, size:"60" %>
+          <%= form.fields_for :images_attachments, image do |fields| %>
+            <%= fields.check_box :_destroy, id: image.id, class: 'css-checkbox' %>
+            <label for='<%= image.id %>' class="css-label" data-type="image-label"></label>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+    <span class="image-message">Click checkbox to remove image</span>
+  <% end %>
+</div>

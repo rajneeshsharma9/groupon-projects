@@ -23,22 +23,7 @@
       <div data-type="add-more-images-container">
         <div class="field" data-type="add-more-container">
           <%= form.label :images, class: 'col-form-label' %>
-          <div class="form-images-container">
-            <% if deal.images.attached? && deal.persisted? %>
-              <% @deal.images.each do |image| %>
-                <% if image.persisted? %>
-                  <div class="image-box">
-                    <%= image_tag image, size:"60" %>
-                    <%= form.fields_for :images_attachments, image do |fields| %>
-                      <%= fields.check_box :_destroy, id: image.id, class: 'css-checkbox' %>
-                      <label for='<%= image.id %>' class="css-label" data-type="image-label"></label>
-                    <% end %>
-                  </div>
-                <% end %>
-              <% end %>
-              <span class="image-message">Click checkbox to remove image</span>
-            <% end %>
-          </div>
+          <%= render 'image_container', { deal: deal, form: form }%>
           <%= form.file_field :images, class: 'form-control image-field', name: "deal[images][#{Time.current.to_i}]" %>
           <div class="hidden-input-div" data-type="hidden-input-div">
             <input class="form-control" type="file" data-type="add-more-field" data-model="deal" data-association="images">
