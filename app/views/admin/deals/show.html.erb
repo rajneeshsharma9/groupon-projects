@@ -41,6 +41,11 @@
   </p>
 
   <p>
+    <strong>Category:</strong>
+    <%= @deal.category.name.humanize %>
+  </p>
+
+  <p>
     <strong>Locations:</strong>
     <ul>
       <% @deal.locations.each do |location| %>
