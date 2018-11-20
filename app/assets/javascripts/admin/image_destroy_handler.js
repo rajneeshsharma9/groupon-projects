@@ -1,5 +1,5 @@
 function ImageDestroyHandler(options) {
-  this.destroy_button = options.destroy_button;
+  this.destroyButton = options.destroyButton;
 }
 
 ImageDestroyHandler.prototype.destroyButtonClickHandler = function(event) {
@@ -7,7 +7,7 @@ ImageDestroyHandler.prototype.destroyButtonClickHandler = function(event) {
 }
 
 ImageDestroyHandler.prototype.attachDestroyButtonHandler = function() {
-  this.destroy_button.on("click", this.destroyButtonClickHandler.bind(this));
+  this.destroyButton.on("click", this.destroyButtonClickHandler.bind(this));
 };
 
 ImageDestroyHandler.prototype.init = function() {
@@ -16,7 +16,7 @@ ImageDestroyHandler.prototype.init = function() {
 
 $(document).ready(function() {
   var options = {
-    "destroy_button" : $(".css-label")
+    "destroyButton" : $("[data-type='image-label']")
   },
 
     imageHandler = new ImageDestroyHandler(options);

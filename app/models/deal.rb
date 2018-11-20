@@ -41,13 +41,11 @@ class Deal < ApplicationRecord
   end
 
   private def images_size_constraint
-    if images.present?
-      images.each do |image|
-        if image.blob && image.blob.byte_size > MAXIMUM_ALLOWED_IMAGE_SIZE
-          image.purge
-          image.blob.purge
-          errors.add(:images, 'only 100 kb image allowed')
-        end
+    images.each do |image|
+      if image.blob && image.blob.byte_size > MAXIMUM_ALLOWED_IMAGE_SIZE
+        image.purge
+        image.blob.purge
+        errors.add(:images, 'only 100 kb image allowed')
       end
     end
   end

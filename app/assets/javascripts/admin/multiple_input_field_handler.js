@@ -1,21 +1,21 @@
 function MultipleInputFieldHandler(options) {
   this.button = options.button;
   this.container = options.container;
-  this.hidden_input_div = options.hidden_input_div;
+  this.hiddenInputDiv = options.hiddenInputDiv;
 }
 
 MultipleInputFieldHandler.prototype.addInputFieldToContainer = function() {
-  var inputDiv = this.hidden_input_div.clone();
+  var inputDiv = this.hiddenInputDiv.clone().removeClass("hidden-input-div"),
       _this = this;
-  inputDiv.find('input').each(function(index, input) {
+  inputDiv.find("[data-type='add-more-field']").each(function(index, input) {
     $input = $(input);
     $input.attr('name', _this.returnNameFieldValue($input));
-    _this.container.append($input);
   });
+  this.container.append(inputDiv);
 }
 
 MultipleInputFieldHandler.prototype.returnNameFieldValue = function(input) {
-  return input.data("model") + '[' + input.data("for") + '][' + $.now() + ']';
+  return input.data("model") + '[' + input.data("association") + '][' + $.now() + ']';
 }
 
 MultipleInputFieldHandler.prototype.addButtonClickHandler = function(event) {
@@ -33,9 +33,9 @@ MultipleInputFieldHandler.prototype.init = function() {
 
 $(document).ready(function() {
   var options = {
-    "button" : $("[data-type='add-more-button']"),
-    "hidden_input_div" : $("[data-type='hidden-input-div']"),
-    "container" : $("[data-type='add-more-container']")
+    "button" : $("[data-type='add-more-images-container'").find("[data-type='add-more-button']"),
+    "hiddenInputDiv" : $("[data-type='add-more-images-container'").find("[data-type='hidden-input-div']"),
+    "container" : $("[data-type='add-more-images-container'").find("[data-type='add-more-container']")
   },
 
     handler = new MultipleInputFieldHandler(options);

@@ -2,7 +2,6 @@ module Admin
   class DealsController < BaseController
 
     before_action :find_deal_by_id, only: %i[show edit update destroy]
-    around_action :transaction_block, only: %i[create update]
 
     def index
       @deals = Deal.order(created_at: :desc)
@@ -17,29 +16,31 @@ module Admin
     def edit; end
 
     def create
-      @deal = Deal.new(permitted_deal_params)
-      if params[:deal][:images].present?
-        @deal.images.attach(params[:deal][:images].values)
-      end
-      if @deal.save
-        redirect_to admin_deal_path(@deal), info: t('.deal_created')
-      else
-        flash.now[:danger] = t('.error_has_occured')
-        render :new
-        raise ActiveRecord::Rollback
+      Deal.transaction do
+        @deal = Deal.new(permitted_deal_params)
+        if params[:deal][:images].present?
+          @deal.images.attach(params[:deal][:images].values)
+        end
+        if @deal.save
+          redirect_to admin_deal_path(@deal), info: t('.deal_created')
+        else
+          flash.now[:danger] = t('.error_has_occured')
+          render :new
+        end
       end
     end
 
     def update
-      if params[:deal][:images].present?
-        @deal.images.attach(params[:deal][:images].values)
-      end
-      if @deal.update(permitted_deal_params)
-        redirect_to admin_deal_path(@deal), success: t('.deal_updated')
-      else
-        flash.now[:danger] = t('.error_has_occured')
-        render :edit
-        raise ActiveRecord::Rollback
+      Deal.transaction do
+        if params[:deal][:images].present?
+          @deal.images.attach(params[:deal][:images].values)
+        end
+        if @deal.update(permitted_deal_params)
+          redirect_to admin_deal_path(@deal), success: t('.deal_updated')
+        else
+          flash.now[:danger] = t('.error_has_occured')
+          render :edit
+        end
       end
     end
 

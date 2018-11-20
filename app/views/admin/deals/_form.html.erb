@@ -20,34 +20,32 @@
         <%= form.label :expire_at, class: 'col-form-label' %>
         <%= form.datetime_select :expire_at, class: 'form-control', placeholder: 'Enter expire time' %>
       </div>
-
-      <div class="field" data-type="add-more-container">
-        <%= form.label :images, class: 'col-form-label' %>
-        <div class="form-images-container">
-          <% if deal.images.attached? && deal.persisted? %>
-            <% @deal.images.each do |image| %>
-              <% if image.persisted? %>
-              <div class="image-box">
-                  <%= image_tag image, size:"60" %>
-                <%= form.fields_for :images_attachments, image do |fields| %>
-                  <%= fields.check_box :_destroy, id: image.id, class: 'css-checkbox' %>
-                  <label for='<%= image.id %>' class="css-label"></label>
+      <div data-type="add-more-images-container">
+        <div class="field" data-type="add-more-container">
+          <%= form.label :images, class: 'col-form-label' %>
+          <div class="form-images-container">
+            <% if deal.images.attached? && deal.persisted? %>
+              <% @deal.images.each do |image| %>
+                <% if image.persisted? %>
+                  <div class="image-box">
+                    <%= image_tag image, size:"60" %>
+                    <%= form.fields_for :images_attachments, image do |fields| %>
+                      <%= fields.check_box :_destroy, id: image.id, class: 'css-checkbox' %>
+                      <label for='<%= image.id %>' class="css-label" data-type="image-label"></label>
+                    <% end %>
+                  </div>
                 <% end %>
-              </div>
               <% end %>
+              <span class="image-message">Click checkbox to remove image</span>
             <% end %>
-            <span class="image-message">Click checkbox to remove image</span>
-          <% end %>
+          </div>
+          <%= form.file_field :images, class: 'form-control image-field', name: "deal[images][#{Time.current.to_i}]" %>
+          <div class="hidden-input-div" data-type="hidden-input-div">
+            <input class="form-control" type="file" data-type="add-more-field" data-model="deal" data-association="images">
+          </div>
         </div>
-
-        <%= form.file_field :images, class: 'form-control image-field', name: "deal[images][#{Time.current.to_i}]" %>
-        <div class="hidden-input-div" data-type="hidden-input-div">
-          <%= form.file_field :images, class: 'form-control', data: { type: 'add-more-field' , model: 'deal', for: 'images' } %>
-        </div>
+        <input type="button" class="btn btn-primary" value="Add more" data-type="add-more-button" />
       </div>
-
-      <input type="button" class="btn btn-primary" value="Add more" data-type="add-more-button" />
-
       <div class="field">
         <%= form.label :minimum_purchases_required, 'Minimum purchases required:', class: 'col-form-label' %>
         <%= form.text_field :minimum_purchases_required, class: 'form-control', placeholder: 'Minimum purchases required' %>
