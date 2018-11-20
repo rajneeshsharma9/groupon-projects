@@ -1,6 +1,6 @@
 class Deal < ApplicationRecord
 
-  #Assciations
+  # Assciations
   has_many :deals_locations
   has_many :locations, through: :deals_locations
   belongs_to :category

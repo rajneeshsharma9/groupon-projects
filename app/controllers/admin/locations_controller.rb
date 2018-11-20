@@ -49,7 +49,7 @@ module Admin
     end
 
     private def permitted_location_params
-      params.require(:location).permit(:name,  address_attributes: [:id, :street_address, :state, :city, :country, :pincode, :contact_person_name, :contact_number])
+      params.require(:location).permit(:name, address_attributes: %i[id street_address state city country pincode contact_person_name contact_number])
     end
 
   end
