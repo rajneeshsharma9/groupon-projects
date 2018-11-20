@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.3.7'
+gem 'basic_presenter',                                             '~> 0.0.4'
 gem 'bcrypt',                                                      '~> 3.1.7'
 gem 'bootsnap',                                                    '>= 1.1.0', require: false
 gem 'bootstrap',                                                   '~> 4.1.3'

@@ -3,8 +3,8 @@ function Select2Handler(options) {
 }
 
 Select2Handler.prototype.init = function() {
-     this.selectField.select2({
-   });
+  this.selectField.select2({
+  });
 };
 
 $(document).ready(function() {
