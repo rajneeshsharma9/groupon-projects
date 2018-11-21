@@ -6,7 +6,7 @@
 
   <p>
     <strong>Address:</strong>
-    <%= @location.address.readable_format %>
+    <%= @location.address.presenter.readable_format %>
   </p>
 
   <%= link_to 'Edit', edit_admin_location_path(@location) %> |

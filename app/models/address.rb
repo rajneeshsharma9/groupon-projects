@@ -1,8 +1,6 @@
 class Address < ApplicationRecord
 
   include BasicPresenter::Concern
-  @delegation_methods = [:readable_format]
-  delegate *@delegation_methods, to: :presenter
   # Associations
   belongs_to :location
   # Validations

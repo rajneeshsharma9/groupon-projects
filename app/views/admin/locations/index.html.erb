@@ -14,7 +14,7 @@
     <% @locations.each do |location| %>
       <tr class="<%= cycle('table-primary', 'table-secondary') -%>">
         <th scope="row"><%= location.name %></th>
-        <td><%= location.address.readable_format %></td>
+        <td><%= location.address.presenter.readable_format %></td>
         <td>
           <%= link_to 'Show', [:admin, location] %> |
           <%= link_to 'Edit', edit_admin_location_path(location) %> |
