@@ -10,6 +10,7 @@
       <th scope="col">Price</th>
       <th scope="col">Start Time</th>
       <th scope="col">Expire Time</th>
+      <th scope="col">Published At</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -21,12 +22,64 @@
         <td><%= deal.price %></td>
         <td><%= deal.start_at.to_formatted_s(:long) %></td>
         <td><%= deal.expire_at.to_formatted_s(:long) %></td>
+        <% if deal.published_at.present? %>
+          <td data-type="deal-date" data-id="<%= deal.id %>"><%= deal.published_at.to_formatted_s(:rfc822) %></td>
+        <% else %>
+          <td data-type="deal-date" data-id="<%= deal.id %>">-</td>
+        <% end %>
         <td>
           <%= link_to 'Show', [:admin, deal] %> |
           <%= link_to 'Edit', edit_admin_deal_path(deal) %> |
-          <%= link_to 'Destroy', [:admin, deal], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %>
+          <%= link_to 'Destroy', [:admin, deal], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %> |
+          <% if deal.published_at.nil? %>
+            <a href="" data-type="publish-link" data-id="<%= deal.id %>">Publish</a>
+          <% else %>
+            <a href="" data-type="unpublish-link" data-id="<%= deal.id %>">Unpublish</a>
+          <% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+<script type="text/javascript">
+
+   $(document).ready(function() {
+
+      $("[data-type='publish-link']").click(function(event) {
+        event.preventDefault();
+          $.ajax({
+            url: "/admin/deals/publish", // this will be routed
+            type: 'GET',
+            data: { id: $(event.target).attr('data-id') },
+            dataType: "json",
+            error: function(XMLHttpRequest, errorTextStatus, error) {
+              console.log("Failed: " + errorTextStatus + " ;" + error);
+            },
+            success: function(data) {
+              console.log(data)
+              var date = new Date(data)
+              $("[data-type='deal-date'][data-id='" + $(event.target).attr('data-id') + "']").html(date.toGMTString());
+              $(event.target).attr("data-type", 'unpublish-link').text('Unpublish');
+            }
+           });
+        });
+
+      $("[data-type='unpublish-link']").click(function(event) {
+        event.preventDefault();
+          $.ajax({
+            url: "/admin/deals/unpublish", // this will be routed
+            type: 'GET',
+            data: { id: $(event.target).attr('data-id') },
+            dataType: "json",
+            error: function(XMLHttpRequest, errorTextStatus, error) {
+              console.log("Failed: " + errorTextStatus + " ;" + error);
+            },
+            success: function(data) {
+              $("[data-type='deal-date'][data-id='" + $(event.target).attr('data-id') + "']").html('-');
+            }
+          });
+      });
+    });
+
+</script>>

@@ -1,7 +1,7 @@
 module Admin
   class DealsController < BaseController
 
-    before_action :find_deal_by_id, only: %i[show edit update destroy]
+    before_action :find_deal_by_id, only: %i[show edit update destroy publish unpublish]
 
     def index
       @deals = Deal.order(created_at: :desc)
@@ -52,6 +52,16 @@ module Admin
       else
         redirect_to admin_deals_path, info: t('.error_has_occured')
       end
+    end
+
+    def publish
+      @deal.update_columns(published_at: Time.current)
+      render json: @deal.published_at
+    end
+
+     def unpublish
+      @deal.update_columns(published_at: nil)
+      render json: @deal.published_at
     end
 
     private def find_deal_by_id
