@@ -18,12 +18,22 @@
 
       <div class="field">
         <%= form.label :expire_at, class: 'col-form-label' %>
-        <%= form.datetime_select :expire_at, class: 'form-control', placeholder: 'Enter   expire time' %>
+        <%= form.datetime_select :expire_at, class: 'form-control', placeholder: 'Enter expire time' %>
       </div>
-
+      <div data-type="add-more-images-container">
+        <div class="field" data-type="add-more-container">
+          <%= form.label :images, class: 'col-form-label' %>
+          <%= render 'image_container', { deal: deal, form: form }%>
+          <%= form.file_field :images, class: 'form-control image-field', name: "deal[images][#{Time.current.to_i}]" %>
+          <div class="hidden-input-div" data-type="hidden-input-div">
+            <input class="form-control" type="file" data-type="add-more-field" data-model="deal" data-association="images">
+          </div>
+        </div>
+        <input type="button" class="btn btn-primary" value="Add more" data-type="add-more-button" />
+      </div>
       <div class="field">
-        <%= form.label :minimum_purchases_required, 'Minimum purchases required:', class: '  col-form-label' %>
-        <%= form.text_field   :minimum_purchases_required, class: 'form-control', placeholder: 'Minimum purchases required' %>
+        <%= form.label :minimum_purchases_required, 'Minimum purchases required:', class: 'col-form-label' %>
+        <%= form.text_field :minimum_purchases_required, class: 'form-control', placeholder: 'Minimum purchases required' %>
       </div>
 
       <div class="field">
@@ -52,5 +62,8 @@
     </div>
   <% end %>
 </div>
+
 <%= link_to 'Back', admin_deals_path %>
 <%= javascript_include_tag 'admin/rich_html_editor_handler' %>
+<%= javascript_include_tag 'admin/multiple_input_field_handler' %>
+<%= javascript_include_tag 'admin/image_destroy_handler' %>

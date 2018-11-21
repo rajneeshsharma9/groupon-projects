@@ -16,18 +16,32 @@ module Admin
     def edit; end
 
     def create
-      @deal = Deal.new(permitted_deal_params)
-      if @deal.save
+      Deal.transaction do
+        @deal = Deal.new(permitted_deal_params)
+        attach_images
+        unless @deal.save
+          raise ActiveRecord::Rollback
+        end
+      end
+      if @deal.persisted?
         redirect_to admin_deal_path(@deal), info: t('.deal_created')
       else
+        flash.now[:danger] = t('.error_has_occured')
         render :new
       end
     end
 
     def update
-      if @deal.update(permitted_deal_params)
+      Deal.transaction do
+        attach_images
+        unless @deal.update(permitted_deal_params)
+          raise ActiveRecord::Rollback
+        end
+      end
+      if @deal.errors.empty?
         redirect_to admin_deal_path(@deal), success: t('.deal_updated')
       else
+        flash.now[:danger] = t('.error_has_occured')
         render :edit
       end
     end
@@ -48,7 +62,13 @@ module Admin
     end
 
     private def permitted_deal_params
-      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price)
+      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price, images_attachments_attributes: %i[id _destroy])
+    end
+
+    private def attach_images
+      if params[:deal][:images].present?
+        @deal.images.attach(params[:deal][:images].values)
+      end
     end
 
   end
