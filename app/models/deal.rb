@@ -27,7 +27,7 @@ class Deal < ApplicationRecord
   validates :expire_at, date_range: { greater_than: :start_at }
   validate :images_size_constraint
   validate :check_publishability, on: :update , if: :published_at_changed?
-  validate :check_if_live_or_expired, on: :update
+  validate :check_if_live_or_expired, on: :update, unless: :published_at_changed?
 
   private def validate_start_at
     if start_at < created_at
@@ -51,6 +51,8 @@ class Deal < ApplicationRecord
         image.blob.purge
         errors.add(:images, 'only 100 kb image allowed')
       end
+    end
+  end
 
   private def check_publishability
     if locations.count < 1
