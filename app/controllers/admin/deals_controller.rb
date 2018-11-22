@@ -62,7 +62,7 @@ module Admin
       end
     end
 
-     def unpublish
+    def unpublish
       @deal.update(published_at: nil)
       render json: { id: @deal.id }
     end

@@ -3,7 +3,7 @@ class Deal < ApplicationRecord
   MINIMUM_ALLOWED_PRICE = 0.01
   MAXIMUM_ALLOWED_PRICE = 9999.99
   MAXIMUM_ALLOWED_IMAGE_SIZE = 100000
-  #Assciations
+  # Assciations
   has_many :deals_locations, dependent: :destroy
   has_many :locations, through: :deals_locations
   belongs_to :category
@@ -26,7 +26,7 @@ class Deal < ApplicationRecord
   validates :start_at, date_range: { greater_than: :created_at }, on: :update
   validates :expire_at, date_range: { greater_than: :start_at }
   validate :images_size_constraint
-  validate :check_publishability, on: :update , if: :published_at_changed?
+  validate :check_publishability, on: :update, if: :published_at_changed?
   validate :check_if_live_or_expired, on: :update, unless: :published_at_changed?
 
   private def validate_start_at
