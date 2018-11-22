@@ -58,6 +58,9 @@ class Deal < ApplicationRecord
     if locations.count < 1
       errors.add(:base, 'cannot be published as no locations present')
     end
+    if images.count < 1
+      errors.add(:base, 'cannot be published as no images present')
+    end
   end
 
   private def check_if_live_or_expired
