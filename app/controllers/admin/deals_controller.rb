@@ -2,7 +2,6 @@ module Admin
   class DealsController < BaseController
 
     before_action :find_deal_by_id, only: %i[show edit update destroy publish unpublish]
-    skip_before_action :verify_authenticity_token, only: %i[publish unpublish]
 
     def index
       @deals = Deal.order(created_at: :desc)
@@ -42,7 +41,7 @@ module Admin
       if @deal.errors.empty?
         redirect_to admin_deal_path(@deal), success: t('.deal_updated')
       else
-        flash.now[:danger] = t('.error_has_occured')
+        flash.now[:danger] = @deal.errors.full_messages.join('<br>')
         render :edit
       end
     end
@@ -56,12 +55,15 @@ module Admin
     end
 
     def publish
-      @deal.update_columns(published_at: Time.current)
-      render json: { id: @deal.id, published_at: @deal.published_at.to_s(:long) }
+      if @deal.update(published_at: Time.current)
+        render json: { id: @deal.id, published_at: @deal.published_at.to_s(:long) }
+      else
+        render json: { id: @deal.id, status: 'error', error_message: @deal.errors.full_messages }
+      end
     end
 
      def unpublish
-      @deal.update_columns(published_at: nil)
+      @deal.update(published_at: nil)
       render json: { id: @deal.id }
     end
 
