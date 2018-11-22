@@ -2,6 +2,7 @@ module Admin
   class DealsController < BaseController
 
     before_action :find_deal_by_id, only: %i[show edit update destroy publish unpublish]
+    skip_before_action :verify_authenticity_token, only: %i[publish unpublish]
 
     def index
       @deals = Deal.order(created_at: :desc)
@@ -56,12 +57,12 @@ module Admin
 
     def publish
       @deal.update_columns(published_at: Time.current)
-      render json: @deal.published_at
+      render json: { id: @deal.id, published_at: @deal.published_at.to_s(:long) }
     end
 
      def unpublish
       @deal.update_columns(published_at: nil)
-      render json: @deal.published_at
+      render json: { id: @deal.id }
     end
 
     private def find_deal_by_id
