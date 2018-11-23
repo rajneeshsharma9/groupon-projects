@@ -56,6 +56,16 @@
         <%= form.text_area :instructions, class: 'form-control', placeholder: 'Enter instructions' %>
       </div>
 
+      <div class="field">
+        <%= form.label 'Locations', class: 'col-form-label' %>
+        <%= form.collection_select :location_ids, Location.all, :id, :name, {}, multiple: true, class: 'form-control', data: { type: 'select2-enabled' } %>
+      </div>
+
+      <div class="field">
+        <%= form.label 'Category', class: 'col-form-label' %>
+        <%= form.collection_select(:category_id, Category.all, :id, :name, {}, { class: 'form-control', data: { type: 'select2-enabled' } }) %>
+      </div>
+
     </div>
     <div class="actions">
       <%= form.submit 'Submit', class: 'btn btn-primary' %>
@@ -65,5 +75,5 @@
 
 <%= link_to 'Back', admin_deals_path %>
 <%= javascript_include_tag 'admin/rich_html_editor_handler' %>
-<%= javascript_include_tag 'admin/multiple_input_field_handler' %>
+<%= javascript_include_tag 'admin/select2_handler' %>
 <%= javascript_include_tag 'admin/image_destroy_handler' %>

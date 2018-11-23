@@ -61,14 +61,14 @@ module Admin
       end
     end
 
-    private def permitted_deal_params
-      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price, images_attachments_attributes: %i[id _destroy])
-    end
-
     private def attach_images
       if params[:deal][:images].present?
         @deal.images.attach(params[:deal][:images].values)
       end
+    end
+
+    private def permitted_deal_params
+      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price, :category_id, images_attachments_attributes: %i[id _destroy], location_ids: [])
     end
 
   end

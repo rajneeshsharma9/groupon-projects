@@ -1,0 +1,14 @@
+<div class="deal-container">
+  <p>
+    <strong>Name:</strong>
+    <%= @location.name %>
+  </p>
+
+  <p>
+    <strong>Address:</strong>
+    <%= @location.address.presenter.readable_format %>
+  </p>
+
+  <%= link_to 'Edit', edit_admin_location_path(@location) %> |
+  <%= link_to 'Back', admin_locations_path %>
+</div>

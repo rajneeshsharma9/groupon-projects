@@ -35,6 +35,20 @@
     <% end %>
   </div>
 
+  <p>
+    <strong>Category:</strong>
+    <%= @deal.category.name.humanize %>
+  </p>
+
+  <p>
+    <strong>Locations:</strong>
+    <ul>
+      <% @deal.locations.each do |location| %>
+        <li><%= location.name %></li>
+      <% end %>
+    </ul>
+  </p>
+
   <%= link_to 'Edit', edit_admin_deal_path(@deal) %> |
   <%= link_to 'Back', admin_deals_path %>
 </div>
