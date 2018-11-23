@@ -55,16 +55,19 @@ module Admin
     end
 
     def publish
-      if @deal.update(published_at: Time.current)
+      if @deal.publish
         render json: { id: @deal.id, published_at: @deal.published_at.to_s(:long) }
       else
-        render json: { id: @deal.id, status: 'error', error_message: @deal.errors.full_messages }
+        render json: { errors: @deal.errors.full_messages.join(', ') }, status: 422
       end
     end
 
     def unpublish
-      @deal.update(published_at: nil)
-      render json: { id: @deal.id }
+      if @deal.unpublish
+        render json: { id: @deal.id }
+      else
+        render json: { errors: @deal.errors.full_messages.join(', ') }, status: 422
+      end
     end
 
     private def find_deal_by_id

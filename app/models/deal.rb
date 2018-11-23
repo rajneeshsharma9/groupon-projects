@@ -1,8 +1,10 @@
 class Deal < ApplicationRecord
-
+  # Constants
   MINIMUM_ALLOWED_PRICE = 0.01
   MAXIMUM_ALLOWED_PRICE = 9999.99
   MAXIMUM_ALLOWED_IMAGE_SIZE = 100000
+  MINIMUM_IMAGE_COUNT = 1
+  MINIMUM_LOCATION_COUNT = 1
   # Assciations
   has_many :deals_locations, dependent: :destroy
   has_many :locations, through: :deals_locations
@@ -28,6 +30,14 @@ class Deal < ApplicationRecord
   validate :images_size_constraint
   validate :check_publishability, on: :update, if: :published_at_changed?
   validate :check_if_live_or_expired, on: :update, unless: :published_at_changed?
+
+  def publish
+    update(published_at: Time.current)
+  end
+
+  def unpublish
+    update(published_at: nil)
+  end
 
   private def validate_start_at
     if start_at < created_at
@@ -55,17 +65,25 @@ class Deal < ApplicationRecord
   end
 
   private def check_publishability
-    if locations.count < 1
-      errors.add(:base, 'cannot be published as no locations present')
+    check_location_presence
+    check_image_presence
+  end
+
+  private def check_location_presence
+    if locations.count < MINIMUM_LOCATION_COUNT
+      errors.add(:base, I18n.t('location_not_present'))
     end
-    if images.count < 1
-      errors.add(:base, 'cannot be published as no images present')
+  end
+
+  private def check_image_presence
+    if images.count < MINIMUM_IMAGE_COUNT
+      errors.add(:base, I18n.t('image_not_present'))
     end
   end
 
   private def check_if_live_or_expired
     if published_at.present? || expire_at < Time.current
-      errors.add(:base, 'Live or expired deals cannot be updated')
+      errors.add(:base, I18n.t('live_or_expired_deal'))
     end
   end
 
