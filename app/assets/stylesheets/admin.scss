@@ -1,0 +1,112 @@
+//= require globals
+//= require select2
+@import 'bootswatch_theme';
+
+.deal-form-main {
+  padding: 50px;
+}
+
+.form-main {
+  padding: 50px;
+}
+
+.deals-container {
+  padding: 20px;
+}
+
+.deal-title {
+  text-align: center;
+}
+
+.deal-card {
+  max-width: 20rem;
+}
+
+.corner-button {
+  text-align: right;
+  padding-right: 10px;
+}
+
+.deal-container {
+  padding: 20px;
+}
+
+.destroy-link {
+  color: red;
+}
+
+.hidden-input-div {
+  display: none !important;
+}
+
+.form-images-container {
+  display: flex;
+  align-items: center;
+}
+
+.form-images-container .image-box {
+  margin-right: 20px;
+}
+
+.image-cross:hover {
+  cursor: pointer;
+  color: red;
+}
+
+input[type=checkbox].css-checkbox {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height:1px;  width:1px;
+  margin:-1px;
+  padding:0;
+  border:0;
+}
+
+input[type=checkbox].css-checkbox + label.css-label {
+  padding-left:20px;
+  height:15px;
+  display:inline-block;
+  line-height:15px;
+  background-repeat:no-repeat;
+  background-position: 0 0;
+  font-size:15px;
+  vertical-align:middle;
+  cursor:pointer;
+}
+
+input[type=checkbox].css-checkbox:checked + label.css-label {
+  background-position: 0 -15px;
+}
+
+.css-label {
+  background-image:url(http://csscheckbox.com/checkboxes/lite-x-red.png);
+}
+
+.greyImage {
+  opacity: 0.5;
+}
+
+.image-message {
+  color: blue;
+}
+
+.image-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%
+}
+
+.image-container img {
+  margin-top: 10px;
+}
+
+.ck-content {
+  height: 100px;
+}
+
+.hidden {
+  display: none;
+}

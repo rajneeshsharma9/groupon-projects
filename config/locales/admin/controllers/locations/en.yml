@@ -1,0 +1,11 @@
+en:
+  admin:
+    locations:
+      error_has_occured: 'An error has occurred'
+      location_not_found: 'Deal not found'
+      create:
+        location_created: 'Location created successfully'
+      update:
+        location_updated: 'Location updated successfully'
+      destroy:
+        location_deleted: 'Location deleted successfully'

@@ -1,0 +1,3 @@
+en:
+  admin:
+    not_admin: 'You do not have the privileges to access this page'
