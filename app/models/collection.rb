@@ -28,7 +28,7 @@ class Collection < ApplicationRecord
   private def publish_associated_deals
     deals.each do |deal|
       unless deal.publish
-        errors.add(:base, "#{ deal.title }: #{ deal.errors.full_messages.join(', ') }")
+        errors.add(:base, "#{deal.title}: #{deal.errors.full_messages.join(', ')}")
       end
     end
     if errors.present?
@@ -39,7 +39,7 @@ class Collection < ApplicationRecord
   private def unpublish_associated_deals
     deals.each do |deal|
       unless deal.unpublish
-        errors.add(:base, "#{ deal.title }: #{ deal.errors.full_messages.join(', ') }")
+        errors.add(:base, "#{deal.title}: #{deal.errors.full_messages.join(', ')}")
       end
     end
     if errors.present?
