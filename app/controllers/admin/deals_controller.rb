@@ -1,7 +1,7 @@
 module Admin
   class DealsController < BaseController
 
-    before_action :find_deal_by_id, only: %i[show edit update destroy]
+    before_action :find_deal_by_id, only: %i[show edit update destroy publish unpublish]
 
     def index
       @deals = Deal.order(created_at: :desc)
@@ -41,7 +41,7 @@ module Admin
       if @deal.errors.empty?
         redirect_to admin_deal_path(@deal), success: t('.deal_updated')
       else
-        flash.now[:danger] = t('.error_has_occured')
+        flash.now[:danger] = @deal.errors.full_messages.join('<br>')
         render :edit
       end
     end
@@ -51,6 +51,22 @@ module Admin
         redirect_to admin_deals_path, info: t('.deal_deleted')
       else
         redirect_to admin_deals_path, info: t('.error_has_occured')
+      end
+    end
+
+    def publish
+      if @deal.publish
+        render json: { id: @deal.id, published_at: @deal.published_at.to_s(:long) }
+      else
+        render json: { errors: @deal.errors.full_messages.join(', ') }, status: 422
+      end
+    end
+
+    def unpublish
+      if @deal.unpublish
+        render json: { id: @deal.id }
+      else
+        render json: { errors: @deal.errors.full_messages.join(', ') }, status: 422
       end
     end
 
