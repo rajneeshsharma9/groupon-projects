@@ -1,6 +1,7 @@
 en:
   admin:
     deals:
+      not_admin: 'You do not have the privileges to access this page'
       error_has_occured: 'An error has occurred'
       deal_not_found: 'Deal not found'
       create:

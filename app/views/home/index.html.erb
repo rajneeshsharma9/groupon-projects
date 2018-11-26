@@ -1,5 +1,14 @@
-<div class="jumbotron">
-  <h1 class="display-4">Welcome to Groupon</h1>
-  <hr class="my-4">
-  <p class="lead">Your destination for the best coupons in your city</p>
-</div>
+<% if logged_in? %>
+  <div class="jumbotron">
+    <h2>Deals :</h2>
+  </div>
+<% else %>
+  <div class="jumbotron">
+    <h1 class="display-4">Welcome to Groupon</h1>
+    <hr class="my-4">
+    <p class="lead">Your destination for the best coupons in your city</p>
+  </div>
+<% end %>
+
+<!-- https://avatars.githubusercontent.com/u/4223 -->
+
