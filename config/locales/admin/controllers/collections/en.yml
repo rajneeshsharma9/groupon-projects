@@ -1,0 +1,11 @@
+en:
+  admin:
+    collections:
+      error_has_occured: 'An error has occurred'
+      collection_not_found: 'Collection not found'
+      create:
+        collection_created: 'Collection created successfully'
+      update:
+        collection_updated: 'Collection updated successfully'
+      destroy:
+        collection_deleted: 'Collection deleted successfully'

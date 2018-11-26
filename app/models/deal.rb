@@ -9,6 +9,7 @@ class Deal < ApplicationRecord
   has_many :deals_locations, dependent: :destroy
   has_many :locations, through: :deals_locations
   belongs_to :category
+  belongs_to :collection, optional: true
   has_many_attached :images
   accepts_nested_attributes_for :images_attachments, allow_destroy: true
   # Callbacks
@@ -67,6 +68,7 @@ class Deal < ApplicationRecord
   private def check_publishability
     check_location_presence
     check_image_presence
+    # check_collection_presence
   end
 
   private def check_location_presence
@@ -78,6 +80,12 @@ class Deal < ApplicationRecord
   private def check_image_presence
     if images.count < MINIMUM_IMAGE_COUNT
       errors.add(:base, I18n.t('image_not_present'))
+    end
+  end
+
+  private def check_collection_presence
+    if collection_id.present?
+      errors.add(:base, I18n.t('collection_present'))
     end
   end
 

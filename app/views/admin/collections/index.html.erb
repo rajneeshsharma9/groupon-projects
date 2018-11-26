@@ -1,0 +1,44 @@
+<h1 class="deal-title">Collections</h1>
+<div class="corner-button">
+  <%= button_to 'New Collection', new_admin_collection_path, method: :get, class: 'btn btn-primary' %>
+</div>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Deals</th>
+      <th scope="col">Published At</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @collections.each do |collection| %>
+      <tr class="<%= cycle('table-primary', 'table-secondary') -%>" >
+        <th scope="row"><%= collection.name %></th>
+        <td>
+          <% if collection.deals.exists? %>
+            <%= collection.deals.map{ |deal| content_tag(:a, deal.title, href: edit_admin_deal_path(deal)) }.join(', ').html_safe %>
+          <% else %>
+            No deals currently
+          <% end %>
+        </td>
+        <% if collection.published_at.present? %>
+          <td data-type="publish-date" data-id="<%= collection.id %>"><%= collection.published_at.to_formatted_s(:long) %></td>
+        <% else %>
+          <td data-type="publish-date" data-id="<%= collection.id %>">-</td>
+        <% end %>
+        <td data-type="actions-container">
+          <%= link_to 'Show', [:admin, collection] %> |
+          <%= link_to 'Edit', edit_admin_collection_path(collection) %> |
+          <%= link_to 'Destroy', [:admin, collection], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %> |
+          <% if collection.published_at.nil? %>
+            <a href="" data-type="publish-link" data-id="<%= collection.id %>" data-publish-url="<%= admin_collections_publish_path %>" data-unpublish-url="<%= admin_collections_unpublish_path %>">Publish</a>
+          <% else %>
+            <a href="" data-type="unpublish-link" data-id="<%= collection.id %>" data-publish-url="<%=admin_collections_publish_path %>" data-unpublish-url="<%= admin_collections_unpublish_path %>">Unpublish</a>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<%= javascript_include_tag 'admin/record_publisher' %>

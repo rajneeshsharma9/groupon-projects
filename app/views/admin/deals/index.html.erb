@@ -23,9 +23,9 @@
         <td><%= deal.start_at.to_formatted_s(:long) %></td>
         <td><%= deal.expire_at.to_formatted_s(:long) %></td>
         <% if deal.published_at.present? %>
-          <td data-type="deal-date" data-id="<%= deal.id %>"><%= deal.published_at.to_formatted_s(:long) %></td>
+          <td data-type="publish-date" data-id="<%= deal.id %>"><%= deal.published_at.to_formatted_s(:long) %></td>
         <% else %>
-          <td data-type="deal-date" data-id="<%= deal.id %>">-</td>
+          <td data-type="publish-date" data-id="<%= deal.id %>">-</td>
         <% end %>
         <td data-type="actions-container">
           <%= link_to 'Show', [:admin, deal] %> |

@@ -1,0 +1,34 @@
+<div class="deal-container">
+  <p>
+    <strong>Name:</strong>
+    <%= @collection.name %>
+  </p>
+
+  <h3 align="center">Deals in this collection</h3>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Price</th>
+        <th scope="col">Start Time</th>
+        <th scope="col">Expire Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @collection.deals.each do |deal| %>
+        <tr class="<%= cycle('table-primary', 'table-secondary') -%>">
+          <th scope="row"><%= deal.title %></th>
+          <td><%= truncate(deal.description, length: 15) %></td>
+          <td><%= deal.price %></td>
+          <td><%= deal.start_at.to_formatted_s(:long) %></td>
+          <td><%= deal.expire_at.to_formatted_s(:long) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to 'Edit', edit_admin_collection_path(@collection) %> |
+  <%= link_to 'Back', admin_collections_path %>
+</div>
+

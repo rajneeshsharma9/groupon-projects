@@ -46,7 +46,7 @@ RecordPublisher.prototype.appendErrorsToView = function(errors) {
 
 RecordPublisher.prototype.updatePropertyValue = function(value, event, toggle_to) {
   this.hideErrorDiv();
-  $("[data-type='deal-date'][data-id='" + $(event.target).attr('data-id') + "']").html(value);
+  $("[data-type='publish-date'][data-id='" + $(event.target).attr('data-id') + "']").html(value);
   $(event.target).attr('data-type', toggle_to + '-link').text(this.capitalizeFirstLetter(toggle_to));
 }
 
