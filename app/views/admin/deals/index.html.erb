@@ -6,11 +6,11 @@
   <thead>
     <tr>
       <th scope="col">Title</th>
-      <th scope="col">Description</th>
       <th scope="col">Price</th>
       <th scope="col">Start Time</th>
       <th scope="col">Expire Time</th>
       <th scope="col">Published At</th>
+      <th scope="col">Collection</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -18,7 +18,6 @@
     <% @deals.each do |deal| %>
       <tr class="<%= cycle('table-primary', 'table-secondary') -%>">
         <th scope="row"><%= deal.title %></th>
-        <td><%= truncate(deal.description, length: 15) %></td>
         <td><%= deal.price %></td>
         <td><%= deal.start_at.to_formatted_s(:long) %></td>
         <td><%= deal.expire_at.to_formatted_s(:long) %></td>
@@ -27,14 +26,21 @@
         <% else %>
           <td data-type="publish-date" data-id="<%= deal.id %>">-</td>
         <% end %>
+        <% if deal.collection.present? %>
+          <td><%= deal.collection.name %></td>
+        <% else %>
+          <td>--</td>
+        <% end %>
         <td data-type="actions-container">
           <%= link_to 'Show', [:admin, deal] %> |
           <%= link_to 'Edit', edit_admin_deal_path(deal) %> |
-          <%= link_to 'Destroy', [:admin, deal], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %> |
-          <% if deal.published_at.nil? %>
-            <a href="" data-type="publish-link" data-id="<%= deal.id %>" data-publish-url="<%= publish_admin_deal_path(deal) %>" data-unpublish-url="<%= unpublish_admin_deal_path(deal) %>">Publish</a>
-          <% else %>
-            <a href="" data-type="unpublish-link" data-id="<%= deal.id %>" data-publish-url="<%= publish_admin_deal_path(deal) %>" data-unpublish-url="<%= unpublish_admin_deal_path(deal) %>">Unpublish</a>
+          <%= link_to 'Destroy', [:admin, deal], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %>
+          <% if deal.collection.nil? %>
+            <% if deal.published_at.nil? %>
+              | <a href="" data-type="publish-link" data-id="<%= deal.id %>" data-publish-url="<%= publish_admin_deal_path(deal) %>" data-unpublish-url="<%= unpublish_admin_deal_path(deal) %>">Publish</a>
+            <% else %>
+              | <a href="" data-type="unpublish-link" data-id="<%= deal.id %>" data-publish-url="<%= publish_admin_deal_path(deal) %>" data-unpublish-url="<%= unpublish_admin_deal_path(deal) %>">Unpublish</a>
+            <% end %>
           <% end %>
         </td>
       </tr>

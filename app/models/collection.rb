@@ -12,6 +12,7 @@ class Collection < ApplicationRecord
   # Validations
   validates :name, presence: true
   validates :name, uniqueness: { case_sensitive: false }, allow_blank: true
+  validate :check_if_live, on: :update, unless: :published_at_changed?
 
   def publish
     Collection.transaction do
@@ -31,6 +32,7 @@ class Collection < ApplicationRecord
 
   private def publish_associated_deals
     deals.each do |deal|
+      deal.published_from_collection = true
       unless deal.publish
         errors.add(:base, "#{deal.title}: #{deal.errors.full_messages.join(', ')}")
       end
@@ -42,12 +44,19 @@ class Collection < ApplicationRecord
 
   private def unpublish_associated_deals
     deals.each do |deal|
+      deal.published_from_collection = true
       unless deal.unpublish
         errors.add(:base, "#{deal.title}: #{deal.errors.full_messages.join(', ')}")
       end
     end
     if errors.present?
       throw :abort
+    end
+  end
+
+  private def check_if_live
+    if published_at.present?
+      errors.add(:base, I18n.t('live_or_expired_deal'))
     end
   end
 

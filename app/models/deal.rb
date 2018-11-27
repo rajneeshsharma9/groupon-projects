@@ -5,6 +5,8 @@ class Deal < ApplicationRecord
   MAXIMUM_ALLOWED_IMAGE_SIZE = 100000
   MINIMUM_IMAGE_COUNT = 1
   MINIMUM_LOCATION_COUNT = 1
+  # accessors
+  attr_accessor :published_from_collection
   # Assciations
   has_many :deals_locations, dependent: :destroy
   has_many :locations, through: :deals_locations
@@ -68,7 +70,7 @@ class Deal < ApplicationRecord
   private def check_publishability
     check_location_presence
     check_image_presence
-    # check_collection_presence
+    check_collection_presence
   end
 
   private def check_location_presence
@@ -78,7 +80,7 @@ class Deal < ApplicationRecord
   end
 
   private def check_collection_presence
-    if collection_id.present?
+    if collection_id.present? && published_from_collection.nil?
       errors.add(:base, I18n.t('collection_present'))
     end
   end

@@ -4,7 +4,7 @@ module Admin
     before_action :find_deal_by_id, only: %i[show edit update destroy publish unpublish]
 
     def index
-      @deals = Deal.where(collection_id: nil).order(created_at: :desc)
+      @deals = Deal.includes(:collection).order(created_at: :desc)
     end
 
     def show; end
