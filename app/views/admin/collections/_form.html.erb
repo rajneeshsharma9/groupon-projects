@@ -1,0 +1,24 @@
+<div class="deal-form">
+  <%= form_for [:admin, collection] do |form| %>
+    <div class="form-container">
+
+      <div class="field">
+        <%= form.label :name, class: 'col-form-label' %>
+        <%= form.text_field :name, class: 'form-control', placeholder: 'Enter name' %>
+      </div>
+
+      <div class="field">
+        <%= form.label 'Deals', class: 'col-form-label' %>
+        <%= form.collection_select :deal_ids, Deal.available_for_collection(collection), :id, :title, {}, multiple: true, class: 'form-control', data: { type: 'select2-enabled' } %>
+      </div>
+
+    </div>
+    <div class="actions">
+      <%= form.submit 'Submit', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+
+<%= link_to 'Back', admin_collections_path %>
+<%= javascript_include_tag 'admin/select2_handler' %>
+

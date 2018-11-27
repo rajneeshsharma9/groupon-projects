@@ -11,10 +11,19 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
   resources :password_resets, only: %i[new create update]
-  put 'admin/deals/publish'
-  put 'admin/deals/unpublish'
   namespace :admin do
-    resources :deals
+    resources :deals do
+      member do
+        put 'publish'
+        put 'unpublish'
+      end
+    end
     resources :locations
+    resources :collections do
+      member do
+        put 'publish'
+        put 'unpublish'
+      end
+    end
   end
 end
