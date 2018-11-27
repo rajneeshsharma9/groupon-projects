@@ -17,3 +17,18 @@
 
 //= require globals
 @import 'bootswatch_theme';
+
+.card-info {
+  background-color: red;
+}
+
+.deals-container {
+  background-color: #eeeaf4;
+}
+
+.deal-card-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

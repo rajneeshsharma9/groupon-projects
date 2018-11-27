@@ -44,6 +44,10 @@ class Deal < ApplicationRecord
     update(published_at: nil)
   end
 
+  def published?
+    published_at.present?
+  end
+
   private def validate_start_at
     if start_at < created_at
       errors.add(:start_at, 'cannot be less than the current time')
