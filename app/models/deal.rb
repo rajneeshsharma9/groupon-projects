@@ -33,6 +33,8 @@ class Deal < ApplicationRecord
   validate :images_size_constraint
   validate :check_publishability, on: :update, if: :published_at_changed?
   validate :check_if_live_or_expired, on: :update, unless: :published_at_changed?
+  #scopes
+  scope :available_for_collection, ->(collection) { where(collection_id: nil, published_at: nil).or(Deal.where(collection_id: collection.id)) }
 
   def publish
     update(published_at: Time.current)

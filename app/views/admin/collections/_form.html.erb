@@ -9,7 +9,7 @@
 
       <div class="field">
         <%= form.label 'Deals', class: 'col-form-label' %>
-        <%= form.collection_select :deal_ids, Deal.where(collection_id: nil, published_at: nil).or(Deal.where(collection_id: collection.id)), :id, :title, {}, multiple: true, class: 'form-control', data: { type: 'select2-enabled' } %>
+        <%= form.collection_select :deal_ids, Deal.available_for_collection(collection), :id, :title, {}, multiple: true, class: 'form-control', data: { type: 'select2-enabled' } %>
       </div>
 
     </div>
