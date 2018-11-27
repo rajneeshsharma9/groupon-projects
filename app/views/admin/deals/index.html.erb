@@ -32,9 +32,9 @@
           <%= link_to 'Edit', edit_admin_deal_path(deal) %> |
           <%= link_to 'Destroy', [:admin, deal], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %> |
           <% if deal.published_at.nil? %>
-            <a href="" data-type="publish-link" data-id="<%= deal.id %>" data-publish-url="<%= admin_deals_publish_path %>" data-unpublish-url="<%= admin_deals_unpublish_path %>">Publish</a>
+            <a href="" data-type="publish-link" data-id="<%= deal.id %>" data-publish-url="<%= publish_admin_deal_path(deal) %>" data-unpublish-url="<%= unpublish_admin_deal_path(deal) %>">Publish</a>
           <% else %>
-            <a href="" data-type="unpublish-link" data-id="<%= deal.id %>" data-publish-url="<%=admin_deals_publish_path %>" data-unpublish-url="<%= admin_deals_unpublish_path %>">Unpublish</a>
+            <a href="" data-type="unpublish-link" data-id="<%= deal.id %>" data-publish-url="<%= publish_admin_deal_path(deal) %>" data-unpublish-url="<%= unpublish_admin_deal_path(deal) %>">Unpublish</a>
           <% end %>
         </td>
       </tr>

@@ -4,7 +4,7 @@ module Admin
     before_action :find_collection_by_id, only: %i[show edit update destroy publish unpublish]
 
     def index
-      @collections = Collection.order(created_at: :desc)
+      @collections = Collection.includes(:deals).order(created_at: :desc)
     end
 
     def show; end

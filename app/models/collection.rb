@@ -14,14 +14,18 @@ class Collection < ApplicationRecord
   validates :name, uniqueness: { case_sensitive: false }, allow_blank: true
 
   def publish
-    run_callbacks :publish do
-      update(published_at: Time.current)
+    Collection.transaction do
+      run_callbacks :publish do
+        update(published_at: Time.current)
+      end
     end
   end
 
   def unpublish
-    run_callbacks :unpublish do
-      update(published_at: nil)
+    Collection.transaction do
+      run_callbacks :unpublish do
+        update(published_at: nil)
+      end
     end
   end
 

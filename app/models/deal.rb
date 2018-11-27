@@ -77,15 +77,15 @@ class Deal < ApplicationRecord
     end
   end
 
-  private def check_image_presence
-    if images.count < MINIMUM_IMAGE_COUNT
-      errors.add(:base, I18n.t('image_not_present'))
-    end
-  end
-
   private def check_collection_presence
     if collection_id.present?
       errors.add(:base, I18n.t('collection_present'))
+    end
+  end
+
+  private def check_image_presence
+    if images.count < MINIMUM_IMAGE_COUNT
+      errors.add(:base, I18n.t('image_not_present'))
     end
   end
 

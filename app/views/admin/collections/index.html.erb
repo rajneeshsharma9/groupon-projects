@@ -16,10 +16,10 @@
       <tr class="<%= cycle('table-primary', 'table-secondary') -%>" >
         <th scope="row"><%= collection.name %></th>
         <td>
-          <% if collection.deals.exists? %>
-            <%= collection.deals.map{ |deal| content_tag(:a, deal.title, href: edit_admin_deal_path(deal)) }.join(', ').html_safe %>
+          <% if collection.deals.present? %>
+            <%= collection.deals.map{ |deal| link_to deal.title, edit_admin_deal_path(deal) }.join(', ').html_safe %>
           <% else %>
-            No deals currently
+            --
           <% end %>
         </td>
         <% if collection.published_at.present? %>
@@ -32,9 +32,9 @@
           <%= link_to 'Edit', edit_admin_collection_path(collection) %> |
           <%= link_to 'Destroy', [:admin, collection], method: :delete, data: { confirm: 'Are you sure?' }, class: 'destroy-link' %> |
           <% if collection.published_at.nil? %>
-            <a href="" data-type="publish-link" data-id="<%= collection.id %>" data-publish-url="<%= admin_collections_publish_path %>" data-unpublish-url="<%= admin_collections_unpublish_path %>">Publish</a>
+            <a href="" data-type="publish-link" data-id="<%= collection.id %>" data-publish-url="<%= publish_admin_collection_path(collection) %>" data-unpublish-url="<%= unpublish_admin_collection_path(collection) %>">Publish</a>
           <% else %>
-            <a href="" data-type="unpublish-link" data-id="<%= collection.id %>" data-publish-url="<%=admin_collections_publish_path %>" data-unpublish-url="<%= admin_collections_unpublish_path %>">Unpublish</a>
+            <a href="" data-type="unpublish-link" data-id="<%= collection.id %>" data-publish-url="<%= publish_admin_collection_path(collection) %>" data-unpublish-url="<%= unpublish_admin_collection_path(collection) %>">Unpublish</a>
           <% end %>
         </td>
       </tr>
