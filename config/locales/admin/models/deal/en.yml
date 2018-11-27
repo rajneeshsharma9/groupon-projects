@@ -7,3 +7,5 @@ en:
   location_not_present: 'cannot be published as location is not present'
   image_not_present: 'cannot be published as image is not present'
   live_or_expired_deal: 'Live or expired deals cannot be updated'
+  collection_present: 'cannot be published or unpublished as it belongs to collection'
+

@@ -11,7 +11,7 @@ RecordPublisher.prototype.publishAjaxRequest = function(event) {
   $.ajax({
     url: $(event.target).attr('data-publish-url'),
     type: 'PUT',
-    data: { id: $(event.target).attr('data-id'), authenticity_token: _this.csrfToken },
+    data: { authenticity_token: _this.csrfToken },
     dataType: 'json',
     error: function(XMLHttpRequest) {
       _this.appendErrorsToView($.parseJSON(XMLHttpRequest.responseText).errors);
@@ -28,7 +28,7 @@ RecordPublisher.prototype.unpublishAjaxRequest = function(event) {
   $.ajax({
     url: $(event.target).attr('data-unpublish-url'),
     type: 'PUT',
-    data: { id: $(event.target).attr('data-id'), authenticity_token: _this.csrfToken },
+    data: { authenticity_token: _this.csrfToken },
     dataType: 'json',
     error: function(XMLHttpRequest) {
       _this.appendErrorsToView($.parseJSON(XMLHttpRequest.responseText).errors);
@@ -46,7 +46,7 @@ RecordPublisher.prototype.appendErrorsToView = function(errors) {
 
 RecordPublisher.prototype.updatePropertyValue = function(value, event, toggle_to) {
   this.hideErrorDiv();
-  $("[data-type='deal-date'][data-id='" + $(event.target).attr('data-id') + "']").html(value);
+  $("[data-type='publish-date'][data-id='" + $(event.target).attr('data-id') + "']").html(value);
   $(event.target).attr('data-type', toggle_to + '-link').text(this.capitalizeFirstLetter(toggle_to));
 }
 

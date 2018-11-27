@@ -7,6 +7,12 @@
 
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <%= link_to 'Collections', admin_collections_path, class: "nav-link" %>
+      </li>
+      <li class="nav-item">
+        <%= link_to 'Deals', admin_deals_path, class: "nav-link" %>
+      </li>
       <% if logged_in? %>
         <li class="nav-item">
           <%= link_to 'Logout', logout_path, method: :delete, class: "nav-link" %>
