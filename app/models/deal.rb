@@ -48,6 +48,18 @@ class Deal < ApplicationRecord
     published_at.present?
   end
 
+  def self.search(search)
+    joins(locations: :address).where("addresses.city like ? OR title like ?", "%#{search}%", "%#{search}%")
+  end
+
+  def self.filter(filter)
+    if filter.present?
+      where(category_id: filter)
+    else
+      where(nil)
+    end
+  end
+
   private def validate_start_at
     if start_at < created_at
       errors.add(:start_at, 'cannot be less than the current time')
