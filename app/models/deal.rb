@@ -49,7 +49,7 @@ class Deal < ApplicationRecord
   end
 
   def self.search(search)
-    joins(locations: :address).where("addresses.city like ? OR title like ?", "%#{search}%", "%#{search}%")
+    joins(locations: :address).where('addresses.city like ? OR title like ?', "%#{search}%", "%#{search}%")
   end
 
   def self.filter(filter)
