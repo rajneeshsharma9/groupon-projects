@@ -4,9 +4,9 @@ class HomeController < ApplicationController
 
   def index
     if params[:search]
-      @deals = Deal.filter(params[:category][:category_id]).search(params[:search]).order('created_at DESC')
+      @deals = Deal.includes(:category).filter(params[:category][:category_id]).search(params[:search]).order('created_at DESC')
     else
-      @deals = Deal.order(created_at: :desc)
+      @deals = Deal.includes(:category).order(created_at: :desc)
     end
   end
 
