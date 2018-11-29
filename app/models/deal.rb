@@ -35,6 +35,9 @@ class Deal < ApplicationRecord
   validate :check_if_live_or_expired, on: :update, unless: :published_at_changed?
   #scopes
   scope :available_for_collection, ->(collection) { where(collection_id: nil, published_at: nil).or(Deal.where(collection_id: collection.id)) }
+  scope :published, -> { where.not(published_at: nil) }
+  scope :filter, ->(filters) { where(filters) }
+  scope :search, ->(search) { joins(locations: :address).where(Address.arel_table[:city].matches("#{search}%").or(Deal.arel_table[:title].matches("#{search}%")).to_sql) }
 
   def publish
     update(published_at: Time.current)
@@ -46,18 +49,6 @@ class Deal < ApplicationRecord
 
   def published?
     published_at.present?
-  end
-
-  def self.search(search)
-    joins(locations: :address).where('addresses.city like ? OR title like ?', "%#{search}%", "%#{search}%")
-  end
-
-  def self.filter(filter)
-    if filter.present?
-      where(category_id: filter)
-    else
-      where(nil)
-    end
   end
 
   private def validate_start_at
@@ -116,3 +107,5 @@ class Deal < ApplicationRecord
   end
 
 end
+
+# Deal.where(Deal.arel_table[:title].matches('b%').to_sql)
