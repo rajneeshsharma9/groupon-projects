@@ -13,7 +13,7 @@ class HomeController < ApplicationController
   def show; end
 
   private def permitted_filter_params
-    params[:q].except(:search).permit!.to_h.delete_if { |filter_key, filter_value| filter_value.empty? }
+    params[:q].except(:search).permit!.to_h.delete_if { |_filter_key, filter_value| filter_value.empty? }
   end
 
 end
