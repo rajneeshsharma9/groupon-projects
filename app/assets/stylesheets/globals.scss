@@ -48,3 +48,49 @@ html, body {
 .checkbox {
   margin-top: 10px;
 }
+
+.card-info {
+  background-color: red;
+}
+
+.deals-container {
+  background-color: #eeeaf4;
+  margin-bottom: 0px;
+}
+
+.deal-card-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-form .search-input {
+  width: 50%;
+  margin-right: 10px;
+}
+
+.search-form input {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.card-title {
+  margin-bottom: 2px;
+}
+
+.deal-heading {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.deal-heading span {
+  margin-left: 10px;
+}

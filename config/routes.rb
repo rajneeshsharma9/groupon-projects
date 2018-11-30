@@ -26,4 +26,6 @@ Rails.application.routes.draw do
       end
     end
   end
+  resources :deals, only: %i[show]
+
 end
