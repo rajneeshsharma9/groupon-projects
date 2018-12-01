@@ -107,5 +107,3 @@ class Deal < ApplicationRecord
   end
 
 end
-
-# Deal.where(Deal.arel_table[:title].matches('b%').to_sql)
