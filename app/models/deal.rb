@@ -10,6 +10,8 @@ class Deal < ApplicationRecord
   # Assciations
   has_many :deals_locations, dependent: :destroy
   has_many :locations, through: :deals_locations
+  has_many :line_items
+  has_many :orders, through: :line_items
   belongs_to :category
   belongs_to :collection, optional: true
   has_many_attached :images

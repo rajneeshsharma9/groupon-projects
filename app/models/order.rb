@@ -29,9 +29,11 @@ class Order < ApplicationRecord
   # Associations
   has_one :address, as: :addressable, dependent: :destroy, validate: true
   belongs_to :user, optional: true
+  has_many :line_items, dependent: :destroy
+  has_many :deals, through: :line_items
   # Callbacks
   # Validations
-  validates :amount, :workflow_state, presence: true
+  validates :amount, :workflow_state, :address, :email, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_AMOUNT }, allow_nil: true
   validates :amount, numericality: { less_than_or_equal_to: MAXIMUM_ALLOWED_AMOUNT }, allow_nil: true
   validates :receiver_email, format: {
@@ -88,6 +90,21 @@ class Order < ApplicationRecord
     else
       halt! 'You dont have the privileges to do this'
     end
+  end
+
+  def add_deal(deal)
+    current_item = line_items.find_by(deal_id: deal.id)
+    if current_item
+      current_item.quantity += 1
+    else
+      current_item = line_items.build(deal_id: deal.id)
+    end
+    current_item.price = deal.price
+    current_item
+  end
+
+  def total_price
+    line_items.to_a.sum { |item| item.total_price }
   end
 
 end
