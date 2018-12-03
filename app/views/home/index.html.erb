@@ -5,33 +5,7 @@
     <%= collection_select(:q, :category_id, Category.all, :id, :name, { selected: params[:q]&.[](:category_id), include_blank: 'Select Category' },  data: { type: 'select2-enabled' }) %>
     <%= submit_tag "Search", class: "btn btn-primary" %>
   <% end %>
-  <% @deals.each do |deal| %>
-    <div class="container py-3">
-      <div class="card">
-        <div class="row">
-          <div class="col-md-3">
-            <%= link_to image_tag(deal.images.first, class: 'w-100'), deal_path(deal) %>
-          </div>
-          <div class="col-md-9">
-            <div class="card-block">
-              <div class="deal-heading">
-                <h3 class="card-title"><%= link_to deal.title, deal_path(deal) %></h3>
-                <span class="badge badge-primary badge-pill"><%= deal.category.name %></span>
-              </div>
-              <p class="card-text"><b>Description : </b><%= raw deal.description %></p>
-              <p class="card-text"><b>Instructions : </b><%= deal.instructions %></p>
-              <p class="card-text"><b>Price : </b><%= deal.price %></p>
-              <a href="#" class="btn btn-primary">Add To Cart</a>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer text-muted deal-card-footer">
-          <span>Valid till <%= deal.expire_at.to_formatted_s(:long) %></span>
-          <span>Can be redeemed in <%= deal.locations.map{ |location| location.name }.join(', ') %></span>
-        </div>
-      </div>
-    </div>
-  <% end %>
+  <%= render partial: :deal, collection: @deals %>
   <% if @deals.count.zero? %>
     <div class="jumbotron">
       <h4 class="display-4">No deals present.</h4>
