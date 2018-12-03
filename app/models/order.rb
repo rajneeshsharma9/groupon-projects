@@ -8,6 +8,8 @@ class Order < ApplicationRecord
   # Associations
   has_one :billing_address, as: :addressable, dependent: :destroy, validate: true, class_name: 'Address'
   belongs_to :user, optional: true
+  has_many :line_items, dependent: :destroy
+  has_many :deals, through: :line_items
   # Callbacks
   # Validations
   validates :workflow_state, presence: true
@@ -16,5 +18,20 @@ class Order < ApplicationRecord
     with:    EMAIL_REGEXP,
     message: :invalid_email
   }, allow_blank: true
+
+  def add_deal(deal)
+    current_item = line_items.find_by(deal_id: deal.id)
+    if current_item
+      current_item.quantity += 1
+    else
+      current_item = line_items.build(deal_id: deal.id)
+    end
+    current_item.price = deal.price
+    current_item
+  end
+
+  def total_price
+    line_items.to_a.sum { |item| item.total_price }
+  end
 
 end
