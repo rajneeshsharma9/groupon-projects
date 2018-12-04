@@ -37,9 +37,9 @@ class LineItemsController < ApplicationController
 
   def destroy
     if @line_item.destroy
-      redirect_to line_items_path, info: 'Line item was successfully destroyed.'
+      redirect_to home_page_path, success: t('.empty_cart')
     else
-      redirect_to line_items_path, danger: t('.error_has_occured')
+      redirect_to cart_path, danger: t('.error_has_occured')
     end
   end
 
@@ -47,8 +47,7 @@ class LineItemsController < ApplicationController
     @line_item.quantity -= 1
     if @line_item.save
       if @line_item.quantity == 0
-        @line_item.destroy
-        redirect_to home_page_path, success: t('.empty_cart')
+        destroy
       else
         redirect_to cart_path, success: t('.removed_from_cart')
       end

@@ -22,6 +22,7 @@
             <p class="card-text"><b>Description : </b><%= raw @deal.description %></p>
             <p class="card-text"><b>Price : </b><%= @line_item.price %></p>
             <p class="card-text"><b>Quantity : </b><%= @line_item.quantity %></p>
+            <%= button_to 'Remove', @line_item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
           </div>
         </div>
       </div>
