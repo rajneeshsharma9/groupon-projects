@@ -1,6 +1,6 @@
 class LineItem < ApplicationRecord
   # Associations
-  belongs_to :order
+  belongs_to :order, validate: true
   belongs_to :deal
   # Validations
   validates :deal_id, uniqueness: { scope: [:order_id] }

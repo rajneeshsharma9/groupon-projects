@@ -91,6 +91,20 @@ html, body {
   justify-content: flex-start;
 }
 
+.deal-heading .add-buttons {
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .deal-heading span {
   margin-left: 10px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
 }
