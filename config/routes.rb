@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     end
   end
   resources :deals, only: %i[show]
+  get '/cart', to: 'orders#cart', as: 'cart'
+  get '/checkout', to: 'orders#checkout', as: 'checkout'
   resources :orders
   resources :line_items
 end

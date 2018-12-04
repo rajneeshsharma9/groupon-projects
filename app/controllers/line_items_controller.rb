@@ -1,6 +1,6 @@
 class LineItemsController < ApplicationController
 
-  before_action :set_order, only: [:create, :decrement]
+  before_action :set_cart_order, only: [:create, :decrement]
   before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement]
   skip_before_action :authorize, only: [:create, :decrement]
 
@@ -22,10 +22,9 @@ class LineItemsController < ApplicationController
     deal = Deal.find(params[:deal_id])
     @line_item = @order.add_deal(deal)
     if @line_item.save
-      redirect_to home_page_path
+      redirect_to cart_path, success: 'Item successfully added to cart.'
     else
-      flash.now[:danger] = t('.error_has_occured')
-      render :new
+      redirect_to home_page_path, danger: @order.errors.full_messages.join(', ')
     end
   end
 
@@ -66,11 +65,12 @@ class LineItemsController < ApplicationController
     params.require(:line_item).permit(:deal_id)
   end
 
-  private def set_order
+  private def set_cart_order
     @order = Order.find_by(id: session[:order_id])
-  rescue ActiveRecord::RecordNotFound
-    @order = Order.create
-    session[:order_id] = @order.id
+    unless @order
+      @order = Order.create
+      session[:order_id] = @order.id
+    end
   end
 
 end

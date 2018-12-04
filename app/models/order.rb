@@ -2,7 +2,7 @@ class Order < ApplicationRecord
 
   attr_accessor :current_user
   # Constants
-  MINIMUM_ALLOWED_AMOUNT = 0.01
+  MINIMUM_ALLOWED_AMOUNT = 0.00
   MAXIMUM_ALLOWED_AMOUNT = 99999.99
   # Workflow
   include Workflow
@@ -33,7 +33,8 @@ class Order < ApplicationRecord
   has_many :deals, through: :line_items
   # Callbacks
   # Validations
-  validates :amount, :workflow_state, :address, :email, presence: true
+  validates :line_items, length: { maximum: 1, message: ': Only one deal allowed in cart at a time. Please remove it from cart first.' }
+  validates :workflow_state, presence: true
   validates :amount, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_AMOUNT }, allow_nil: true
   validates :amount, numericality: { less_than_or_equal_to: MAXIMUM_ALLOWED_AMOUNT }, allow_nil: true
   validates :receiver_email, format: {
