@@ -4,11 +4,14 @@ class OrdersController < ApplicationController
   skip_before_action :authorize, only: [:cart]
 
   def cart
-    @line_item = @order.line_items.first
-    @deal = @line_item.deal
+    if @order.line_items.present?
+      @line_item = @order.line_items.first
+      @deal = @line_item.deal
+    end
   end
 
-  def checkout; end
+  def checkout
+  end
 
   private def set_cart_order
     @order = Order.find_by(id: session[:order_id])

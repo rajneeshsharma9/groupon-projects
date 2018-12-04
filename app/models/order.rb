@@ -95,11 +95,10 @@ class Order < ApplicationRecord
 
   def add_deal(deal)
     current_item = line_items.find_by(deal_id: deal.id)
-    if current_item
-      current_item.quantity += 1
-    else
+    unless current_item
       current_item = line_items.build(deal_id: deal.id)
     end
+    current_item.quantity += 1
     current_item.price = deal.price
     current_item
   end
