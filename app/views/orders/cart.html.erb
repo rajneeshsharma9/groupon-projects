@@ -19,7 +19,7 @@
                 <div class="add-buttons">
                   <%= button_to '-', decrement_line_item_path(line_item), method: :put, class: 'btn btn-danger' %>
                   <%= button_to '+', line_items_path(deal_id: deal), class: 'btn btn-success' %>
-              </div>
+                </div>
               </div>
               <p class="card-text"><b>Description : </b><%= raw deal.description %></p>
               <p class="card-text"><b>Price : </b><%= line_item.price %></p>
