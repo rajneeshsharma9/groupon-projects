@@ -2,7 +2,7 @@ class User < ApplicationRecord
 
   include Authenticator
   attr_accessor :reset_token
-
+  # Constants
   ROLES = ({ customer: 0, admin: 1 }).freeze
   PASSWORD_VALIDATION_RANGE = (6..20).freeze
 
