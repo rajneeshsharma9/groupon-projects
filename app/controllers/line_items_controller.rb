@@ -27,7 +27,7 @@ class LineItemsController < ApplicationController
   def decrement
     @line_item.quantity -= 1
     if @line_item.save
-      if @line_item.quantity == 0
+      if @line_item.quantity.zero?
         destroy
       else
         redirect_to cart_path, success: t('.removed_from_cart')

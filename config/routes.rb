@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   get '/checkout', to: 'orders#checkout', as: 'checkout'
   resources :line_items, only: %i[create destroy] do
     member do
-     put 'decrement'
+      put 'decrement'
     end
   end
 end
