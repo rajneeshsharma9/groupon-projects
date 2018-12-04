@@ -2,8 +2,9 @@ en:
   line_items:
     empty_cart: 'Your cart is empty'
     error_has_occured: 'An error has occured'
+    emoved_from_cart: 'Item successfully removed from cart'
     decrement:
-      removed_from_cart: 'Item successfully removed from cart'
+      empty_cart: 'Your cart is empty'
     set_line_item:
       line_item_not_present: 'Line item not present'
     create:
