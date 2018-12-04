@@ -11,6 +11,7 @@ class User < ApplicationRecord
   enum role: ROLES
   # Associations
   has_many :orders, dependent: :restrict_with_error
+  has_one :current_order, -> { where.not(workflow_state: ['completed', 'cancelled']) }, class_name: 'Order'
   # Callbacks
   before_create :set_verification_token
   after_create_commit :send_verification_email
