@@ -1,37 +1,18 @@
 class LineItemsController < ApplicationController
 
-  before_action :set_cart_order, only: [:create, :decrement]
-  before_action :set_line_item, only: [:show, :edit, :update, :destroy, :decrement]
-  skip_before_action :authorize, only: [:create, :decrement]
+  include CurrentCartOrder
 
-  def index
-    @line_items = LineItem.all
-  end
-
-  def show; end
-
-  def new
-    @line_item = LineItem.new
-  end
-
-  def edit; end
+  before_action :set_cart_order, only: %i[create decrement]
+  before_action :set_deal, only: %i[create]
+  before_action :set_line_item, only: %i[destroy decrement]
+  skip_before_action :authorize, only: %i[create decrement destroy]
 
   def create
-    deal = Deal.find(params[:deal_id])
-    @line_item = @order.add_deal(deal)
+    @line_item = @order.add_deal(@deal)
     if @line_item.save
       redirect_to cart_path, success: t('.line_item_added')
     else
       redirect_to home_page_path, danger: @order.errors.full_messages.join(', ')
-    end
-  end
-
-  def update
-    if @line_item.update(line_item_params)
-      redirect_to line_item_path(@line_item), info: t('.line_item_updated')
-    else
-      flash.now[:danger] = t('.error_has_occured')
-      render :edit
     end
   end
 
@@ -63,23 +44,15 @@ class LineItemsController < ApplicationController
     end
   end
 
-  private def line_item_params
-    params.require(:line_item).permit(:deal_id)
+  private def set_deal
+    @deal = Deal.find(params[:deal_id])
+    if @deal.nil?
+      redirect_to home_page_path, danger: t('.deal_not_present')
+    end
   end
 
-  private def set_cart_order
-    if logged_in?
-      @order = current_user.orders.where.not(workflow_state: %w[completed cancelled]).last
-      unless @order
-        @order = current_user.orders.create
-      end
-    else
-      @order = Order.find_by(id: session[:order_id])
-      unless @order
-        @order = Order.create
-        session[:order_id] = @order.id
-      end
-    end
+  private def line_item_params
+    params.require(:line_item).permit(:deal_id)
   end
 
 end

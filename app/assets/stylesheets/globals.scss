@@ -108,3 +108,18 @@ html, body {
   align-items: center;
   margin-top: 10px;
 }
+
+.order-details-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 90%;
+}
+
+.order-details {
+  width: 20%;
+  border-top:    1px dotted #595;
+  border-bottom: 1px dotted #595;
+  margin-bottom: 10px;
+  font-size: 20px;
+}

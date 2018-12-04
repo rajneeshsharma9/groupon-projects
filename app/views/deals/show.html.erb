@@ -16,7 +16,7 @@
           <p class="card-text"><b>Minimum Purchases required : </b><%= @deal.minimum_purchases_required %></p>
           <p class="card-text"><b>Maximum Purchases allowed per customer : </b><%= @deal.maximum_purchases_per_customer %></p>
           <p class="card-text"><b>Price : </b><%= @deal.price %></p>
-          <a href="#" class="btn btn-primary">Add To Cart</a>
+          <%= button_to 'Add To Cart', line_items_path(deal_id: @deal.id), class: 'btn btn-primary' %>
         </div>
       </div>
     </div>

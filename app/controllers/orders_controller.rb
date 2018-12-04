@@ -1,31 +1,16 @@
 class OrdersController < ApplicationController
 
-  before_action :set_cart_order, only: [:cart]
-  skip_before_action :authorize, only: [:cart]
+  include CurrentCartOrder
+
+  before_action :set_cart_order, only: %i[cart]
+  skip_before_action :authorize, only: %i[cart]
 
   def cart
     if @order.line_items.present?
-      @line_item = @order.line_items.first
-      @deal = @line_item.deal
+      @line_items = @order.line_items.includes(:deal)
     end
   end
 
-  def checkout
-  end
-
-  private def set_cart_order
-    if logged_in?
-      @order = current_user.orders.where.not(workflow_state: %w[completed cancelled]).last
-      unless @order
-        @order = current_user.orders.create
-      end
-    else
-      @order = Order.find_by(id: session[:order_id])
-      unless @order
-        @order = Order.create
-        session[:order_id] = @order.id
-      end
-    end
-  end
+  def checkout; end
 
 end
