@@ -8,21 +8,19 @@ class LineItemsController < ApplicationController
     @line_items = LineItem.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @line_item = LineItem.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     deal = Deal.find(params[:deal_id])
     @line_item = @order.add_deal(deal)
     if @line_item.save
-      redirect_to cart_path, success: 'Item successfully added to cart.'
+      redirect_to cart_path, success: t('.line_item_added')
     else
       redirect_to home_page_path, danger: @order.errors.full_messages.join(', ')
     end
@@ -30,7 +28,7 @@ class LineItemsController < ApplicationController
 
   def update
     if @line_item.update(line_item_params)
-      redirect_to line_item_path(@line_item), info: 'Line item was successfully updated.'
+      redirect_to line_item_path(@line_item), info: t('.line_item_updated')
     else
       flash.now[:danger] = t('.error_has_occured')
       render :edit
@@ -50,8 +48,10 @@ class LineItemsController < ApplicationController
     if @line_item.save
       if @line_item.quantity == 0
         @line_item.destroy
+        redirect_to home_page_path, success: t('.empty_cart')
+      else
+        redirect_to cart_path, success: t('.removed_from_cart')
       end
-      redirect_to home_page_path, success: t('.removed_from_cart')
     else
       redirect_to home_page_path, danger: t('.error_has_occured')
     end
@@ -59,6 +59,9 @@ class LineItemsController < ApplicationController
 
   private def set_line_item
     @line_item = LineItem.find(params[:id])
+    if @line_item.nil?
+      redirect_to cart_path, danger: t('.line_item_not_present')
+    end
   end
 
   private def line_item_params
@@ -66,10 +69,17 @@ class LineItemsController < ApplicationController
   end
 
   private def set_cart_order
-    @order = Order.find_by(id: session[:order_id])
-    unless @order
-      @order = Order.create
-      session[:order_id] = @order.id
+    if logged_in?
+      @order = current_user.orders.where.not(workflow_state: %w[completed cancelled]).last
+      unless @order
+        @order = current_user.orders.create
+      end
+    else
+      @order = Order.find_by(id: session[:order_id])
+      unless @order
+        @order = Order.create
+        session[:order_id] = @order.id
+      end
     end
   end
 

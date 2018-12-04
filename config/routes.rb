@@ -30,5 +30,9 @@ Rails.application.routes.draw do
   get '/cart', to: 'orders#cart', as: 'cart'
   get '/checkout', to: 'orders#checkout', as: 'checkout'
   resources :orders
-  resources :line_items
+  resources :line_items do
+    member do
+     put 'decrement'
+    end
+  end
 end
