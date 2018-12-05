@@ -4,9 +4,9 @@ class HomeController < ApplicationController
 
   def index
     if params[:q]
-      @deals = Deal.published.includes(:category).filter(permitted_filter_params).search(params[:q][:search]).order('created_at DESC').uniq
+      @deals = Deal.published.live.includes(:category).filter(permitted_filter_params).search(params[:q][:search]).order(created_at: :desc).uniq
     else
-      @deals = Deal.published.includes(:category).order(created_at: :desc)
+      @deals = Deal.published.live.includes(:category).order(created_at: :desc)
     end
   end
 

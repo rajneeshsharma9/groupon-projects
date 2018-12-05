@@ -9,7 +9,7 @@
     <% end %>
     <tr class="total_line">
       <td colspan="2">Total</td>
-      <td class="total_cell">: <%= number_to_currency(@order.total_price, unit: "₹") %></td>
+      <td class="total_cell">: <%= number_to_currency(@order.amount, unit: "₹") %></td>
     </tr>
   </table>
 </div>

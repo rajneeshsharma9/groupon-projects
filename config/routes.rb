@@ -29,9 +29,5 @@ Rails.application.routes.draw do
   resources :deals, only: %i[show]
   get '/cart', to: 'orders#cart', as: 'cart'
   get '/checkout', to: 'orders#checkout', as: 'checkout'
-  resources :line_items, only: %i[create destroy] do
-    member do
-      put 'decrement'
-    end
-  end
+  put '/update', to: 'orders#update', as: 'update_order'
 end

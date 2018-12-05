@@ -23,8 +23,8 @@ class Order < ApplicationRecord
     current_item = line_items.find_by(deal_id: deal.id)
     current_item ||= line_items.build(deal_id: deal.id)
     current_item.quantity += 1
-    current_item.price = deal.price
-    current_item
+    current_item.price_per_quantity = deal.price
+    current_item.save
   end
 
   def total_price

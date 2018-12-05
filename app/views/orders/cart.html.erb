@@ -9,7 +9,7 @@
       <div class="card">
         <div class="row">
           <div class="col-md-3">
-            <%= image_tag(line_item.deal.images.first, class: 'w-100') %>
+            <%= image_tag(deal.images.first, class: 'w-100') %>
           </div>
           <div class="col-md-9">
             <div class="card-block">
@@ -17,14 +17,14 @@
                 <h3 class="card-title"><%= deal.title %></h3>
                 <span class="badge badge-primary badge-pill"><%= deal.category.name %></span>
                 <div class="add-buttons">
-                  <%= button_to '-', decrement_line_item_path(line_item), method: :put, class: 'btn btn-danger' %>
-                  <%= button_to '+', line_items_path(deal_id: deal), class: 'btn btn-success' %>
+                  <%= button_to '-', update_order_path(deal_id: deal, task: 'decrement'), method: :put, class: 'btn btn-danger' %>
+                  <%= button_to '+', update_order_path(deal_id: deal), method: :put, class: 'btn btn-success' %>
                 </div>
               </div>
               <p class="card-text"><b>Description : </b><%= raw deal.description %></p>
-              <p class="card-text"><b>Price : </b><%= line_item.price %></p>
+              <p class="card-text"><b>Price : </b><%= line_item.price_per_quantity %></p>
               <p class="card-text"><b>Quantity : </b><%= line_item.quantity %></p>
-              <%= button_to 'Remove', line_item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              <%= button_to 'Remove', update_order_path(deal_id: deal, task: 'destroy'), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
             </div>
           </div>
         </div>
