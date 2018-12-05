@@ -37,7 +37,7 @@ class Deal < ApplicationRecord
   scope :available_for_collection, ->(collection) { where(collection_id: nil, published_at: nil).or(Deal.where(collection_id: collection.id)) }
   scope :published, -> { where.not(published_at: nil) }
   scope :filter, ->(filters) { where(filters) }
-  scope :live, -> { where("expire_at > ?", Time.current) }
+  scope :live, -> { where('expire_at > ?', Time.current) }
   scope :search, ->(search) { joins(locations: :address).where(Address.arel_table[:city].matches("#{search}%").or(Deal.arel_table[:title].matches("#{search}%")).to_sql) if search.present? }
 
   def publish
