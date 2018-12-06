@@ -33,7 +33,7 @@ module OrderWorkflow
   end
 
   def update_address(address_params)
-    build_address(address_params)
+    build_billing_address(address_params)
     unless save
       halt errors.full_messages
     end

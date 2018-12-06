@@ -21,6 +21,7 @@ class Order < ApplicationRecord
   after_update_cart :update_price
   # Validations
   validates :workflow_state, presence: true
+  validates :receiver_email, presence: true, if: :receiver_email_changed?
   validates :amount, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_AMOUNT, less_than_or_equal_to: MAXIMUM_ALLOWED_AMOUNT }, allow_nil: true
   validates :line_items, length: { maximum: 1, message: ': Only one deal allowed in cart at a time. Please remove it from cart first.' }
   validates :receiver_email, format: {
