@@ -1,0 +1,9 @@
+<% if @order.cart? && @order.line_items.present? %>
+  <%= render 'email', { order: @order } %>
+<% elsif @order.email? %>
+  <%= render 'address', { order: @order } %>
+<% elsif @order.address? %>
+  <%= render 'confirm', { order: @order } %>
+<% else %>
+  <h3 align="center">No orders currently</h3>
+<% end %>

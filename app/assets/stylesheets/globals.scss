@@ -127,3 +127,18 @@ html, body {
 .no-margin-alert {
   margin-bottom: 0px;
 }
+
+.order-confirm-container {
+  border: 1px solid black;
+  padding: 30px;
+}
+
+.action-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.order-title {
+  text-align: center;
+}

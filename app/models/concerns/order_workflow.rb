@@ -1,5 +1,6 @@
 module OrderWorkflow
 
+  DEAL_AVAILABILITY_STATES = %i[completed].freeze
   extend ActiveSupport::Concern
 
   included do
@@ -23,6 +24,27 @@ module OrderWorkflow
       end
       state :delivered
       state :cancelled
+
+      before_transition do |_from_state, to_state, _event|
+        check_deals_availability if DEAL_AVAILABILITY_STATES.include?(to_state)
+        check_deals_expiry
+      end
+    end
+  end
+
+  def check_deals_availability
+    line_items.each do |line_item|
+      if line_item.quantity > line_item.deal.quantity_left
+        halt! "Sorry, #{line_item.deal.title} is out of stock now."
+      end
+    end
+  end
+
+  def check_deals_expiry
+    deals.each do |deal|
+      if deal.expire_at < Time.current
+        halt! "Sorry, #{deal.title} is expired now."
+      end
     end
   end
 

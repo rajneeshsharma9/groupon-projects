@@ -30,7 +30,7 @@ class LineItem < ApplicationRecord
   end
 
   private def check_deal_quantity
-    if quantity > deal.maximum_purchases_per_customer
+    if quantity + order.user&.purchased_deal_quantity(deal.id) > deal.maximum_purchases_per_customer || quantity > deal.quantity_left
       errors.add(:base, 'No more purchases of this deal per customer allowed')
     end
   end

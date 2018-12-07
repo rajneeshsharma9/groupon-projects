@@ -56,6 +56,18 @@ class Deal < ApplicationRecord
     expire_at < Time.current
   end
 
+  def quantity_sold
+    orders.includes(:line_items).where(workflow_state: 'completed').sum('line_items.quantity')
+  end
+
+  def quantity_left
+    maximum_purchases_allowed - quantity_sold
+  end
+
+  def percentage_sold
+    (quantity_sold / maximum_purchases_allowed.to_f * 100).to_i
+  end
+
   private def validate_start_at
     if start_at < created_at
       errors.add(:start_at, 'cannot be less than the current time')

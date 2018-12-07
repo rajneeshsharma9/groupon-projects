@@ -1,5 +1,0 @@
-<h1>Order details</h1>
-<h3>Receiver Email Address: <%= @order.receiver_email %></h3>
-<p>Billing address: <%= @order.billing_address.presenter.readable_format %></p>
-<%= render 'details', { line_items: @order.line_items, order: @order } %>
-<%= button_to 'Confirm order', confirm_order_path, method: :patch, class: 'btn btn-primary' %>

@@ -1,0 +1,9 @@
+<div class="form-main">
+  <div class="form-container order-confirm-container">
+    <h2>Order details</h2>
+    <p class="text-primary">Receiver Email Address: <%= order.receiver_email %></p>
+    <p class="text-warning">Billing address: <%= order.billing_address.presenter.readable_format %></p>
+    <%= render 'order_details', { line_items: order.line_items, order: order } %>
+    <%= button_to 'Confirm order', update_order_path, method: :patch, class: 'btn btn-primary' %>
+  </div>
+</div>

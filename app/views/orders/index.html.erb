@@ -1,0 +1,29 @@
+<h1 class="order-title">Orders</h1>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Receiver Email</th>
+      <th scope="col">Items</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Placed At</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr class="<%= cycle('table-primary', 'table-secondary') -%>">
+        <th scope="row"><%= order.id %></th>
+        <td><%= order.receiver_email %></td>
+        <td><%= order.line_items.sum(&:quantity) %></td>
+        <td><%= order.amount %></td>
+        <td><%= order.confirmed_at.to_s(:long) %></td>
+        <% if order.delivered_at.present? %>
+          <td>Delivered at <%= order.delivered_at %></td>
+        <% else %>
+          <td>Pending Delivery</td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

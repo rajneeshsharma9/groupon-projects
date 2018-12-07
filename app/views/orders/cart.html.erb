@@ -1,7 +1,7 @@
 <% if @line_items.present? %>
   <div class="cart-header">
     <h2>Your cart</h2>
-    <%= button_to 'Checkout', checkout_path, method: :get, class: 'btn btn-primary' %>
+    <%= button_to 'Checkout', edit_order_path, method: :get, class: 'btn btn-primary' %>
   </div>
   <% @line_items.each do |line_item| %>
     <% deal = line_item.deal %>
@@ -18,13 +18,12 @@
                 <span class="badge badge-primary badge-pill"><%= deal.category.name %></span>
                 <div class="add-buttons">
                   <%= button_to '-', update_order_path(deal_id: deal, task: 'decrement'), method: :put, class: 'btn btn-danger' %>
-                  <%= button_to '+', update_order_path(deal_id: deal, task: 'increment'), method: :put, class: 'btn btn-success' %>
                 </div>
               </div>
               <p class="card-text"><b>Description : </b><%= raw deal.description %></p>
               <p class="card-text"><b>Price : </b><%= line_item.price_per_quantity %></p>
               <p class="card-text"><b>Quantity : </b><%= line_item.quantity %></p>
-              <%= button_to 'Remove', update_order_path(deal_id: deal, task: 'destroy'), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              <%= button_to 'Remove', update_cart_path(deal_id: deal, task: 'destroy'), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
             </div>
           </div>
         </div>

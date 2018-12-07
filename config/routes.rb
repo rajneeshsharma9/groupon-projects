@@ -28,12 +28,8 @@ Rails.application.routes.draw do
   end
   resources :deals, only: %i[show]
   get '/cart', to: 'orders#cart', as: 'cart'
-  put '/update', to: 'orders#update', as: 'update_order'
-
-  get '/checkout', to: 'orders#checkout', as: 'checkout'
-  get '/order_address', to: 'orders#address', as: 'order_address'
-  get '/confirmation', to: 'orders#confirmation', as: 'confirmation'
-  patch '/confirm_order', to: 'orders#confirm', as: 'confirm_order'
-  patch '/update_email', to: 'orders#update_email'
-  patch '/update_address', to: 'orders#update_address'
+  put '/update_cart', to: 'orders#update_cart', as: 'update_cart'
+  get '/edit_order', to: 'orders#edit', as: 'edit_order'
+  patch '/update_order', to: 'orders#update', as: 'update_order'
+  resources :orders, only: %i[index]
 end
