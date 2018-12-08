@@ -7,8 +7,6 @@ class OrdersController < ApplicationController
   skip_before_action :authorize, only: %i[cart update]
 
   before_action :set_current_order
-  before_action :set_deal, only: %i[update_cart]
-  before_action :set_line_item, only: %i[update_cart]
   before_action :set_current_user, only: %i[edit update]
   skip_before_action :authorize, only: %i[cart update_cart]
 

@@ -21,7 +21,7 @@
       <span>Valid till <%= deal.expire_at.to_formatted_s(:long) %></span>
       <span>Can be redeemed in <%= deal.locations.map{ |location| location.name }.join(', ') %></span>
     </div>
-    <h6>Deals claimed : <%= deal.quantity_sold %> / <%= deal.maximum_purchases_allowed %></h6>
+    <h6 class="text-primary">Deals claimed : <%= deal.quantity_sold %> / <%= deal.maximum_purchases_allowed %></h6>
     <div class="progress">
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= deal.percentage_sold %>%" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
