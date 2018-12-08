@@ -23,11 +23,10 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = current_user.orders.where(workflow_state: "completed")
+    @orders = current_user.orders.where(workflow_state: 'completed')
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @order.cart?

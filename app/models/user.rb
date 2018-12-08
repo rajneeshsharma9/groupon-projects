@@ -28,7 +28,7 @@ class User < ApplicationRecord
   validates :password, length: { in: PASSWORD_VALIDATION_RANGE }, allow_blank: true
 
   def purchased_deal_quantity(deal_id)
-    orders.includes(:line_items).where(workflow_state: 'completed').sum {|order| order.line_items.where(deal_id: deal_id).sum(&:quantity) }
+    orders.includes(:line_items).where(workflow_state: 'completed').sum { |order| order.line_items.where(deal_id: deal_id).sum(&:quantity) }
   end
 
 end
