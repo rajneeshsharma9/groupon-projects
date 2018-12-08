@@ -13,7 +13,7 @@
           <p class="card-text"><b>Description : </b><%= raw deal.description %></p>
           <p class="card-text"><b>Instructions : </b><%= deal.instructions %></p>
           <p class="card-text"><b>Price : </b><%= deal.price %></p>
-          <%= button_to 'Add To Cart', update_order_path(deal_id: deal), method: :put, class: 'btn btn-primary' %>
+          <%= button_to 'Add To Cart', update_order_path(deal_id: deal, task: 'increment'), method: :put, class: 'btn btn-primary' %>
         </div>
       </div>
     </div>

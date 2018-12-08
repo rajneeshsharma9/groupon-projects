@@ -1,11 +1,9 @@
 class OrdersController < ApplicationController
 
   include CurrentOrderFinder
-  include LineItemsHandler
+  include LineItemFlashMessage
 
   before_action :set_current_order
-  before_action :set_deal, only: %i[update]
-  before_action :set_line_item, only: %i[update]
   skip_before_action :authorize, only: %i[cart update]
 
   def cart
@@ -13,15 +11,17 @@ class OrdersController < ApplicationController
   end
 
   def update
-    if params[:task] == 'decrement' && @line_item.quantity > 1
-      decrement_line_item_quantity
-    elsif params[:task] == 'decrement' && @line_item.quantity == 1 || params[:task] == 'destroy'
-      destroy_line_item
+    if @order.update_cart(permitted_order_params)
+      redirect_to cart_path, success: success_message(permitted_order_params[:task])
     else
-      create_line_item
+      redirect_to cart_path, danger: error_message
     end
   end
 
   def checkout; end
+
+  def permitted_order_params
+    params.permit(:deal_id, :task)
+  end
 
 end

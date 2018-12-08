@@ -6,7 +6,6 @@ class LineItem < ApplicationRecord
   belongs_to :deal
   # Callbacks
   after_rollback :add_errors_to_order
-  after_commit :update_order_amount
   # Validations
   validates :price_per_quantity, presence: true
   validates :price_per_quantity, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_PRICE, less_than_or_equal_to: MAXIMUM_ALLOWED_PRICE }, allow_nil: true
@@ -18,11 +17,6 @@ class LineItem < ApplicationRecord
 
   def total_price
     price_per_quantity * quantity
-  end
-
-  def decrement
-    self.quantity -= 1
-    save
   end
 
   private def add_errors_to_order
@@ -45,10 +39,6 @@ class LineItem < ApplicationRecord
     if order.completed? || order.cancelled?
       errors.add(:base, 'LineItem cannot be added to this order')
     end
-  end
-
-  private def update_order_amount
-    order.update(amount: total_price)
   end
 
 end
