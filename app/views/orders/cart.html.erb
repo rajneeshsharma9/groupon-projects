@@ -17,7 +17,7 @@
                 <h3 class="card-title"><%= deal.title %></h3>
                 <span class="badge badge-primary badge-pill"><%= deal.category.name %></span>
                 <div class="add-buttons">
-                  <%= button_to '-', update_order_path(deal_id: deal, task: 'decrement'), method: :put, class: 'btn btn-danger' %>
+                  <%= button_to '-', update_cart_path(deal_id: deal, task: 'decrement'), method: :put, class: 'btn btn-danger' %>
                 </div>
               </div>
               <p class="card-text"><b>Description : </b><%= raw deal.description %></p>

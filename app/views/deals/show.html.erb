@@ -16,7 +16,7 @@
           <p class="card-text"><b>Minimum Purchases required : </b><%= @deal.minimum_purchases_required %></p>
           <p class="card-text"><b>Maximum Purchases allowed per customer : </b><%= @deal.maximum_purchases_per_customer %></p>
           <p class="card-text"><b>Price : </b><%= @deal.price %></p>
-          <%= button_to 'Add To Cart', update_order_path(deal_id: @deal, task: 'increment'), method: :put, class: 'btn btn-primary' %>
+          <%= button_to 'Add To Cart', update_cart_path(deal_id: @deal, task: 'increment'), method: :put, class: 'btn btn-primary' %>
         </div>
       </div>
     </div>

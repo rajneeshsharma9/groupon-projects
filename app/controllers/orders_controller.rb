@@ -2,7 +2,6 @@ class OrdersController < ApplicationController
 
   include CurrentOrderFinder
   include LineItemFlashMessage
-  include LineItemsHandler
 
   before_action :set_current_order
   skip_before_action :authorize, only: %i[cart update]
@@ -17,7 +16,7 @@ class OrdersController < ApplicationController
     @line_items = @order.line_items.includes(:deal)
   end
 
-  def update
+  def update_cart
     if @order.update_cart(permitted_order_params)
       redirect_to cart_path, success: success_message(permitted_order_params[:task])
     else
