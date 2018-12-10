@@ -15,6 +15,7 @@ class Order < ApplicationRecord
   belongs_to :user, optional: true
   has_many :line_items, dependent: :destroy
   has_many :deals, through: :line_items
+  has_one :payment, dependent: :destroy
   # Callbacks
   before_update_cart :set_line_item
   before_update_cart :set_deal
@@ -31,13 +32,15 @@ class Order < ApplicationRecord
 
   def update_cart(params)
     @params = params # need params in before callbacks
-    run_callbacks :update_cart do
-      if params[:task] == 'decrement' && @line_item.quantity > 1
-        decrement_line_item_quantity
-      elsif params[:task] == 'decrement' && @line_item.quantity == 1 || params[:task] == 'destroy'
-        destroy_line_item
-      elsif params[:task] == 'increment'
-        create_line_item
+    Order.transaction do
+      run_callbacks :update_cart do
+        if params[:task] == 'decrement' && @line_item.quantity > 1
+          decrement_line_item_quantity
+        elsif params[:task] == 'decrement' && @line_item.quantity == 1 || params[:task] == 'destroy'
+          destroy_line_item
+        elsif params[:task] == 'increment'
+          increment_quantity_or_create_line_item
+        end
       end
     end
   end

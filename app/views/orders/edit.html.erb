@@ -4,6 +4,8 @@
   <%= render 'address', { order: @order } %>
 <% elsif @order.address? %>
   <%= render 'confirm', { order: @order } %>
+<% elsif @order.payment? %>
+  <%= render 'payment', { order: @order } %>
 <% else %>
   <h3 align="center">No orders currently</h3>
 <% end %>

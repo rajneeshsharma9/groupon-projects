@@ -57,7 +57,7 @@ class Deal < ApplicationRecord
   end
 
   def quantity_sold
-    orders.includes(:line_items).where(workflow_state: 'completed').sum('line_items.quantity')
+    orders.joins(:line_items).with_completed_state.sum('line_items.quantity')
   end
 
   def quantity_left

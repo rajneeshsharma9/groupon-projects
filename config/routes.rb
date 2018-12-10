@@ -32,4 +32,5 @@ Rails.application.routes.draw do
   get '/edit_order', to: 'orders#edit', as: 'edit_order'
   patch '/update_order', to: 'orders#update', as: 'update_order'
   resources :orders, only: %i[index]
+  resources :payments
 end

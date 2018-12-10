@@ -1,6 +1,6 @@
 module OrderWorkflow
 
-  DEAL_AVAILABILITY_STATES = %i[completed].freeze
+  DEAL_AVAILABILITY_STATES = %i[payment completed].freeze
   extend ActiveSupport::Concern
 
   included do
@@ -15,7 +15,11 @@ module OrderWorkflow
         event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_admin }
       end
       state :address do
-        event :confirm, transitions_to: :completed, if: ->(order) { order.check_if_owner }
+        event :confirm, transitions_to: :payment, if: ->(order) { order.check_if_owner }
+        event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_admin }
+      end
+      state :payment do
+        event :pay, transitions_to: :completed, if: ->(order) { order.check_if_owner }
         event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_admin }
       end
       state :completed do

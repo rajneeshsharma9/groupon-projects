@@ -12,6 +12,7 @@ class User < ApplicationRecord
   # Associations
   has_many :orders, dependent: :restrict_with_error
   has_many :line_items, through: :orders
+  has_many :deals, through: :line_items
   has_one :current_order, -> { where.not(workflow_state: %w[completed cancelled]) }, class_name: 'Order'
   # Callbacks
   before_create :set_verification_token
@@ -28,7 +29,7 @@ class User < ApplicationRecord
   validates :password, length: { in: PASSWORD_VALIDATION_RANGE }, allow_blank: true
 
   def purchased_deal_quantity(deal_id)
-    orders.includes(:line_items).where(workflow_state: 'completed').sum { |order| order.line_items.where(deal_id: deal_id).sum(&:quantity) }
+    orders.with_completed_state.joins(:line_items).where(line_items: { deal_id: deal_id }).sum('line_items.quantity')
   end
 
 end

@@ -4,6 +4,7 @@ class LineItem < ApplicationRecord
   # Associations
   belongs_to :order, validate: true
   belongs_to :deal
+  has_one :refund
   # Callbacks
   after_rollback :add_errors_to_order
   # Validations

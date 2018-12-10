@@ -1,10 +1,6 @@
 class OrdersController < ApplicationController
 
-  include CurrentOrderFinder
   include LineItemFlashMessage
-
-  before_action :set_current_order
-  skip_before_action :authorize, only: %i[cart update]
 
   before_action :set_current_order
   before_action :set_current_user, only: %i[edit update]
@@ -23,7 +19,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = current_user.orders.where(workflow_state: 'completed')
+    @orders = current_user.orders.with_completed_state
   end
 
   def edit; end
@@ -39,18 +35,16 @@ class OrdersController < ApplicationController
   end
 
   private def update_email
-    email = params[:order][:receiver_email]
-    if @order.update_receiver_email!(email)
-      redirect_to edit_order_path, success: 'Enter billing address'
+    if @order.update_receiver_email!(params[:order][:receiver_email])
+      redirect_to edit_order_path, success: t('.enter_address')
     else
       redirect_to edit_order_path, danger: @order.halted_because
     end
   end
 
   private def update_address
-    address = permitted_address_params
-    if @order.update_address!(address)
-      redirect_to edit_order_path, success: 'Confirm order details'
+    if @order.update_address!(permitted_address_params)
+      redirect_to edit_order_path, success: t('.confirm_order')
     else
       redirect_to edit_order_path, danger: @order.halted_because
     end
@@ -58,7 +52,7 @@ class OrdersController < ApplicationController
 
   private def confirm
     if @order.confirm!
-      redirect_to home_page_path, success: 'Order placed successfully'
+      redirect_to edit_order_path, success: t('.payment_request')
     else
       redirect_to edit_order_path, danger: @order.halted_because
     end
@@ -73,7 +67,7 @@ class OrdersController < ApplicationController
   end
 
   private def permitted_address_params
-    params[:order][:address].permit!.to_h
+    params[:order][:address].permit(:id, :street_address, :state, :city, :country, :pincode).to_h
   end
 
 end

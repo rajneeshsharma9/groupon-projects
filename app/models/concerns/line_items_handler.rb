@@ -1,8 +1,7 @@
 module LineItemsHandler
 
-  private def create_line_item
-    current_item = line_items.find_by(deal_id: @deal.id)
-    current_item ||= line_items.build(deal_id: @deal.id)
+  private def increment_quantity_or_create_line_item
+    current_item = line_items.find_by(deal_id: @deal.id) || line_items.build(deal_id: @deal.id)
     current_item.quantity += 1
     current_item.price_per_quantity = @deal.price
     current_item.save
@@ -22,7 +21,7 @@ module LineItemsHandler
   end
 
   private def set_deal
-    @deal = Deal.find_by(id: @params[:deal_id])
+    @deal = Deal.published.live.find_by(id: @params[:deal_id], )
     if @deal.nil?
       redirect_to home_page_path, danger: t('.deal_not_present')
     end

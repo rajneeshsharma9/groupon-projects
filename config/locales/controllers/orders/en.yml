@@ -4,3 +4,7 @@ en:
     error_has_occured: 'An error has occured'
     removed_from_cart: 'Item successfully removed from cart'
     line_item_added: 'Item successfully added to cart.'
+    update:
+      enter_address: 'Enter billing address'
+      confirm_order: 'Confirm order details'
+      payment_request: 'Please proceed with payment'
