@@ -21,7 +21,7 @@ module LineItemsHandler
   end
 
   private def set_deal
-    @deal = Deal.published.live.find_by(id: @params[:deal_id], )
+    @deal = Deal.published.live.find_by(id: @params[:deal_id])
     if @deal.nil?
       redirect_to home_page_path, danger: t('.deal_not_present')
     end

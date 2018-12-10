@@ -1,6 +1,6 @@
 class Payment < ApplicationRecord
 
-  STATES = ({ auth: 0, capture: 1 }).freeze
+  STATES = { auth: 0, capture: 1 }.freeze
   MINIMUM_ALLOWED_AMOUNT = 0.01
   MAXIMUM_ALLOWED_AMOUNT = 99999.99
 

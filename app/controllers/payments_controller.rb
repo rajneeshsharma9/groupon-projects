@@ -18,9 +18,8 @@ class PaymentsController < ApplicationController
     else
       redirect_to edit_order_path, danger: @payment.errors.full_messages
     end
-
-  rescue Stripe::CardError => e
-    redirect_to edit_order_path, danger: e.message
+  rescue Stripe::CardError => error
+    redirect_to edit_order_path, danger: error.message
   end
 
   private def payment_params
