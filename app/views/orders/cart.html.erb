@@ -9,12 +9,12 @@
       <div class="card">
         <div class="row">
           <div class="col-md-3">
-            <%= image_tag(deal.images.first, class: 'w-100') %>
+            <%= link_to image_tag(deal.images.first, class: 'w-100'), deal_path(deal) %>
           </div>
           <div class="col-md-9">
             <div class="card-block">
               <div class="deal-heading">
-                <h3 class="card-title"><%= deal.title %></h3>
+                <h3 class="card-title"><%= link_to deal.title, deal_path(deal) %></h3>
                 <span class="badge badge-primary badge-pill"><%= deal.category.name %></span>
                 <div class="add-buttons">
                   <%= button_to '-', update_cart_path(deal_id: deal, task: 'decrement'), method: :put, class: 'btn btn-danger' %>

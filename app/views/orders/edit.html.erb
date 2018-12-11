@@ -4,8 +4,15 @@
   <%= render 'address', { order: @order } %>
 <% elsif @order.address? %>
   <%= render 'confirm', { order: @order } %>
-<% elsif @order.payment? %>
-  <%= render 'payment', { order: @order } %>
 <% else %>
   <h3 align="center">No orders currently</h3>
+<% end %>
+
+<% if @order.line_items.present? %>
+  <div class="corner-cart">
+    <div>
+      <h4>Order details</h4>
+      <%= render 'order_details', { line_items: @order.line_items, order: @order } %>
+    </div>
+  </div>
 <% end %>

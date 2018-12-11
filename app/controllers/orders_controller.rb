@@ -4,17 +4,19 @@ class OrdersController < ApplicationController
 
   before_action :set_current_order
   before_action :set_current_user, only: %i[edit update]
-  skip_before_action :authorize, only: %i[cart update_cart]
+  before_action :set_deal, only: %i[update_cart]
+  before_action :set_line_item, only: %i[update_cart]
+  skip_before_action :authorize, only: %i[cart]
 
   def cart
     @line_items = @order.line_items.includes(:deal)
   end
 
   def update_cart
-    if @order.update_cart(permitted_order_params)
+    if @order.update_cart(permitted_order_params, @deal, @line_item)
       redirect_to cart_path, success: success_message(permitted_order_params[:task])
     else
-      redirect_to cart_path, danger: error_message
+      redirect_to home_page_path, danger: error_message
     end
   end
 
@@ -29,8 +31,6 @@ class OrdersController < ApplicationController
       update_email
     elsif @order.email?
       update_address
-    elsif @order.address?
-      confirm
     end
   end
 
@@ -46,15 +46,8 @@ class OrdersController < ApplicationController
     if @order.update_address!(permitted_address_params)
       redirect_to edit_order_path, success: t('.confirm_order')
     else
-      redirect_to edit_order_path, danger: @order.halted_because
-    end
-  end
-
-  private def confirm
-    if @order.confirm!
-      redirect_to edit_order_path, success: t('.payment_request')
-    else
-      redirect_to edit_order_path, danger: @order.halted_because
+      flash.now[:danger] = @order.halted_because
+      render :edit
     end
   end
 
@@ -67,7 +60,18 @@ class OrdersController < ApplicationController
   end
 
   private def permitted_address_params
-    params[:order][:address].permit(:id, :street_address, :state, :city, :country, :pincode).to_h
+    params[:order][:billing_address].permit(:id, :street_address, :state, :city, :country, :pincode).to_h
+  end
+
+  private def set_line_item
+    @line_item = @order.line_items.find_by(deal_id: params[:deal_id])
+  end
+
+  private def set_deal
+    @deal = Deal.find_by(id: params[:deal_id])
+    if @deal.nil?
+      redirect_to home_page_path, danger: t('.deal_not_present')
+    end
   end
 
 end

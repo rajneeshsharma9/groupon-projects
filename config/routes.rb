@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     post 'login' => :create
     delete 'logout' => :destroy
   end
+  get '/admin', to: 'admin/deals#index'
   resources :password_resets, only: %i[new create update]
   namespace :admin do
     resources :deals do

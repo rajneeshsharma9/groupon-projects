@@ -1,6 +1,6 @@
 class Order < ApplicationRecord
 
-  define_model_callbacks :update_cart, only: %i[before after]
+  define_model_callbacks :update_cart, only: %i[after]
   # Workflow
   include OrderWorkflow
   # Line item methods
@@ -17,9 +17,8 @@ class Order < ApplicationRecord
   has_many :deals, through: :line_items
   has_one :payment, dependent: :destroy
   # Callbacks
-  before_update_cart :set_line_item
-  before_update_cart :set_deal
   after_update_cart :update_price
+  before_save :change_to_cart_state, if: :amount_changed?
   # Validations
   validates :workflow_state, presence: true
   validates :receiver_email, presence: true, if: :receiver_email_changed?
@@ -30,8 +29,9 @@ class Order < ApplicationRecord
     message: :invalid_email
   }, allow_blank: true
 
-  def update_cart(params)
-    @params = params # need params in before callbacks
+  def update_cart(params, deal, line_item)
+    @deal = deal
+    @line_item = line_item
     Order.transaction do
       run_callbacks :update_cart do
         if params[:task] == 'decrement' && @line_item.quantity > 1
@@ -51,6 +51,10 @@ class Order < ApplicationRecord
 
   private def update_price
     update(amount: total_price)
+  end
+
+  private def change_to_cart_state
+    update_columns(workflow_state: 'cart')
   end
 
 end

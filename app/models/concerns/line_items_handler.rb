@@ -15,16 +15,4 @@ module LineItemsHandler
     @line_item.decrement(:quantity).save
   end
 
-  private def set_line_item
-    # no need to check if line_item found or not as add_deal handles it
-    @line_item = line_items.find_by(deal_id: @params[:deal_id])
-  end
-
-  private def set_deal
-    @deal = Deal.published.live.find_by(id: @params[:deal_id])
-    if @deal.nil?
-      redirect_to home_page_path, danger: t('.deal_not_present')
-    end
-  end
-
 end

@@ -4,6 +4,13 @@
     <p class="text-primary">Receiver Email Address: <%= order.receiver_email %></p>
     <p class="text-warning">Billing address: <%= order.billing_address.presenter.readable_format %></p>
     <%= render 'order_details', { line_items: order.line_items, order: order } %>
-    <%= button_to 'Confirm order', update_order_path, method: :patch, class: 'btn btn-primary' %>
+    <%= form_tag payments_path do %>
+      <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+        data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+        data-description="Order payment"
+        data-amount="<%= @order.amount * 100 %>"
+        data-locale="auto">
+      </script>
+    <% end %>
   </div>
 </div>
