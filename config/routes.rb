@@ -27,12 +27,16 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :deals, only: %i[show]
   resources :orders, only: %i[index] do
     collection do
       get 'cart'
       patch 'update', as: 'update'
       put 'update_cart'
+    end
+  end
+  resources :deals, only: %i[show] do
+    member do
+      get 'check_sold_quantity'
     end
   end
   get '/edit_order', to: 'orders#edit', as: 'edit_order'
