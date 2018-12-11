@@ -1,8 +1,8 @@
 class PaymentsController < ApplicationController
 
   before_action :set_current_order
-  before_action :set_current_user, only: %i[create]
   before_action :check_order_state, only: %i[create]
+  before_action :set_current_user, only: %i[create]
 
   def create
     @order_payment = PaymentService.new(@order)
