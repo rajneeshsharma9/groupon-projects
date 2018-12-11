@@ -1,6 +1,6 @@
 module OrderWorkflow
 
-  DEAL_AVAILABILITY_STATES = %i[payment completed].freeze
+  DEAL_AVAILABILITY_STATES = %i[completed].freeze
   extend ActiveSupport::Concern
 
   included do

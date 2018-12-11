@@ -1,12 +1,9 @@
 class OrdersController < ApplicationController
 
-  include LineItemFlashMessage
-
   before_action :set_current_order
   before_action :set_current_user, only: %i[edit update]
   before_action :set_deal, only: %i[update_cart]
   before_action :set_line_item, only: %i[update_cart]
-  skip_before_action :authorize, only: %i[cart]
 
   def cart
     @line_items = @order.line_items.includes(:deal)
@@ -61,6 +58,18 @@ class OrdersController < ApplicationController
 
   private def permitted_address_params
     params[:order][:billing_address].permit(:id, :street_address, :state, :city, :country, :pincode).to_h
+  end
+
+  private def success_message(task)
+    if task == 'increment'
+      t('.deal_added')
+    else
+      t('.deal_removed')
+    end
+  end
+
+  private def error_message
+    @order.errors.full_messages.join(', ')
   end
 
   private def set_line_item

@@ -1,6 +1,7 @@
 en:
+  payment_description: 'Groupon Order Charge'
+  statement_description: 'Groupon order'
   payments:
     create:
-      payment_description: 'Groupon Order Charge'
-      statement_description: 'Groupon order'
       successful_order: 'Order placed successfully'
+      payment_failed: 'Payment has failed due to some error. Please try again'
