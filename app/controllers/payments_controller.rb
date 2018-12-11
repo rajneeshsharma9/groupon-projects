@@ -2,6 +2,7 @@ class PaymentsController < ApplicationController
 
   before_action :set_current_order
   before_action :set_current_user, only: %i[create]
+  before_action :check_order_state, only: %i[create]
 
   def create
     @order_payment = PaymentService.new(@order)
@@ -26,6 +27,12 @@ class PaymentsController < ApplicationController
       else
         raise ActiveRecord::Rollback
       end
+    end
+  end
+
+  private def check_order_state
+    if !@order.address?
+      redirect_to edit_order_path, danger: t('.payment_not_allowed')
     end
   end
 
