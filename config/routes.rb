@@ -27,7 +27,11 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :deals, only: %i[show]
+  resources :deals, only: %i[show] do
+    member do
+      get 'check_sold_quantity'
+    end
+  end
   get '/cart', to: 'orders#cart', as: 'cart'
   put '/update_cart', to: 'orders#update_cart', as: 'update_cart'
   get '/edit_order', to: 'orders#edit', as: 'edit_order'
