@@ -27,7 +27,6 @@ Rails.application.routes.draw do
       end
     end
   end
-  resources :deals, only: %i[show]
   resources :orders, only: %i[index] do
     collection do
       get 'cart'
