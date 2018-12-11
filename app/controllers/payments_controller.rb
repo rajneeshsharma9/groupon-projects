@@ -31,7 +31,7 @@ class PaymentsController < ApplicationController
   end
 
   private def check_order_state
-    if !@order.address?
+    unless @order.address?
       redirect_to edit_order_path, danger: t('.payment_not_allowed')
     end
   end
