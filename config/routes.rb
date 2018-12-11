@@ -35,6 +35,11 @@ Rails.application.routes.draw do
       put 'update_cart'
     end
   end
+  resources :deals, only: %i[show] do
+    member do
+      get 'check_sold_quantity'
+    end
+  end
   get '/edit_order', to: 'orders#edit', as: 'edit_order'
   resources :payments, only: %i[create]
 end
