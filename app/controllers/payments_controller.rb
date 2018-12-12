@@ -23,9 +23,10 @@ class PaymentsController < ApplicationController
         true
       else
         raise ActiveRecord::Rollback
-        false
       end
     end
+  rescue ActiveRecord::Rollback
+    false
   end
 
   private def check_order_state
