@@ -1,0 +1,40 @@
+Hi <%= @order.user.name %>
+<br>
+Thanks for ordering from groupon. Here are the details of your order :
+<br>
+<table>
+  <thead>
+    <tr>
+      <th>Deal</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.line_items.each do |line_item| %>
+      <tr>
+        <td><%= line_item.deal.title %></td>
+        <td><%= line_item.quantity %></td>
+        <td><%= number_to_currency(line_item.total_price) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<b>Total Order Amount: <%= number_to_currency(@order.amount) %></b>
+<br>
+The coupon code will be sent to you shortly if the deal passes through or else the amount will be refunded to your account. Please be patient.
+
+<style type="text/css">
+  table {
+    border-collapse: collapse;
+  }
+
+  table, th, td {
+    border: 1px solid black;
+  }
+
+  th, td {
+    padding: 10px;
+   text-align: center;
+ }
+</style>
