@@ -76,10 +76,8 @@ module OrderWorkflow
     end
   end
 
-  def confirm
-    unless update(confirmed_at: Time.current)
-      halt errors.full_messages.join(', ')
-    end
+  def on_completed_entry(_prev_state, _event)
+    OrderMailer.send_order_confirmation_email(id).deliver_later
   end
 
   def deliver
