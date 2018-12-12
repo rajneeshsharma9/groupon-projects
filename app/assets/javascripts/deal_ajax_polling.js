@@ -16,12 +16,12 @@ AjaxPollingHandler.prototype.sendAjaxRequest = function() {
       console.log($.parseJSON(XMLHttpRequest.responseText));
     },
     success: function(dealJson) {
-      _this.updateContentText(dealJson.quantity_sold, dealJson.percentage_sold);
+      _this.updateContent(dealJson.quantity_sold, dealJson.percentage_sold);
     }
   });
 }
 
-AjaxPollingHandler.prototype.updateContentText = function(quantity_sold, percentage_sold) {
+AjaxPollingHandler.prototype.updateContent = function(quantity_sold, percentage_sold) {
   this.container.text(quantity_sold);
   this.soldProgressContainer.css('width', percentage_sold + '%');
 };

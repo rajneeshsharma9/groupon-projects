@@ -15,7 +15,10 @@ class DealsController < ApplicationController
   private def find_deal_by_id
     @deal = Deal.find_by(id: params[:id])
     if @deal.nil?
-      redirect_to home_page_path, danger: t('.deal_not_present')
+      respond_to do |format|
+        format.html { redirect_to home_page_path, danger: t('.deal_not_present') }
+        format.json { render json: { id: @deal.id }, status: 404 }
+      end
     end
   end
 
