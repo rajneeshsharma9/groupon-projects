@@ -18,6 +18,8 @@ class Order < ApplicationRecord
   has_one :payment, dependent: :destroy
   # Callbacks
   before_update_cart :reset_state
+  before_update_cart :check_if_deal_expired
+  before_update_cart :check_if_deal_unpublished
   after_update_cart :update_price
   # Validations
   validates :workflow_state, presence: true

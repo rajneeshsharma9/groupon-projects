@@ -8,6 +8,7 @@
       <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
         data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
         data-description="Order payment"
+        data-label="Place Order"
         data-amount="<%= @order.amount * 100 %>"
         data-locale="auto">
       </script>

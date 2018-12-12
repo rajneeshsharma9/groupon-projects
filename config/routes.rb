@@ -28,10 +28,13 @@ Rails.application.routes.draw do
     end
   end
   resources :deals, only: %i[show]
-  get '/cart', to: 'orders#cart', as: 'cart'
-  put '/update_cart', to: 'orders#update_cart', as: 'update_cart'
+  resources :orders, only: %i[index] do
+    collection do
+      get 'cart'
+      patch 'update', as: 'update'
+      put 'update_cart'
+    end
+  end
   get '/edit_order', to: 'orders#edit', as: 'edit_order'
-  patch '/update_order', to: 'orders#update', as: 'update_order'
-  resources :orders, only: %i[index]
-  resources :payments
+  resources :payments, only: %i[create]
 end

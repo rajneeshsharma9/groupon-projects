@@ -11,7 +11,7 @@ class OrdersController < ApplicationController
 
   def update_cart
     if @order.update_cart(permitted_order_params, @deal, @line_item)
-      redirect_to cart_path, success: success_message(permitted_order_params[:task])
+      redirect_to cart_orders_path, success: success_message(permitted_order_params[:task])
     else
       redirect_to home_page_path, danger: error_message
     end
@@ -35,7 +35,8 @@ class OrdersController < ApplicationController
     if @order.update_receiver_email!(params[:order][:receiver_email])
       redirect_to edit_order_path, success: t('.enter_address')
     else
-      redirect_to edit_order_path, danger: @order.halted_because
+      flash.now[:danger] = @order.halted_because
+      render :edit
     end
   end
 
@@ -53,7 +54,7 @@ class OrdersController < ApplicationController
   end
 
   private def permitted_order_params
-    params.permit(:deal_id, :task)
+    params.permit(:task)
   end
 
   private def permitted_address_params
@@ -74,6 +75,9 @@ class OrdersController < ApplicationController
 
   private def set_line_item
     @line_item = @order.line_items.find_by(deal_id: params[:deal_id])
+    if @line_item.nil? && params[:task] != 'increment'
+      redirect_to home_page_path, danger: t('.wrong_deal')
+    end
   end
 
   private def set_deal

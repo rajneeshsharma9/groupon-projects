@@ -4,7 +4,7 @@ class LineItem < ApplicationRecord
   # Associations
   belongs_to :order, validate: true
   belongs_to :deal
-  has_one :refund
+  # has_one :refund, dependent: :destroy
   # Callbacks
   after_validation :add_errors_to_order
   # Validations
@@ -30,24 +30,23 @@ class LineItem < ApplicationRecord
   private def check_if_deal_expired
     if deal.expired?
       errors.add(:base, 'Expired deals cannot be bought')
-      order.errors.clear
-      order.deals.clear
     end
   end
 
   private def check_if_deal_unpublished
     if deal.published_at.nil?
       errors.add(:base, 'Unpublished deals cannot be bought')
-      order.errors.clear
-      order.deals.clear
     end
   end
 
   private def check_deal_quantity
-    if quantity + order.user&.purchased_deal_quantity(deal.id) > deal.maximum_purchases_per_customer || quantity > deal.quantity_left
-      order.errors.clear
+    if deal_quantity_bought > deal.maximum_purchases_per_customer || quantity > deal.quantity_left
       errors.add(:base, 'No more purchases of this deal per customer allowed')
     end
+  end
+
+  private def deal_quantity_bought
+    quantity + order.user&.purchased_deal_quantity(deal.id)
   end
 
   private def check_order_state

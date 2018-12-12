@@ -10,3 +10,4 @@ en:
     update_cart:
       deal_added: 'Item successfully added to cart.'
       deal_removed: 'Item successfully removed from cart'
+      wrong_deal: 'Line item does not belong to this deal'

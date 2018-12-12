@@ -16,4 +16,20 @@ module LineItemsHandler
     @line_item.decrement(:quantity).save!
   end
 
+  private def check_if_deal_unpublished
+    if @deal.published_at.nil?
+      errors.add(:base, 'Unpublished deals cannot be bought')
+      @line_item.destroy
+      throw(:abort)
+    end
+  end
+
+  private def check_if_deal_expired
+    if @deal.expired?
+      errors.add(:base, 'Expired deals cannot be bought')
+      @line_item.destroy
+      throw(:abort)
+    end
+  end
+
 end

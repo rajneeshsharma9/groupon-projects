@@ -1,5 +1,7 @@
 class Refund < ApplicationRecord
-
+  # Constants
+  MINIMUM_ALLOWED_AMOUNT = 0.01
+  MAXIMUM_ALLOWED_AMOUNT = 99999.99
   # Associations
   belongs_to :payment
   belongs_to :line_item
