@@ -5,10 +5,10 @@ namespace :order do
     today_expired_deals = Deal.expired_today
     today_expired_deals.each do |deal|
       if deal.minimum_criteria_met?
-        STDOUT.puts "Sending coupons for deal #{ deal.title } at #{Time.current}"
+        STDOUT.puts "Sending coupons for deal #{deal.title} at #{Time.current}"
         deal.generate_coupons
       else
-        STDOUT.puts "Cancelling orders for deal #{ deal.title } at #{Time.current}"
+        STDOUT.puts "Cancelling orders for deal #{deal.title} at #{Time.current}"
         deal.cancel_orders
       end
     end
