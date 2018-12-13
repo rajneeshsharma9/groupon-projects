@@ -5,7 +5,7 @@ class RefundService
   end
 
   def refund
-    @refund = Stripe::Refund.create ({
+    @refund = Stripe::Refund.create({
       charge: @order.payment.charge_id
     })
     { success: true }
