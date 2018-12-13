@@ -93,10 +93,6 @@ module OrderWorkflow
     OrderMailer.send_order_cancellation_email(id).deliver_later
   end
 
-  def on_cancelled_entry(_prev_state, _event)
-    OrderMailer.send_order_cancellation_email(id).deliver_later
-  end
-
   def deliver
     unless update(delivered_at: Time.current)
       halt errors.full_messages.join(', ')
