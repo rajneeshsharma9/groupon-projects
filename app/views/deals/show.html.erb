@@ -24,6 +24,12 @@
       <span>Valid till <%= @deal.expire_at.to_formatted_s(:long) %></span>
       <span>Can be redeemed in <%= @deal.locations.map{ |location| location.name }.join(', ') %></span>
     </div>
+    <h6 class="text-primary">Deals claimed : <span data-container='ajax-polling' data-ajax-url="<%= check_sold_quantity_deal_path(@deal) %>"><%= @deal.quantity_sold %></span> / <%= @deal.maximum_purchases_allowed %></h6>
+    <div class="progress">
+      <div data-container='sold-progress' class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= @deal.percentage_sold %>%" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
   </div>
 <%= link_to 'Back', home_page_path %>
 </div>
+<%= javascript_include_tag 'deal_ajax_polling' %>
+
