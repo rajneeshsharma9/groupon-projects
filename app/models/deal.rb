@@ -3,7 +3,6 @@ class Deal < ApplicationRecord
   MAXIMUM_ALLOWED_IMAGE_SIZE = 100000
   MINIMUM_IMAGE_COUNT = 1
   MINIMUM_LOCATION_COUNT = 1
-  include NumericalCalculator
   # accessors
   attr_accessor :published_from_collection
   # Assciations
@@ -63,6 +62,10 @@ class Deal < ApplicationRecord
 
   def quantity_left
     maximum_purchases_allowed - quantity_sold
+  end
+
+  def percentage_sold
+    (quantity_sold / maximum_purchases_allowed.to_f * 100).to_i
   end
 
   private def validate_start_at

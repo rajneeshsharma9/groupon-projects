@@ -15,7 +15,7 @@ class PaymentService
     )
     { success: true }
   rescue Stripe::CardError, Stripe::RateLimitError, Stripe::InvalidRequestError, Stripe::AuthenticationError, Stripe::APIConnectionError, Stripe::StripeError => error
-    return { errors: error.message, success: false }
+    { errors: error.message, success: false }
   end
 
   def build_payment_params_hash
@@ -26,7 +26,7 @@ class PaymentService
     @charge.capture
     { success: true }
   rescue Stripe::CardError, Stripe::RateLimitError, Stripe::InvalidRequestError, Stripe::AuthenticationError, Stripe::APIConnectionError, Stripe::StripeError => error
-    return { errors: error.message, success: false }
+    { errors: error.message, success: false }
   end
 
 end
