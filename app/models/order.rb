@@ -36,13 +36,7 @@ class Order < ApplicationRecord
     @line_item = line_item
     Order.transaction do
       run_callbacks :update_cart do
-        if params[:task] == 'decrement' && @line_item.quantity > 1
-          decrement_line_item_quantity!
-        elsif params[:task] == 'decrement' && @line_item.quantity == 1 || params[:task] == 'destroy'
-          destroy_line_item!
-        elsif params[:task] == 'increment'
-          increment_quantity_or_create_line_item!
-        end
+        update_line_item(params)
       end
     end
   rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotDestroyed
@@ -51,6 +45,16 @@ class Order < ApplicationRecord
 
   def total_price
     line_items.reload.to_a.sum(&:total_price)
+  end
+
+  private def update_line_item(params)
+    if params[:task] == 'decrement' && @line_item.quantity > 1
+      decrement_line_item_quantity!
+    elsif params[:task] == 'decrement' && @line_item.quantity == 1 || params[:task] == 'destroy'
+      destroy_line_item!
+    elsif params[:task] == 'increment'
+      increment_quantity_or_create_line_item!
+    end
   end
 
   private def update_price
