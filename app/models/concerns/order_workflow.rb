@@ -77,7 +77,7 @@ module OrderWorkflow
   end
 
   def on_completed_entry(_prev_state, _event)
-    OrderMailer.send_order_confirmation_email(id).deliver_later
+    SendOrderConfirmationEmailJob.perform_later(id)
   end
 
   def deliver
