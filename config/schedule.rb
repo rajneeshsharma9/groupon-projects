@@ -19,9 +19,9 @@
 
 # Learn more: http://github.com/javan/whenever
 
-ENV['RAILS_ENV'] = "development"
+ENV['RAILS_ENV'] = 'development'
 
 set :output, 'log/whenever.log'
-every 1.day, :at => '11:59 pm' do
-  rake "order:deliver"
+every 1.day, at: '11:59 pm' do
+  rake 'order:deliver'
 end

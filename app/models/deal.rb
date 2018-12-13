@@ -59,9 +59,7 @@ class Deal < ApplicationRecord
   end
 
   def cancel_orders
-    orders.each do |order|
-      order.cancel!
-    end
+    orders.each(&:cancel!)
   end
 
   def unpublish
