@@ -1,7 +1,5 @@
 class Deal < ApplicationRecord
   # Constants
-  MINIMUM_ALLOWED_PRICE = 0.01
-  MAXIMUM_ALLOWED_PRICE = 9999.99
   MAXIMUM_ALLOWED_IMAGE_SIZE = 100000
   MINIMUM_IMAGE_COUNT = 1
   MINIMUM_LOCATION_COUNT = 1
@@ -10,6 +8,8 @@ class Deal < ApplicationRecord
   # Assciations
   has_many :deals_locations, dependent: :destroy
   has_many :locations, through: :deals_locations
+  has_many :line_items
+  has_many :orders, through: :line_items
   belongs_to :category
   belongs_to :collection, optional: true
   has_many_attached :images
@@ -37,6 +37,7 @@ class Deal < ApplicationRecord
   scope :available_for_collection, ->(collection) { where(collection_id: nil, published_at: nil).or(Deal.where(collection_id: collection.id)) }
   scope :published, -> { where.not(published_at: nil) }
   scope :filter, ->(filters) { where(filters) }
+  scope :live, -> { where('expire_at > ?', Time.current) }
   scope :search, ->(search) { joins(locations: :address).where(Address.arel_table[:city].matches("#{search}%").or(Deal.arel_table[:title].matches("#{search}%")).to_sql) if search.present? }
 
   def publish
@@ -49,6 +50,22 @@ class Deal < ApplicationRecord
 
   def published?
     published_at.present?
+  end
+
+  def expired?
+    expire_at < Time.current
+  end
+
+  def quantity_sold
+    orders.joins(:line_items).with_completed_state.sum('line_items.quantity')
+  end
+
+  def quantity_left
+    maximum_purchases_allowed - quantity_sold
+  end
+
+  def percentage_sold
+    (quantity_sold / maximum_purchases_allowed.to_f * 100).to_i
   end
 
   private def validate_start_at

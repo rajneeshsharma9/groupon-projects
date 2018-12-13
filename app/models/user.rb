@@ -11,7 +11,9 @@ class User < ApplicationRecord
   enum role: ROLES
   # Associations
   has_many :orders, dependent: :restrict_with_error
-  has_one :current_order, -> { where.not(workflow_state: %w[completed cancelled]).last }, class_name: 'Order'
+  has_many :line_items, through: :orders
+  has_many :deals, through: :line_items
+  has_one :current_order, -> { where.not(workflow_state: %w[completed cancelled]) }, class_name: 'Order'
   # Callbacks
   before_create :set_verification_token
   after_create_commit :send_verification_email
@@ -25,4 +27,9 @@ class User < ApplicationRecord
   }, allow_blank: true
   validates :verification_token, uniqueness: { case_sensitive: false }, allow_nil: true
   validates :password, length: { in: PASSWORD_VALIDATION_RANGE }, allow_blank: true
+
+  def purchased_deal_quantity(deal_id)
+    orders.with_completed_state.joins(:line_items).where(line_items: { deal_id: deal_id }).sum('line_items.quantity')
+  end
+
 end

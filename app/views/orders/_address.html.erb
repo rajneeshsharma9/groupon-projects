@@ -1,0 +1,32 @@
+<div class="form-main" style="margin-top: 50px;">
+  <div class="signup-login-form">
+    <%= form_for order, url: { action: 'update' } do |form| %>
+      <legend>Enter Billing Address</legend>
+      <div class="form-container">
+        <%= form.fields_for :billing_address, order.billing_address do |address_form| %>
+          <div class="field">
+            <%= address_form.label :street_address, class: 'col-form-label'%>
+            <%= address_form.text_field :street_address, class: 'form-control', placeholder: 'Enter street address' %>
+          </div>
+          <div class="field">
+            <%= address_form.label :city, class: 'col-form-label' %>
+            <%= address_form.text_field :city, class: 'form-control', placeholder: 'Enter city' %>
+          </div>
+          <div class="field">
+            <%= address_form.label :state, class: 'col-form-label' %>
+            <%= address_form.text_field :state, class: 'form-control', placeholder: 'Enter state' %>
+          </div>
+            <%= address_form.label :country, class: 'col-form-label' %>
+            <%= address_form.text_field :country, class: 'form-control', placeholder: 'Enter country' %>
+          <div class="field">
+            <%= address_form.label :pincode, class: 'col-form-label' %>
+            <%= address_form.text_field :pincode, class: 'form-control', placeholder: 'Enter pincode' %>
+          </div>
+        <% end %>
+        <div class="actions">
+          <%= form.submit 'Submit', class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

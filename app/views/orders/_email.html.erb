@@ -1,0 +1,16 @@
+<div class="form-main">
+  <div class="signup-login-form">
+    <%= form_for order, url: { action: 'update' } do |f| %>
+      <legend>Enter Receiver Email</legend>
+      <div class="form-container">
+        <div class="field">
+          <%= f.label 'The deal coupon code will be sent on this email', class: 'col-form-label text-info' %>
+          <%= f.email_field :receiver_email, class: 'form-control', placeholder: 'Enter email' %>
+        </div>
+        <div class="actions">
+          <%= f.submit 'Update', class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

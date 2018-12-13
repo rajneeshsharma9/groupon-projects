@@ -1,0 +1,8 @@
+en:
+  payment_description: 'Groupon Order Charge'
+  statement_description: 'Groupon order'
+  payment_not_allowed: 'Payment not allowed for this order'
+  payments:
+    create:
+      successful_order: 'Order placed successfully'
+      payment_failed: 'Payment has failed due to some error. Please try again'

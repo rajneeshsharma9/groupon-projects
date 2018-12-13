@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
 
+  include CurrentOrderFinder
   add_flash_types :danger, :success, :info
 
   before_action :authorize

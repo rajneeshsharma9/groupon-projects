@@ -91,6 +91,60 @@ html, body {
   justify-content: flex-start;
 }
 
+.deal-heading .add-buttons {
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .deal-heading span {
   margin-left: 10px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.order-details-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 90%;
+}
+
+.order-details {
+  width: 20%;
+  border-top:    1px dotted #595;
+  border-bottom: 1px dotted #595;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.no-margin-alert {
+  margin-bottom: 0px;
+}
+
+.order-confirm-container {
+  border: 1px solid black;
+  padding: 30px;
+}
+
+.action-buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.order-title {
+  text-align: center;
+}
+
+.corner-cart {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }

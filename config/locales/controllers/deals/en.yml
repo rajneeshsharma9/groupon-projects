@@ -1,0 +1,4 @@
+en:
+  deals:
+    show:
+      deal_not_present: 'Deal not present'
