@@ -19,6 +19,7 @@ gem 'stripe',                                                      '~> 4.2.0'
 gem 'select2-rails',                                               '~> 4.0.3'
 gem 'uglifier',                                                    '>= 1.3.0'
 gem 'workflow',                                                    '~> 1.2.0'
+gem 'whenever',                                                    '~> 0.10.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

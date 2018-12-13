@@ -39,9 +39,29 @@ class Deal < ApplicationRecord
   scope :filter, ->(filters) { where(filters) }
   scope :live, -> { where('expire_at > ?', Time.current) }
   scope :search, ->(search) { joins(locations: :address).where(Address.arel_table[:city].matches("#{search}%").or(Deal.arel_table[:title].matches("#{search}%")).to_sql) if search.present? }
+  scope :expired_today, -> { where(expire_at: (Time.current - 1.day)..Time.current) }
 
   def publish
     update(published_at: Time.current)
+  end
+
+  def minimum_criteria_met?
+    quantity_sold >= minimum_purchases_required
+  end
+
+  def generate_coupons
+    line_items.each do |line_item|
+      (1..line_item.quantity).each do |_|
+        line_item.coupons.create
+      end
+      line_item.order.deliver!
+    end
+  end
+
+  def cancel_orders
+    orders.each do |order|
+      order.cancel!
+    end
   end
 
   def unpublish
