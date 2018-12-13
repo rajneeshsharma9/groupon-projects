@@ -11,7 +11,7 @@ class RefundService
       })
       { success: true }
     rescue Stripe::CardError, Stripe::RateLimitError, Stripe::InvalidRequestError, Stripe::AuthenticationError, Stripe::APIConnectionError, Stripe::StripeError => error
-      return { errors: error.message, success: false }
+      { errors: error.message, success: false }
     end
   end
 
