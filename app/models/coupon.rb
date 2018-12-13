@@ -16,7 +16,7 @@ class Coupon < ApplicationRecord
   end
 
   private def send_coupon_code_email
-    CouponMailer.send_coupon_email(id).deliver_later
+    SendCouponEmailJob.perform_later(id)
   end
 
 end

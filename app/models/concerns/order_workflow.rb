@@ -90,7 +90,7 @@ module OrderWorkflow
   end
 
   def on_cancelled_entry(_prev_state, _event)
-    OrderMailer.send_order_cancellation_email(id).deliver_later
+    SendOrderCancellationEmailJob.perform_later(id)
   end
 
   def deliver
