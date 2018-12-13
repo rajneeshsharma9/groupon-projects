@@ -5,7 +5,7 @@ class DealsController < ApplicationController
   def show; end
 
   def check_sold_quantity
-    if(params[:current_quantity_sold] != @deal.quantity_sold)
+    if params[:current_quantity_sold] != @deal.quantity_sold
       render json: { id: @deal.id, quantity_sold: @deal.quantity_sold, percentage_sold: @deal.percentage_sold }
     else
       render json: { id: @deal.id }, status: 304

@@ -1,0 +1,6 @@
+en:
+  order_mailer:
+    send_order_confirmation_email:
+      order_confirmation_email_subject: 'Your Order is successfully placed.'
+
+
