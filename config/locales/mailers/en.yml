@@ -8,5 +8,12 @@ en:
   order_mailer:
     send_order_confirmation_email:
       order_confirmation_email_subject: 'Your Order is successfully placed.'
+    send_order_cancellation_email:
+      order_cancellation_email_subject: 'Your Order has been cancelled.'
+
+  coupon_mailer:
+    send_coupon_email:
+      coupon_email_subject: 'Coupon code for deal from Groupon'
+
 
 

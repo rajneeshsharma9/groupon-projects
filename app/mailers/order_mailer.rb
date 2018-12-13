@@ -7,4 +7,11 @@ class OrderMailer < ApplicationMailer
     end
   end
 
+  def send_order_cancellation_email(order_id)
+    @order = Order.find_by(id: order_id)
+    if @order
+      mail to: @order.user.email, subject: t('.order_cancellation_email_subject')
+    end
+  end
+
 end

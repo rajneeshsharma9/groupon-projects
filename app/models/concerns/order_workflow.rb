@@ -19,16 +19,18 @@ module OrderWorkflow
         event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_admin }
       end
       state :completed do
-        event :deliver, transitions_to: :delivered, if: ->(order) { order.check_if_admin }
-        event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_admin }
+        event :deliver, transitions_to: :delivered
+        event :cancel, transitions_to: :cancelled
       end
       state :delivered
       state :cancelled
 
       before_transition do |_from_state, to_state, _event|
-        check_deals_availability if DEAL_AVAILABILITY_STATES.include?(to_state)
-        check_deals_expiry
-        check_deals_publishability
+        if to_state != :cancelled
+          check_deals_availability if DEAL_AVAILABILITY_STATES.include?(to_state)
+          check_deals_expiry
+          check_deals_publishability
+        end
       end
     end
   end
@@ -71,13 +73,24 @@ module OrderWorkflow
   end
 
   def cancel
-    unless update(cancelled_at: Time.current, cancelled_by: current_user)
-      halt errors.full_messages.join(', ')
+    ActiveRecord::Base.transaction do
+      @refund_payment = RefundService.new(self)
+      refund_successful = @refund_payment.refund[:success]
+      @refund = payment.refunds.build(@refund_payment.build_refund_params_hash) if refund_successful
+      unless refund_successful && @refund.save && update(cancelled_at: Time.current, cancelled_by: current_user)
+        raise ActiveRecord::Rollback
+      end
     end
+  rescue ActiveRecord::Rollback
+    halt 'Cancelling order failed'
   end
 
   def on_completed_entry(_prev_state, _event)
     OrderMailer.send_order_confirmation_email(id).deliver_later
+  end
+
+  def on_cancelled_entry(_prev_state, _event)
+    OrderMailer.send_order_cancellation_email(id).deliver_later
   end
 
   def deliver

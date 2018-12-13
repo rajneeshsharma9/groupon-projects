@@ -1,0 +1,5 @@
+Hi <%= @order.user.name %>
+
+The deal which you ordered on Groupon didn't went through. Hence we have refunded your order amount of <%= number_to_currency(@order.amount) %>
+The amount might take 4-5 business days to reflect in your account.
+We apologize for the inconvenience caused.
