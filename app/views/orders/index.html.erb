@@ -18,11 +18,7 @@
         <td><%= order.line_items.sum(&:quantity) %></td>
         <td><%= order.amount %></td>
         <td><%= order.payment.created_at.to_s(:long) %></td>
-        <% if order.delivered_at.present? %>
-          <td>Coupon code sent at <%= order.delivered_at %></td>
-        <% else %>
-          <td>Pending Coupon code delivery</td>
-        <% end %>
+        <td><%= order.current_state.to_s.humanize %></td>
       </tr>
     <% end %>
   </tbody>

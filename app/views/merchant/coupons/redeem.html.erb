@@ -1,0 +1,16 @@
+<div class="form-main">
+  <div class="signup-login-form">
+    <%= form_tag("update",  method: :put) do %>
+      <legend>Redeem Coupon</legend>
+      <div class="form-container">
+        <div class="field">
+          <%= text_field_tag :code, nil, class: 'form-control', placeholder: 'Enter coupon code' %>
+        </div>
+        <div class="actions">
+          <%= submit_tag 'Redeem', class: 'btn btn-primary' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+

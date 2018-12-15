@@ -18,7 +18,7 @@ class OrdersController < ApplicationController
   end
 
   def index
-    @orders = current_user.orders.with_completed_state
+    @orders = current_user.orders.with_completed_state.or(current_user.orders.with_cancelled_state).or(current_user.orders.with_delivered_state)
   end
 
   def edit; end

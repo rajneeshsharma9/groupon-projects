@@ -26,7 +26,7 @@ module OrderWorkflow
       state :cancelled
 
       before_transition do |_from_state, to_state, _event|
-        if to_state != :cancelled
+        if to_state != :cancelled && to_state != :delivered
           check_deals_availability if DEAL_AVAILABILITY_STATES.include?(to_state)
           check_deals_expiry
           check_deals_publishability

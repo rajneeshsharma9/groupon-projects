@@ -6,6 +6,14 @@ class Coupon < ApplicationRecord
   before_create :create_coupon_code
   after_create_commit :send_coupon_code_email
 
+  def redeem(merchant)
+    if redeemed_at.present?
+      false
+    else
+      update(redeemed_at: Time.current, redeemed_by: merchant)
+    end
+  end
+
   private def create_coupon_code
     loop do
       self.code = Tokenizer.new_token

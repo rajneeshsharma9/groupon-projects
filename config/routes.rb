@@ -20,6 +20,7 @@ Rails.application.routes.draw do
       end
     end
     resources :locations
+    # resources :merchants
     resources :collections do
       member do
         put 'publish'
@@ -41,4 +42,13 @@ Rails.application.routes.draw do
   end
   get '/edit_order', to: 'orders#edit', as: 'edit_order'
   resources :payments, only: %i[create]
+  get '/merchant', to: 'merchant/coupons#index'
+  namespace :merchant do
+    resources :coupons, only: %i[index show] do
+      collection do
+        get 'redeem'
+        put 'update', as: 'update'
+      end
+    end
+  end
 end

@@ -1,0 +1,8 @@
+en:
+  merchant:
+    coupons:
+      update:
+        invalid_coupon_code: 'Invalid Coupon Code'
+        coupon_not_found: 'Coupon not present'
+        coupon_already_redeemed: 'Coupon already redeemed'
+        coupon_successfully_redeemed: 'Coupon successfully redeemed'

@@ -5,6 +5,7 @@ class CreateCoupons < ActiveRecord::Migration[5.2]
       t.string :code
       t.datetime :redeemed_at
       t.references :redeemed_by
+      t.timestamps
     end
   end
 end

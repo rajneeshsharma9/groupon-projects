@@ -1,0 +1,23 @@
+<h1 class="deal-title">Coupons</h1>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Deal</th>
+      <th scope="col">Code</th>
+      <th scope="col">Redeemed At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @coupons.each do |coupon| %>
+      <tr class="<%= cycle('table-primary', 'table-secondary') -%>">
+        <th scope="row"><%= coupon.line_item.deal.title %></th>
+        <td><%= coupon.code %></td>
+        <% if coupon.redeemed_at.present? %>
+          <td><%= coupon.redeemed_at.to_formatted_s(:long) %></td>
+        <% else %>
+          <td>-</td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
