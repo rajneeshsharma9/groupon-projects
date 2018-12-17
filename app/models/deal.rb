@@ -58,7 +58,10 @@ class Deal < ApplicationRecord
   end
 
   def cancel_orders
-    orders.each(&:cancel!)
+    orders.each do |order|
+      order.current_user = User.sys_admin
+      order.cancel!
+    end
   end
 
   def unpublish
