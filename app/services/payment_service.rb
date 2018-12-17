@@ -2,9 +2,11 @@ class PaymentService
 
   def initialize(order)
     @order = order
+    @logger = Rails.logger
   end
 
   def authorize(params)
+    @logger.info "Creating charge for order: #{@order.id}"
     @charge = Stripe::Charge.create(
       amount: @order.amount.to_i * 100,
       description: I18n.t('payment_description'),
@@ -23,6 +25,7 @@ class PaymentService
   end
 
   def capture
+    @logger.info "Capturing payment for order: #{@order.id}"
     @charge.capture
     { success: true }
   rescue Stripe::CardError, Stripe::RateLimitError, Stripe::InvalidRequestError, Stripe::AuthenticationError, Stripe::APIConnectionError, Stripe::StripeError => error

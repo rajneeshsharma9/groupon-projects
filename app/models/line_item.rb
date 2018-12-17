@@ -4,8 +4,7 @@ class LineItem < ApplicationRecord
   # Associations
   belongs_to :order, validate: true
   belongs_to :deal
-  has_many :coupons
-  # has_one :refund, dependent: :destroy
+  has_many :coupons, dependent: :destroy
   # Callbacks
   after_validation :add_errors_to_order
   # Validations
@@ -21,6 +20,12 @@ class LineItem < ApplicationRecord
 
   def total_price
     price_per_quantity * quantity
+  end
+
+  def generate_coupons
+    (1..quantity).each do |_|
+      coupons.create
+    end
   end
 
   private def add_errors_to_order

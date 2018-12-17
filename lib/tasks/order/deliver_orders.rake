@@ -12,5 +12,6 @@ namespace :order do
         deal.cancel_orders
       end
     end
+    STDOUT.puts "Delivery / Cancellation of expired deals finished at #{Time.current}"
   end
 end

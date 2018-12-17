@@ -51,9 +51,8 @@ class Deal < ApplicationRecord
 
   def generate_coupons
     line_items.each do |line_item|
-      (1..line_item.quantity).each do |_|
-        line_item.coupons.create
-      end
+      line_item.generate_coupons
+      line_item.order.current_user = User.sys_admin
       line_item.order.deliver!
     end
   end

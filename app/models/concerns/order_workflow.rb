@@ -19,18 +19,17 @@ module OrderWorkflow
         event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_admin }
       end
       state :completed do
-        event :deliver, transitions_to: :delivered
-        event :cancel, transitions_to: :cancelled
+        event :deliver, transitions_to: :delivered, if: ->(order) { order.check_if_sys_admin }
+        event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_sys_admin }
       end
       state :delivered
       state :cancelled
 
-      before_transition do |_from_state, to_state, _event|
-        if to_state != :cancelled
-          check_deals_availability if DEAL_AVAILABILITY_STATES.include?(to_state)
-          check_deals_expiry
-          check_deals_publishability
-        end
+      before_transition do |from_state, to_state, _event|
+        return if from_state == :completed
+        check_deals_availability if DEAL_AVAILABILITY_STATES.include?(to_state)
+        check_deals_expiry
+        check_deals_publishability
       end
     end
   end
@@ -79,6 +78,7 @@ module OrderWorkflow
       @refund = payment.refunds.build(@refund_payment.build_refund_params_hash) if refund_successful
       unless refund_successful && @refund.save && update(cancelled_at: Time.current, cancelled_by: current_user)
         raise ActiveRecord::Rollback
+        #TODO: notify on bugsnag later
       end
     end
   rescue ActiveRecord::Rollback
@@ -109,7 +109,16 @@ module OrderWorkflow
   end
 
   def check_if_admin
-    if current_user.check_if_admin && current_user != user
+    if current_user.admin? && current_user != user
+      true
+    else
+      halt 'You dont have the privileges to do this'
+      false
+    end
+  end
+
+  def check_if_sys_admin
+    if current_user == User.sys_admin
       true
     else
       halt 'You dont have the privileges to do this'

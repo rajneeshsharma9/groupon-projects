@@ -2,9 +2,11 @@ class RefundService
 
   def initialize(order)
     @order = order
+    @logger = Rails.logger
   end
 
   def refund
+    @logger.info "Creating refund for order: #{@order.id}"
     @refund = Stripe::Refund.create({
       charge: @order.payment.charge_id
     })
