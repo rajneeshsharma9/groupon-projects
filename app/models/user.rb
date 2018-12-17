@@ -32,4 +32,8 @@ class User < ApplicationRecord
     orders.with_completed_state.joins(:line_items).where(line_items: { deal_id: deal_id }).sum('line_items.quantity')
   end
 
+  def self.sys_admin
+    find_by(name: 'sys_admin')
+  end
+
 end

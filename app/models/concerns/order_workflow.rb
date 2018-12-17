@@ -19,13 +19,14 @@ module OrderWorkflow
         event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_admin }
       end
       state :completed do
-        event :deliver, transitions_to: :delivered, if: ->(order) { order.check_if_admin }
-        event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_admin }
+        event :deliver, transitions_to: :delivered, if: ->(order) { order.check_if_sys_admin }
+        event :cancel, transitions_to: :cancelled, if: ->(order) { order.check_if_sys_admin }
       end
       state :delivered
       state :cancelled
 
-      before_transition do |_from_state, to_state, _event|
+      before_transition do |from_state, to_state, _event|
+        return if from_state == :completed
         check_deals_availability if DEAL_AVAILABILITY_STATES.include?(to_state)
         check_deals_expiry
         check_deals_publishability
@@ -71,13 +72,25 @@ module OrderWorkflow
   end
 
   def cancel
-    unless update(cancelled_at: Time.current, cancelled_by: current_user)
-      halt errors.full_messages.join(', ')
+    ActiveRecord::Base.transaction do
+      @refund_payment = RefundService.new(self)
+      refund_successful = @refund_payment.refund[:success]
+      @refund = payment.refunds.build(@refund_payment.build_refund_params_hash) if refund_successful
+      unless refund_successful && @refund.save && update(cancelled_at: Time.current, cancelled_by: current_user)
+        raise ActiveRecord::Rollback
+        # TODO: notify on bugsnag later
+      end
     end
+  rescue ActiveRecord::Rollback
+    halt 'Cancelling order failed'
   end
 
   def on_completed_entry(_prev_state, _event)
     SendOrderConfirmationEmailJob.perform_later(id)
+  end
+
+  def on_cancelled_entry(_prev_state, _event)
+    SendOrderCancellationEmailJob.perform_later(id)
   end
 
   def deliver
@@ -96,7 +109,16 @@ module OrderWorkflow
   end
 
   def check_if_admin
-    if current_user.check_if_admin && current_user != user
+    if current_user.admin? && current_user != user
+      true
+    else
+      halt 'You dont have the privileges to do this'
+      false
+    end
+  end
+
+  def check_if_sys_admin
+    if current_user == User.sys_admin
       true
     else
       halt 'You dont have the privileges to do this'

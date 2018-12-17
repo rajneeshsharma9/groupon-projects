@@ -41,4 +41,7 @@ Rails.application.routes.draw do
   end
   get '/edit_order', to: 'orders#edit', as: 'edit_order'
   resources :payments, only: %i[create]
+  match '/(*url)', to: redirect('/404'), via: :all, constraints: lambda { |req|
+    req.path.exclude? 'rails/active_storage'
+  }
 end
