@@ -7,9 +7,9 @@ class RefundService
 
   def refund
     @logger.info "Creating refund for order: #{@order.id}"
-    @refund = Stripe::Refund.create({
+    @refund = Stripe::Refund.create(
       charge: @order.payment.charge_id
-    })
+    )
     { success: true }
   rescue Stripe::CardError, Stripe::RateLimitError, Stripe::InvalidRequestError, Stripe::AuthenticationError, Stripe::APIConnectionError, Stripe::StripeError => error
     { errors: error.message, success: false }

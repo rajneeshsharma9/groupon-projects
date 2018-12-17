@@ -78,7 +78,7 @@ module OrderWorkflow
       @refund = payment.refunds.build(@refund_payment.build_refund_params_hash) if refund_successful
       unless refund_successful && @refund.save && update(cancelled_at: Time.current, cancelled_by: current_user)
         raise ActiveRecord::Rollback
-        #TODO: notify on bugsnag later
+        # TODO: notify on bugsnag later
       end
     end
   rescue ActiveRecord::Rollback
