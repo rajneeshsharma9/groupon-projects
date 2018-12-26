@@ -1,0 +1,41 @@
+<% if @line_items.present? %>
+  <div class="cart-header">
+    <h2>Your cart</h2>
+    <%= button_to 'Checkout', edit_order_path, method: :get, class: 'btn btn-primary' %>
+  </div>
+  <% @line_items.each do |line_item| %>
+    <% deal = line_item.deal %>
+    <div class="container py-3">
+      <div class="card">
+        <div class="row">
+          <div class="col-md-3">
+            <%= link_to image_tag(deal.images.first, class: 'w-100'), deal_path(deal) %>
+          </div>
+          <div class="col-md-9">
+            <div class="card-block">
+              <div class="deal-heading">
+                <h3 class="card-title"><%= link_to deal.title, deal_path(deal) %></h3>
+                <span class="badge badge-primary badge-pill"><%= deal.category.name %></span>
+                <div class="add-buttons">
+                  <%= button_to '-', update_cart_orders_path(deal_id: deal, task: 'decrement'), method: :put, class: 'btn btn-danger' %>
+                   <%= button_to '+', update_cart_orders_path(deal_id: deal, task: 'increment'), method: :put, class: 'btn btn-success' %>
+                </div>
+              </div>
+              <p class="card-text"><b>Description : </b><%= raw deal.description %></p>
+              <p class="card-text"><b>Price : </b><%= line_item.price_per_quantity %></p>
+              <p class="card-text"><b>Quantity : </b><%= line_item.quantity %></p>
+              <%= button_to 'Remove', update_cart_orders_path(deal_id: deal, task: 'destroy'), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-muted deal-card-footer">
+          <span>Valid till <%= deal.expire_at.to_formatted_s(:long) %></span>
+          <span>Can be redeemed in <%= deal.locations.map{ |location| location.name }.join(', ') %></span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <%= render 'details', { line_items: @line_items, order: @order } %>
+<% else %>
+ <h2 class="cart-header">Your cart is empty.</h2>
+<% end %>

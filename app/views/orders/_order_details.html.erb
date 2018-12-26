@@ -1,0 +1,15 @@
+<div>
+  <table class="table table-hover">
+    <% line_items.each do |line_item| %>
+      <tr class="table-primary">
+        <td><%= line_item.quantity %>&times;</td>
+        <td><%= line_item.deal.title %></td>
+        <td class="item_price">: <%= number_to_currency(line_item.total_price) %>  </td>
+      </tr>
+    <% end %>
+    <tr class="table-info">
+      <td colspan="2">Total</td>
+      <td>: <%= number_to_currency(@order.amount) %></td>
+    </tr>
+  </table>
+</div>

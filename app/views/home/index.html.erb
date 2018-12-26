@@ -1,5 +1,15 @@
-<div class="jumbotron">
-  <h1 class="display-4">Welcome to Groupon</h1>
-  <hr class="my-4">
-  <p class="lead">Your destination for the best coupons in your city</p>
+<div class="jumbotron deals-container">
+  <h2 align="center">Deals</h2>
+  <%= form_tag(home_page_path, method: 'get', id: 'search-form', class: 'form-inline search-form') do %>
+    <%= text_field_tag "q[search]", params[:q]&.[](:search), placeholder: "Search Deals By Title or City", class: 'form-control search-input' %>
+    <%= collection_select(:q, :category_id, Category.all, :id, :name, { selected: params[:q]&.[](:category_id), include_blank: 'Select Category' },  data: { type: 'select2-enabled' }) %>
+    <%= submit_tag "Search", class: "btn btn-primary" %>
+  <% end %>
+  <%= render partial: :deal, collection: @deals %>
+  <% if @deals.count.zero? %>
+    <div class="jumbotron">
+      <h4 class="display-4">No deals present.</h4>
+    </div>
+  <% end %>
 </div>
+<%= javascript_include_tag 'admin/select2_handler' %>

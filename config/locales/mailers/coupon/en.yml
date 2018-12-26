@@ -1,0 +1,4 @@
+en:
+  coupon_mailer:
+    send_coupon_email:
+      coupon_email_subject: 'Coupon code for deal from Groupon'

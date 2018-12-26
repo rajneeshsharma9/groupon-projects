@@ -26,7 +26,7 @@ module Admin
       if @deal.persisted?
         redirect_to admin_deal_path(@deal), info: t('.deal_created')
       else
-        flash.now[:danger] = t('.error_has_occured')
+        flash.now[:danger] = @deal.errors.full_messages.join(', ')
         render :new
       end
     end

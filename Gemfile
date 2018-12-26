@@ -15,8 +15,11 @@ gem 'mysql2',                                                      '>= 0.4.4', '
 gem 'puma',                                                        '~> 3.11'
 gem 'rails',                                                       '~> 5.2.1'
 gem 'sass-rails',                                                  '~> 5.0'
+gem 'stripe',                                                      '~> 4.2.0'
 gem 'select2-rails',                                               '~> 4.0.3'
 gem 'uglifier',                                                    '>= 1.3.0'
+gem 'whenever',                                                    '~> 0.10.0'
+gem 'workflow',                                                    '~> 1.2.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
@@ -24,8 +27,6 @@ end
 
 group :development do
   gem 'listen',                                                    '>= 3.0.5', '< 3.2'
-  gem 'spring'
-  gem 'spring-watcher-listen',                                     '~> 2.0.0'
   gem 'web-console',                                               '>= 3.3.0'
 end
 

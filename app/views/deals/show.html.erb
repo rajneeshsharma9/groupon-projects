@@ -1,0 +1,35 @@
+<div class="container py-3">
+  <div class="card">
+    <div class="row">
+      <div class="col-md-2">
+        <%= link_to image_tag(@deal.images.first, class: 'w-100'), deal_path(@deal) %>
+      </div>
+      <div class="col-md-10">
+        <div class="card-block">
+          <div class="deal-heading">
+            <h3 class="card-title"><%= link_to @deal.title, deal_path(@deal) %></h3>
+            <span class="badge badge-primary badge-pill"><%= @deal.category.name %></span>
+          </div>
+          <p class="card-text"><b>Description : </b><%= raw @deal.description %></p>
+          <p class="card-text"><b>Instructions : </b><%= @deal.instructions %></p>
+          <p class="card-text"><b>Total Quantity : </b><%= @deal.maximum_purchases_allowed %></p>
+          <p class="card-text"><b>Minimum Purchases required : </b><%= @deal.minimum_purchases_required %></p>
+          <p class="card-text"><b>Maximum Purchases allowed per customer : </b><%= @deal.maximum_purchases_per_customer %></p>
+          <p class="card-text"><b>Price : </b><%= @deal.price %></p>
+          <%= button_to 'Add To Cart', update_cart_orders_path(deal_id: @deal, task: 'increment'), method: :put, class: 'btn btn-primary' %>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-muted deal-card-footer">
+      <span>Valid till <%= @deal.expire_at.to_formatted_s(:long) %></span>
+      <span>Can be redeemed in <%= @deal.locations.map{ |location| location.name }.join(', ') %></span>
+    </div>
+    <h6 class="text-primary">Deals claimed : <span data-container='ajax-polling' data-ajax-url="<%= check_sold_quantity_deal_path(@deal) %>"><%= @deal.quantity_sold %></span> / <%= @deal.maximum_purchases_allowed %></h6>
+    <div class="progress">
+      <div data-container='sold-progress' class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: <%= @deal.percentage_sold %>%" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+  </div>
+<%= link_to 'Back', home_page_path %>
+</div>
+<%= javascript_include_tag 'deal_ajax_polling' %>
+

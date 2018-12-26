@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     post 'login' => :create
     delete 'logout' => :destroy
   end
+  get '/admin', to: 'admin/deals#index'
   resources :password_resets, only: %i[new create update]
   namespace :admin do
     resources :deals do
@@ -26,4 +27,21 @@ Rails.application.routes.draw do
       end
     end
   end
+  resources :orders, only: %i[index] do
+    collection do
+      get 'cart'
+      patch 'update', as: 'update'
+      put 'update_cart'
+    end
+  end
+  resources :deals, only: %i[show] do
+    member do
+      get 'check_sold_quantity'
+    end
+  end
+  get '/edit_order', to: 'orders#edit', as: 'edit_order'
+  resources :payments, only: %i[create]
+  match '/(*url)', to: redirect('/404'), via: :all, constraints: lambda { |req|
+    req.path.exclude? 'rails/active_storage'
+  }
 end

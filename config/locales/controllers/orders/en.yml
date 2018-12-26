@@ -1,0 +1,13 @@
+en:
+  orders:
+    empty_cart: 'Your cart is empty'
+    deal_not_present: 'Deal not present'
+    error_has_occured: 'An error has occured'
+    update:
+      enter_address: 'Enter billing address'
+      confirm_order: 'Confirm order details'
+      payment_request: 'Please proceed with payment'
+    update_cart:
+      deal_added: 'Item successfully added to cart.'
+      deal_removed: 'Item successfully removed from cart'
+      wrong_deal: 'Line item does not belong to this deal'

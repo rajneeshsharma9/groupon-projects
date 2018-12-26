@@ -4,5 +4,3 @@ en:
       sign_up_mail_subject: 'Registration Confirmation for Groupon App'
     send_password_reset_email:
       reset_mail_subject: 'Reset Password for Groupon App'
-        
-      
