@@ -25,15 +25,16 @@ class Order < ApplicationRecord
   validates :workflow_state, presence: true
   validates :receiver_email, presence: true, if: :receiver_email_changed?
   validates :amount, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_AMOUNT, less_than_or_equal_to: MAXIMUM_ALLOWED_AMOUNT }, allow_nil: true
-  validates :line_items, length: { maximum: 1, message: ': Only one deal allowed in cart at a time. Please remove it from cart first.' }
+  # validates :line_items, length: { maximum: 1, message: ': Only one deal allowed in cart at a time. Please remove it from cart first.' }
   validates :receiver_email, format: {
     with:    EMAIL_REGEXP,
     message: :invalid_email
   }, allow_blank: true
 
-  def update_cart(params, deal, line_item)
+  def update_cart(params, deal, line_item, location)
     @deal = deal
     @line_item = line_item
+    @location = location
     Order.transaction do
       run_callbacks :update_cart do
         update_line_item(params)

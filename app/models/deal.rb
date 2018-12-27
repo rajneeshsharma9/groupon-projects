@@ -6,7 +6,7 @@ class Deal < ApplicationRecord
   # accessors
   attr_accessor :published_from_collection
   # Assciations
-  has_many :deals_locations, dependent: :destroy
+  has_many :deals_locations, dependent: :destroy, inverse_of: :deal
   has_many :locations, through: :deals_locations
   has_many :line_items
   has_many :orders, through: :line_items
@@ -14,19 +14,20 @@ class Deal < ApplicationRecord
   belongs_to :collection, optional: true
   has_many_attached :images
   accepts_nested_attributes_for :images_attachments, allow_destroy: true
+  accepts_nested_attributes_for :deals_locations
   # Callbacks
   after_create :validate_start_at
   before_update :purge_images
   # Validations
   validates :title, presence: true
   validates :title, uniqueness: { case_sensitive: false }, allow_nil: true
-  validates :minimum_purchases_required, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :maximum_purchases_allowed, numericality: { greater_than: :minimum_purchases_required }, allow_nil: true
+  # validates :minimum_purchases_required, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  # validates :maximum_purchases_allowed, numericality: { greater_than: :minimum_purchases_required }, allow_nil: true
   validates :start_at, :expire_at, :price, presence: true
   validates :price, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_PRICE }, allow_nil: true
   validates :price, numericality: { less_than_or_equal_to: MAXIMUM_ALLOWED_PRICE }, allow_nil: true
-  validates :maximum_purchases_per_customer, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :maximum_purchases_per_customer, numericality: { less_than_or_equal_to: :maximum_purchases_allowed }, allow_nil: true
+  # validates :maximum_purchases_per_customer, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  # validates :maximum_purchases_per_customer, numericality: { less_than_or_equal_to: :maximum_purchases_allowed }, allow_nil: true
   validates :start_at, date_range: { greater_than: :current_time }, on: :create
   validates :start_at, date_range: { greater_than: :created_at }, on: :update
   validates :expire_at, date_range: { greater_than: :start_at }
@@ -85,7 +86,7 @@ class Deal < ApplicationRecord
   end
 
   def percentage_sold
-    (quantity_sold / maximum_purchases_allowed.to_f * 100).to_i
+    0
   end
 
   private def validate_start_at

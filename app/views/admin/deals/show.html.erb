@@ -43,8 +43,8 @@
   <p>
     <strong>Locations:</strong>
     <ul>
-      <% @deal.locations.each do |location| %>
-        <li><%= location.name %></li>
+      <% @deal.deals_locations.each do |deal_location| %>
+        <li><%= deal_location.location.name %> Quantity: <%= deal_location.total_deals || '-' %></li>
       <% end %>
     </ul>
   </p>

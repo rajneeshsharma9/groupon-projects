@@ -4,13 +4,14 @@ class OrdersController < ApplicationController
   before_action :set_current_user, only: %i[edit update]
   before_action :set_deal, only: %i[update_cart]
   before_action :set_line_item, only: %i[update_cart]
+  before_action :set_location, only: %i[update_cart], if: -> { params[:location_id].present? }
 
   def cart
     @line_items = @order.line_items.includes(:deal)
   end
 
   def update_cart
-    if @order.update_cart(permitted_order_params, @deal, @line_item)
+    if @order.update_cart(permitted_order_params, @deal, @line_item, @location)
       redirect_to cart_orders_path, success: success_message(permitted_order_params[:task])
     else
       redirect_to home_page_path, danger: error_message
@@ -74,7 +75,7 @@ class OrdersController < ApplicationController
   end
 
   private def set_line_item
-    @line_item = @order.line_items.find_by(deal_id: params[:deal_id])
+    @line_item = @order.line_items.find_by(deal_id: params[:deal_id], location_id: params[:location_id][:id])
     if @line_item.nil? && params[:task] != 'increment'
       redirect_to home_page_path, danger: t('.wrong_deal')
     end
@@ -84,6 +85,13 @@ class OrdersController < ApplicationController
     @deal = Deal.find_by(id: params[:deal_id])
     if @deal.nil?
       redirect_to home_page_path, danger: t('.deal_not_present')
+    end
+  end
+
+  private def set_location
+    @location = @deal.locations.find_by(id: params[:location_id][:id])
+    if @location.nil?
+      redirect_to home_page_path, danger: 'Location not present'
     end
   end
 

@@ -4,22 +4,28 @@ class LineItem < ApplicationRecord
   # Associations
   belongs_to :order, validate: true
   belongs_to :deal
+  belongs_to :location
   has_many :coupons, dependent: :destroy
   # Callbacks
   after_validation :add_errors_to_order
   # Validations
   validates :price_per_quantity, presence: true
+  validates :location_id, inclusion: { in: :deals_locations_ids, message: "%{value} is not a valid location" }
   validates :price_per_quantity, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_PRICE, less_than_or_equal_to: MAXIMUM_ALLOWED_PRICE }, allow_nil: true
-  validates :deal_id, uniqueness: { scope: [:order_id] }
-  validates :quantity, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_QUANTITY }, allow_nil: true
+  validates :deal_id, uniqueness: { scope: [:order_id, :location_id] }
+  # validates :quantity, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_QUANTITY }, allow_nil: true
   validate :check_if_deal_expired
   validate :check_if_deal_unpublished
   validate :check_order_state
-  validate :check_deal_quantity
+  validate :check_deal_quantity, if: -> { deal.deals_locations.find_by(location_id: location.id).finite_deal_quantity == true }
   validates :coupons, length: { maximum: :quantity }
 
   def total_price
     price_per_quantity * quantity
+  end
+
+  private def deals_locations_ids
+    deal.location_ids
   end
 
   def generate_coupons
@@ -47,8 +53,8 @@ class LineItem < ApplicationRecord
   end
 
   private def check_deal_quantity
-    if deal_quantity_bought > deal.maximum_purchases_per_customer || quantity > deal.quantity_left
-      errors.add(:base, 'No more purchases of this deal per customer allowed')
+    if quantity > deal.deals_locations.find_by(location_id: location.id).deals_left
+      errors.add(:base, 'No more purchases of this deal allowed')
     end
   end
 
