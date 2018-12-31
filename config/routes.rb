@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get  'login' => :new
     post 'login' => :create
     delete 'logout' => :destroy
+    get 'google-sign-in' => :google_sign_in
   end
   get '/admin', to: 'admin/deals#index'
   resources :password_resets, only: %i[new create update]
@@ -26,6 +27,10 @@ Rails.application.routes.draw do
         put 'unpublish'
       end
     end
+    get 'api/generate_token', to: 'api#generate_token', as: 'generate_token'
+  end
+  namespace :api do
+    resources :deals, only: %i[index]
   end
   resources :orders, only: %i[index] do
     collection do

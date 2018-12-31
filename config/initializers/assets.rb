@@ -12,4 +12,4 @@ Rails.application.config.assets.paths += Dir["#{Rails.root}/vendor/*"]
 # application.js, application.css, and all non-JS/CSS in the app/assets
 # folder are already added.
 Rails.application.config.assets.precompile += %w[admin.scss]
-Rails.application.config.assets.precompile += %w[admin.js admin/rich_html_editor_handler.js admin/select2_handler.js admin/record_publisher.js admin/image_destroy_handler.js admin/multiple_input_field_handler.js deal_ajax_polling.js]
+Rails.application.config.assets.precompile += %w[admin.js admin/rich_html_editor_handler.js admin/select2_handler.js admin/record_publisher.js admin/image_destroy_handler.js admin/multiple_input_field_handler.js deal_ajax_polling.js google_sign_in.js]
