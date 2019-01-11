@@ -18,15 +18,12 @@ class Deal < ApplicationRecord
   after_create :validate_start_at
   before_update :purge_images
   # Validations
-  validates :title, presence: true
+  validates :title, :start_at, :expire_at, :price, presence: true
   validates :title, uniqueness: { case_sensitive: false }, allow_nil: true
   validates :minimum_purchases_required, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
   validates :maximum_purchases_allowed, numericality: { greater_than: :minimum_purchases_required }, allow_nil: true
-  validates :start_at, :expire_at, :price, presence: true
-  validates :price, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_PRICE }, allow_nil: true
-  validates :price, numericality: { less_than_or_equal_to: MAXIMUM_ALLOWED_PRICE }, allow_nil: true
-  validates :maximum_purchases_per_customer, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
-  validates :maximum_purchases_per_customer, numericality: { less_than_or_equal_to: :maximum_purchases_allowed }, allow_nil: true
+  validates :price, numericality: { greater_than_or_equal_to: MINIMUM_ALLOWED_PRICE, less_than_or_equal_to: MAXIMUM_ALLOWED_PRICE }, allow_nil: true
+  validates :maximum_purchases_per_customer, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :maximum_purchases_allowed }, allow_nil: true
   validates :start_at, date_range: { greater_than: :current_time }, on: :create
   validates :start_at, date_range: { greater_than: :created_at }, on: :update
   validates :expire_at, date_range: { greater_than: :start_at }
@@ -136,7 +133,7 @@ class Deal < ApplicationRecord
   end
 
   private def check_if_live_or_expired
-    if published_at.present? || expire_at < Time.current
+    if published_at.present? || (expire_at.present? && expire_at < Time.current)
       errors.add(:base, I18n.t('live_or_expired_deal'))
     end
   end
