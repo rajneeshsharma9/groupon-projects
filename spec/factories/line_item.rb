@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :line_item do
-    deal
+    association :deal, factory: :deal, published_at: Time.current
     order
     price_per_quantity { 20 }
     quantity { 4 }

@@ -6,11 +6,11 @@ RSpec.describe Order, type: :model do
 
   describe "attr accessors" do
     context 'current_user' do
+      before { order_instance.current_user = true }
       it 'responds to attibute getter' do
         expect(order_instance).to respond_to(:current_user)
       end
       it 'has attribute setter' do
-        order_instance.current_user = true
         expect(order_instance.current_user).to be true
       end
     end
@@ -50,39 +50,39 @@ RSpec.describe Order, type: :model do
   describe "Instance methods" do
     describe "#update_cart" do
       context "when adding line item of same deal" do
-        it "should not increase line_item count" do
-          line_item = FactoryBot.create(:line_item, order: order_instance)
+        let!(:line_item) { FactoryBot.create(:line_item, order: order_instance) }
+        before do
           deal = line_item.deal
           order_instance.update_cart({ task: 'increment' }, deal, line_item)
+        end
+        it "does not increase the line_item count" do
           expect(order_instance.line_items.count).to eq(1)
         end
-        it "should increase line_item quantity" do
-          line_item = FactoryBot.create(:line_item, order: order_instance)
-          deal = line_item.deal
-          order_instance.update_cart({ task: 'increment' }, deal, line_item)
+        it "increases line_item quantity" do
           expect(order_instance.line_items.first.quantity - line_item.quantity).to eq(1)
         end
       end
       context "when removing line item of same deal" do
-        it "should not decrease line_item count" do
-          line_item = FactoryBot.create(:line_item, order: order_instance)
+        let!(:line_item) { FactoryBot.create(:line_item, order: order_instance) }
+        let!(:previous_value) { line_item.quantity }
+        before do
           deal = line_item.deal
           order_instance.update_cart({ task: 'decrement' }, deal, line_item)
+        end
+        it "does not decrease the line_item count" do
           expect(order_instance.line_items.count).to eq(1)
         end
-        it "should decrease line_item quantity" do
-          line_item = FactoryBot.create(:line_item, order: order_instance)
-          deal = line_item.deal
-          previous_value = line_item.quantity
-          order_instance.update_cart({ task: 'decrement' }, deal, line_item)
+        it "decreases line_item quantity" do
           expect(previous_value - order_instance.line_items.first.quantity).to eq(1)
         end
       end
       context "when decrementing line item with 1 quantity" do
-        it "should destroy line_item" do
+        before do
           line_item = FactoryBot.create(:line_item, order: order_instance, quantity: 1)
           deal = line_item.deal
           order_instance.update_cart({ task: 'decrement' }, deal, line_item)
+        end
+        it "destroys line_item" do
           expect(order_instance.line_items.count).to eq(0)
         end
       end
@@ -94,8 +94,8 @@ RSpec.describe Order, type: :model do
         end
       end
       context "when line_items are present" do
+        before { FactoryBot.create(:line_item, order: order_instance) }
         it "has positive total price value" do
-          FactoryBot.create(:line_item, order: order_instance)
           expect(order_instance.total_price).to be > 0
         end
       end

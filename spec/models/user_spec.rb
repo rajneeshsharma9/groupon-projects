@@ -1,5 +1,5 @@
 require 'rails_helper'
-require Rails.root.join 'spec/concerns/authenticator_spec'
+require 'models/concerns/authenticator_spec'
 
 RSpec.describe User, type: :model do
 
