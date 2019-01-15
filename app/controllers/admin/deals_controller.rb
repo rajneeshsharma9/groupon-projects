@@ -48,9 +48,9 @@ module Admin
 
     def destroy
       if @deal.destroy
-        redirect_to admin_deals_path, info: t('.deal_deleted')
+        redirect_to admin_deals_path, success: t('.deal_deleted')
       else
-        redirect_to admin_deals_path, info: t('.error_has_occured')
+        redirect_to admin_deals_path, danger: t('.error_has_occured')
       end
     end
 
