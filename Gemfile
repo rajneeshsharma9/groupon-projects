@@ -6,6 +6,7 @@ gem 'basic_presenter',                                             '~> 0.0.4'
 gem 'bcrypt',                                                      '~> 3.1.7'
 gem 'bootsnap',                                                    '>= 1.1.0', require: false
 gem 'bootstrap',                                                   '~> 4.1.3'
+gem 'capybara',                                                    '~> 3.12.0'
 gem 'delayed_job_active_record',                                   '~> 4.1.3'
 gem "factory_bot_rails",                                           '~> 4.11.1'
 gem 'faker',                                                       '~> 1.9.1'
