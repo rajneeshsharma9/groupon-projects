@@ -2,7 +2,7 @@ en:
   admin:
     locations:
       error_has_occured: 'An error has occurred'
-      location_not_found: 'Deal not found'
+      location_not_found: 'Location not found'
       create:
         location_created: 'Location created successfully'
       update:
