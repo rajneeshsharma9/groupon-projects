@@ -19,8 +19,9 @@ module Admin
     def create
       @location = Location.new(permitted_location_params)
       if @location.save
-        redirect_to admin_location_path(@location), info: t('.location_created')
+        redirect_to admin_location_path(@location), success: t('.location_created')
       else
+        flash.now[:danger] = @location.errors.full_messages
         render :new
       end
     end
@@ -29,6 +30,7 @@ module Admin
       if @location.update(permitted_location_params)
         redirect_to admin_location_path(@location), success: t('.location_updated')
       else
+        flash.now[:danger] = @location.errors.full_messages
         render :edit
       end
     end
@@ -37,7 +39,7 @@ module Admin
       if @location.destroy
         redirect_to admin_locations_path, info: t('.location_deleted')
       else
-        redirect_to admin_locations_path, info: t('.error_has_occured')
+        redirect_to admin_locations_path, danger: t('.error_has_occured')
       end
     end
 

@@ -14,7 +14,6 @@ RecordPublisher.prototype.publishAjaxRequest = function(event) {
     data: { authenticity_token: _this.csrfToken },
     dataType: 'json',
     error: function(XMLHttpRequest) {
-      console.log(error);
       _this.appendErrorsToView($.parseJSON(XMLHttpRequest.responseText).errors);
     },
     success: function(dealJson) {
@@ -32,7 +31,6 @@ RecordPublisher.prototype.unpublishAjaxRequest = function(event) {
     data: { authenticity_token: _this.csrfToken },
     dataType: 'json',
     error: function(XMLHttpRequest) {
-      console.log(error);
       _this.appendErrorsToView($.parseJSON(XMLHttpRequest.responseText).errors);
     },
     success: function(dealJson) {

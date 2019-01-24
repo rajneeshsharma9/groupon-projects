@@ -3,9 +3,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.3.7'
 gem 'basic_presenter',                                             '~> 0.0.4'
+gem 'bugsnag',                                                     '~> 6.11.0'
 gem 'bcrypt',                                                      '~> 3.1.7'
 gem 'bootsnap',                                                    '>= 1.1.0', require: false
 gem 'bootstrap',                                                   '~> 4.1.3'
+gem 'capybara',                                                    '~> 3.12.0'
 gem 'delayed_job_active_record',                                   '~> 4.1.3'
 gem 'figaro',                                                      '~> 1.1.1'
 gem 'jbuilder',                                                    '~> 2.5'
@@ -15,6 +17,7 @@ gem 'mysql2',                                                      '>= 0.4.4', '
 gem 'puma',                                                        '~> 3.11'
 gem 'rails',                                                       '~> 5.2.1'
 gem 'sass-rails',                                                  '~> 5.0'
+gem 'social-share-button',                                         '~> 1.2.0'
 gem 'stripe',                                                      '~> 4.2.0'
 gem 'select2-rails',                                               '~> 4.0.3'
 gem 'uglifier',                                                    '>= 1.3.0'
@@ -23,6 +26,16 @@ gem 'workflow',                                                    '~> 1.2.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+end
+
+group :test do
+  gem "factory_bot_rails",                                           '~> 4.11.1'
+  gem 'faker',                                                       '~> 1.9.1'
+  gem 'rails-controller-testing',                                    '~> 1.0.4'
+  gem 'rspec-activemodel-mocks',                                     '~> 1.1.0'
+  gem 'rspec-rails',                                                 '~> 3.4'
+  gem 'shoulda-callback-matchers',                                   '~> 1.1.4'
+  gem 'shoulda-matchers',                                            '~> 3.1.2'
 end
 
 group :development do
