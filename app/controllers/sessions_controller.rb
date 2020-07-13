@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
 
   before_action :find_user_by_email,     only: %i[create]
   before_action :ensure_logged_out_user, except: %i[destroy]
-  skip_before_action :authorize,         only: %i[new create]
+  skip_before_action :authorize,         only: %i[new create google_sign_in]
 
   def new; end
 
@@ -19,6 +19,23 @@ class SessionsController < ApplicationController
       flash.now[:danger] = t('.invalid_password')
       render :new
     end
+  end
+
+  def google_sign_in
+    user = User.find_by(email: params[:email])
+    if user.nil?
+      user = User.customer.new(email: params[:email], name: params[:name], provider: params[:provider], password: Tokenizer.new_password)
+      user.save
+    end
+    if user.persisted?
+      log_in user
+      flash[:success] = 'Successfully signed in using google'
+      flash.keep(:success)
+    else
+      flash[:danger] = user.errors.full_messages
+      flash.keep(:danger)
+    end
+    render js: "window.location = '#{ home_page_path }'"
   end
 
   def destroy

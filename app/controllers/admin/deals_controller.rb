@@ -11,6 +11,7 @@ module Admin
 
     def new
       @deal = Deal.new
+      @deal.deals_locations.build
     end
 
     def edit; end
@@ -84,7 +85,7 @@ module Admin
     end
 
     private def permitted_deal_params
-      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price, :category_id, images_attachments_attributes: %i[id _destroy], location_ids: [])
+      params.require(:deal).permit(:title, :description, :start_at, :expire_at, :instructions, :minimum_purchases_required, :maximum_purchases_allowed, :maximum_purchases_per_customer, :price, :category_id, images_attachments_attributes: %i[id _destroy], deals_locations_attributes: %i[id location_id finite_deal_quantity total_deals _destroy])
     end
 
   end

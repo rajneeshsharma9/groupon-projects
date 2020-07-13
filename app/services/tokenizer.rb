@@ -4,6 +4,10 @@ class Tokenizer
     SecureRandom.urlsafe_base64.to_s
   end
 
+  def self.new_password
+    SecureRandom.urlsafe_base64.to_s[1..15]
+  end
+
   def self.create_digest(string)
     BCrypt::Password.create(string)
   end

@@ -17,10 +17,11 @@
                 <h3 class="card-title"><%= link_to deal.title, deal_path(deal) %></h3>
                 <span class="badge badge-primary badge-pill"><%= deal.category.name %></span>
                 <div class="add-buttons">
-                  <%= button_to '-', update_cart_orders_path(deal_id: deal, task: 'decrement'), method: :put, class: 'btn btn-danger' %>
-                   <%= button_to '+', update_cart_orders_path(deal_id: deal, task: 'increment'), method: :put, class: 'btn btn-success' %>
+                  <%= button_to '-', update_cart_orders_path(deal_id: deal, task: 'decrement', location_id: { id: line_item.location.id }), method: :put, class: 'btn btn-danger' %>
+                   <%= button_to '+', update_cart_orders_path(deal_id: deal, task: 'increment', location_id: { id: line_item.location.id }), method: :put, class: 'btn btn-success' %>
                 </div>
               </div>
+              <p class="card-text"><b>Location : </b><%= line_item.location.name %></p>
               <p class="card-text"><b>Description : </b><%= raw deal.description %></p>
               <p class="card-text"><b>Price : </b><%= line_item.price_per_quantity %></p>
               <p class="card-text"><b>Quantity : </b><%= line_item.quantity %></p>

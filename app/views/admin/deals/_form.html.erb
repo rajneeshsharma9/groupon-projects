@@ -31,10 +31,6 @@
         </div>
         <input type="button" class="btn btn-primary" value="Add more" data-type="add-more-button" />
       </div>
-      <div class="field">
-        <%= form.label :minimum_purchases_required, 'Minimum purchases required:', class: 'col-form-label' %>
-        <%= form.text_field :minimum_purchases_required, class: 'form-control', placeholder: 'Minimum purchases required' %>
-      </div>
 
       <div class="field">
         <%= form.label :price, 'Price:', class: 'col-form-label' %>
@@ -42,24 +38,37 @@
       </div>
 
       <div class="field">
-        <%= form.label :maximum_purchases_allowed, 'Maximum purchases allowed:', class: 'col-form-label' %>
-        <%= form.text_field :maximum_purchases_allowed, class: 'form-control', placeholder: 'Maximum purchases allowed' %>
-      </div>
-
-      <div class="field">
-        <%= form.label :maximum_purchases_allowed_per_customer, 'Maximum purchases allowed per customer:', class: 'col-form-label' %>
-        <%= form.text_field :maximum_purchases_per_customer, class: 'form-control', placeholder: 'Maximum purchases allowed per customer' %>
-      </div>
-
-      <div class="field">
         <%= form.label :instructions, class: 'col-form-label' %>
         <%= form.text_area :instructions, class: 'form-control', placeholder: 'Enter instructions' %>
       </div>
 
-      <div class="field">
-        <%= form.label 'Locations', class: 'col-form-label' %>
-        <%= form.collection_select :location_ids, Location.all, :id, :name, {}, multiple: true, class: 'form-control', data: { type: 'select2-enabled' } %>
-      </div>
+      <%= form.fields_for :deals_locations do |deals_location_form| %>
+        <%= deals_location_form.label 'Locations', class: 'col-form-label' %>
+        <%= deals_location_form.collection_select :location_id, Location.all, :id, :name, { prompt: true }, class: 'form-control', data: { type: 'select2-enabled' } %>
+        <div class="field">
+          <%= deals_location_form.label :finite_deal_quantity, class: 'col-form-label' %>
+          <%= deals_location_form.check_box :finite_deal_quantity, class: 'checkbox enable-check' %>
+        </div>
+        <div class="field">
+          <%= deals_location_form.label 'Total quantity', class: 'col-form-label' %>
+          <%= deals_location_form.text_field :total_deals, class: 'form-control checked-text', placeholder: 'Enter total deal available', disabled: true %>
+        </div>
+      <% end %>
+
+      <% if deal.persisted? %>
+        <%= form.fields_for :deals_locations, deal.deals_locations.build do |deals_location_form| %>
+          <%= deals_location_form.label 'Locations', class: 'col-form-label' %>
+          <%= deals_location_form.collection_select :location_id, Location.all, :id, :name, { prompt: true }, class: 'form-control', data: { type: 'select2-enabled' } %>
+          <div class="field">
+            <%= deals_location_form.label :finite_deal_quantity, class: 'col-form-label' %>
+            <%= deals_location_form.check_box :finite_deal_quantity, class: 'checkbox enable-check' %>
+          </div>
+          <div class="field">
+            <%= deals_location_form.label 'Total quantity', class: 'col-form-label' %>
+            <%= deals_location_form.text_field :total_deals, class: 'form-control checked-text', placeholder: 'Enter total deal available', disabled: true %>
+          </div>
+        <% end %>
+      <% end %>
 
       <div class="field">
         <%= form.label 'Category', class: 'col-form-label' %>
@@ -78,3 +87,18 @@
 <%= javascript_include_tag 'admin/select2_handler' %>
 <%= javascript_include_tag 'admin/image_destroy_handler' %>
 <%= javascript_include_tag 'admin/multiple_input_field_handler' %>
+
+<script type="text/javascript">
+
+$(function(){
+  $(".enable-check").change(function(){
+    if($(".enable-check").prop("checked") == true){
+      $(".checked-text").prop("disabled", false);
+    }
+    else {
+      $(".checked-text").prop("disabled", true);
+    }
+  });
+});
+
+</script>

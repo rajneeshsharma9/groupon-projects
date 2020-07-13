@@ -6,6 +6,9 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="<%= Rails.configuration.google[:client_id] %>">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
   </head>
 
   <header>
@@ -16,4 +19,5 @@
     <%= render_flash_messages %>
     <%= yield %>
   </body>
+  <%= javascript_include_tag 'google_sign_in' %>
 </html>
